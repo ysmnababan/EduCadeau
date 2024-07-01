@@ -1,0 +1,49 @@
+API GATEWAY ENDPOINT
+
+-> USER
+    POST /user/register             login               ALL
+    POST /user/login                register            ALL 
+
+    GET /users                      get all user        ADMIN
+    GET /user                       get user detail     ALL
+    PUT /user/top-up                top up              DONOR
+    PUT /user                       edit user data      RECIPIENT, DONOR
+
+-> DONATION     
+    GET /donations                  list donations      
+        ==> all donations                               ALL
+        ==> settled donations                           ADMIN
+        ==> on progress donations                       ADMIN, DONOR
+        ==> unsponsored donations                       ADMIN, DONOR
+        ==> requested donations                         RECIPIENT
+
+    GET /donation/{id}              donation detail     ALL
+    POST /donation                  request donation    RECIPIENT
+    PUT /donation/{id}              edit donation       RECIPIENT
+    DELETE /donation/{id}           delete donation     RECIPIENT
+
+-> REGISTRIES
+    GET /donated                    list of donation
+        ==> all registries                              ADMIN
+        ==> donated by donor                            DONOR
+    
+    GET /donated/{id}               detail of registry  ADMIN, DONOR
+
+    POST /donate/{id}               donate
+        ==> full donate             pay donation full   DONOR
+        ==> partial donate          pay partial         DONOR
+    
+    DELETE /donate/{id}             cancel donation     DONOR
+
+-> PAYMENT
+    GET /payments                           
+        ==> all payments                                ADMIN
+        ==> donor payments                              DONOR
+
+    GET /payment/{id}               payment detail      ADMIN, DONOR
+    POST /payment{id}               pay a donation      DONOR
+
+-> REPORT
+    GET /recipient-donor/{id}       get donation-donor  ADMIN
+    GET /best-donor                 the biggest donor   ADMIN
+    GET /total-donor                sum of all donor    ADMIN
