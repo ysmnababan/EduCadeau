@@ -225,6 +225,29 @@ func (h *UserHandler) EditUser(c echo.Context) error {
 }
 
 func (h *UserHandler) TopUp(c echo.Context) error {
+	cred := helper.GetCredential(c)
+	if cred.Role != "donor" {
+		return helper.ParseError(helper.ErrDonorUser, c)
+	}
+	var GetD models.TopUpReq
+	err := c.Bind(&GetD)
+	if err != nil {
+		return helper.ParseError(helper.ErrBindJSON, c)
+	}
 
-	return nil
+	//validate deposit
+	if GetD.Deposit <= 0 {
+		return helper.ParseError(helper.ErrParam, c)
+	}
+
+	respU, err := h.UserGRPC.TopUp(
+		context.TODO(),
+		&pb.TopUpReq{Amount: GetD.Deposit, UserId: uint64(cred.UserID)},
+	)
+	if err != nil {
+		return helper.ParseErrorGRPC(err, c)
+	}
+
+	return c.JSON(http.StatusOK, map[string]interface{}{"message": "Top Up success", "New Balance": respU.Balance})
+
 }
