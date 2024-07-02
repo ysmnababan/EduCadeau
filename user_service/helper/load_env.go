@@ -1,6 +1,7 @@
 package helper
 
 import (
+	"log"
 	"os"
 
 	"github.com/joho/godotenv"
@@ -29,4 +30,5 @@ func LoadEnv() {
 	DB_PORT = os.Getenv("DB_PORT")
 	USER_SERVICE_PORT = os.Getenv("USER_SERVICE_PORT")
 	TOKEN_KEY = os.Getenv("TOKEN_KEY")
+	log.Println("localhost: ", LOCALHOST)
 }
