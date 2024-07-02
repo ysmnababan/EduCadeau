@@ -118,6 +118,9 @@ func (s *UserController) GetUserDetail(ctx context.Context, in *pb.DetailReq) (*
 	return user, nil
 }
 func (s *UserController) TopUp(ctx context.Context, in *pb.TopUpReq) (*pb.TopUpResp, error) {
+	if in.Amount <= 0 || in.Amount >= 20000 {
+		return nil, helper.ParseErrorGRPC(helper.ErrParam)
+	}
 	respU, err := s.UserRepo.TopUp(uint(in.UserId), in.Amount)
 	if err != nil {
 		return nil, helper.ParseErrorGRPC(err)
@@ -155,5 +158,8 @@ func (s *UserController) EditDataUser(ctx context.Context, in *pb.EditReq) (*pb.
 	out.Age = int64(respU.Age)
 	out.PhoneNumber = respU.PhoneNumber
 	out.ProfilePictureUrl = respU.ProfilePictureUrl
+
+	log.Printf("UPDATE USER SUCCESS\n====================\n\n\n")
+
 	return out, nil
 }

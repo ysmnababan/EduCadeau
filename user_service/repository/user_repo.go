@@ -138,6 +138,10 @@ func (r *Repo) GetInfo(user_id uint) (models.UserDetailResponse, error) {
 	var u models.User
 	res := r.DB.First(&u, user_id)
 	if res.Error != nil {
+		if res.Error == gorm.ErrRecordNotFound {
+			return models.UserDetailResponse{}, helper.ErrNoUser
+		}
+		helper.Logging(nil).Error("ERR QUERY", res.Error)
 		return models.UserDetailResponse{}, helper.ErrQuery
 	}
 	var ud models.UserDetail
@@ -156,6 +160,7 @@ func (r *Repo) GetInfo(user_id uint) (models.UserDetailResponse, error) {
 	respU.Address = ud.Address
 	respU.Age = ud.Age
 	respU.PhoneNumber = ud.PhoneNumber
+	respU.ProfilePictureUrl = ud.ProfilePictureUrl
 
 	return respU, nil
 }
@@ -182,6 +187,10 @@ func (r *Repo) Update(user_id uint, u models.UserUpdateRequest) (models.UserDeta
 	var user models.User
 	res := r.DB.First(&user, user_id)
 	if res.Error != nil {
+		if res.Error == gorm.ErrRecordNotFound {
+			return models.UserDetailResponse{}, helper.ErrNoUser
+		}
+		helper.Logging(nil).Error("ERR QUERY", res.Error)
 		return models.UserDetailResponse{}, helper.ErrQuery
 	}
 
@@ -203,6 +212,8 @@ func (r *Repo) Update(user_id uint, u models.UserUpdateRequest) (models.UserDeta
 	updateU.Address = u.Address
 	updateU.Age = u.Age
 	updateU.PhoneNumber = u.PhoneNumber
+	updateU.ProfilePictureUrl = u.ProfilePictureUrl
+
 	res = r.DB.Save(&updateU)
 	if res.Error != nil {
 		return models.UserDetailResponse{}, helper.ErrQuery
@@ -215,6 +226,10 @@ func (r *Repo) TopUp(user_id uint, amount float64) (float64, error) {
 	var user models.User
 	res := r.DB.First(&user, user_id)
 	if res.Error != nil {
+		if res.Error == gorm.ErrRecordNotFound {
+			return 0, helper.ErrNoUser
+		}
+		helper.Logging(nil).Error("ERR QUERY", res.Error)
 		return 0, helper.ErrQuery
 	}
 	log.Println("HERE")

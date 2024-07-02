@@ -3,9 +3,14 @@ package main
 import (
 	"user_service/config"
 	"user_service/controller"
+	"user_service/helper"
 	"user_service/repository"
 	"user_service/setup"
 )
+
+func init() {
+	helper.LoadEnv()
+}
 
 func main() {
 	// connect to db
