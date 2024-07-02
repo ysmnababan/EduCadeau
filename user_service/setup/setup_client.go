@@ -1,0 +1,5 @@
+package setup
+
+func SetupLoginServiceClient(){
+	
+}

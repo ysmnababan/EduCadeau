@@ -1,0 +1,3 @@
+// compile proto for user-rest_proto
+
+protoc --go_out=. --go-grpc_out=require_unimplemented_servers=false:. .\proto\user_to_rest.proto
