@@ -23,7 +23,8 @@ var (
 	ErrCredential          = errors.New("password or email doesn't match")
 	ErrGeneratedPwd        = errors.New("error generating password hash")
 	ErrMustAdmin           = errors.New("unauthorized, admin privilege only")
-	ErrOnlyUser            = errors.New("unauthorized, user privilege only")
+	ErrDonorUser           = errors.New("unauthorized, donor privilege only")
+	ErrRecipientUser       = errors.New("unauthorized, recipient privilege only")
 	ErrUnsufficientBalance = errors.New("no sufficient fund")
 )
 
@@ -62,7 +63,10 @@ func ParseError(err error, ctx echo.Context) error {
 	case errors.Is(err, ErrMustAdmin):
 		status = http.StatusUnauthorized
 
-	case errors.Is(err, ErrOnlyUser):
+	case errors.Is(err, ErrDonorUser):
+		status = http.StatusUnauthorized
+
+	case errors.Is(err, ErrRecipientUser):
 		status = http.StatusUnauthorized
 
 	case errors.Is(err, ErrNoUpdate):
@@ -75,57 +79,6 @@ func ParseError(err error, ctx echo.Context) error {
 
 	return ctx.JSON(status, map[string]interface{}{"message": err.Error()})
 }
-
-// func ParseErrorGRPC(err error) error {
-// 	Logging(nil).Error("ERR: ", err)
-// 	code := codes.OK
-// 	message := ""
-// 	switch {
-// 	case errors.Is(err, ErrNoUser):
-// 		code = codes.NotFound
-// 		message = "No User found"
-// 	case errors.Is(err, ErrNoData):
-// 		code = codes.NotFound
-// 		message = "No data found"
-// 	case errors.Is(err, ErrUnsufficientBalance):
-// 		code = codes.InvalidArgument
-// 		message = "unsufficient balance"
-// 	case errors.Is(err, ErrParam):
-// 		code = codes.InvalidArgument
-// 		message = "error or missing param"
-// 	case errors.Is(err, ErrBindJSON):
-// 		code = codes.InvalidArgument
-// 		message = "Bad request"
-// 	case errors.Is(err, ErrInvalidId):
-// 		code = codes.InvalidArgument
-// 		message = "Invalid ID"
-// 	case errors.Is(err, ErrCredential):
-// 		code = codes.InvalidArgument
-// 		message = "email or password missmatch"
-// 	case errors.Is(err, ErrUserExists):
-// 		code = codes.AlreadyExists
-// 		message = "User Already Exists"
-// 	case errors.Is(err, ErrMustAdmin):
-// 		code = codes.PermissionDenied
-// 		message = "Admin privilege only"
-// 	case errors.Is(err, ErrOnlyUser):
-// 		code = codes.PermissionDenied
-// 		message = "User privilege only"
-// 	case errors.Is(err, ErrNoUpdate):
-// 		code = codes.AlreadyExists
-// 		message = "Data is the same"
-// 	case errors.Is(err, ErrQuery):
-// 		fallthrough
-// 	case errors.Is(err, ErrGeneratedPwd):
-// 		fallthrough
-// 	default:
-// 		code = codes.Internal
-// 		message = "Unknown error:" + err.Error()
-// 	}
-
-// 	// log.Println(map[string]interface{}{"message": message, "status": status})
-// 	return status.Errorf(code, message)
-// }
 
 func ParseErrorGRPC(err error, ctx echo.Context) error {
 	stat := http.StatusOK
