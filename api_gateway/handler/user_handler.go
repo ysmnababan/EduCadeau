@@ -70,7 +70,7 @@ func (h *UserHandler) Login(c echo.Context) error {
 			Password: GetU.Password,
 		})
 	if err != nil {
-		return helper.ParseError(err, c)
+		return helper.ParseErrorGRPC(err, c)
 	}
 
 	return c.JSON(

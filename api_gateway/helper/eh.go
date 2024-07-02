@@ -3,6 +3,7 @@ package helper
 import (
 	"errors"
 	"fmt"
+	"log"
 	"net/http"
 
 	"github.com/labstack/echo/v4"
@@ -145,6 +146,7 @@ func ParseErrorGRPC(err error, ctx echo.Context) error {
 		case codes.Internal:
 			fallthrough
 		default:
+			log.Println(st.Code())
 			stat = http.StatusInternalServerError
 			message = "Unknown error:" + err.Error()
 		}

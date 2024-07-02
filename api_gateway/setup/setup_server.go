@@ -4,8 +4,7 @@ import (
 	"api_gateway/handler"
 	"api_gateway/helper"
 	"api_gateway/pb"
-	"os"
-	"os/exec"
+	"fmt"
 
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
@@ -20,11 +19,11 @@ func SetupRESTServer(e *echo.Echo, h *Handler) {
 	// using logger for each api
 	e.Use(func(next echo.HandlerFunc) echo.HandlerFunc {
 		return func(c echo.Context) error {
-			// fmt.Print("\033[H\033[2J")
+			fmt.Print("\033[H\033[2J")
+			fmt.Println("==================================")
+			fmt.Println("            EDU CADEU")
+			fmt.Println("==================================")
 
-			cmd := exec.Command("cmd", "/c", "cls")
-			cmd.Stdout = os.Stdout
-			cmd.Run()
 			helper.Logging(c).Info("Calling an API")
 			return next(c)
 		}
