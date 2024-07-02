@@ -2,10 +2,13 @@ package handler
 
 import (
 	"api_gateway/helper"
+	"api_gateway/models"
 	"api_gateway/pb"
+	"context"
 	"crypto/tls"
 	"crypto/x509"
 	"log"
+	"net/http"
 
 	"github.com/labstack/echo/v4"
 	"google.golang.org/grpc"
@@ -36,9 +39,52 @@ type UserHandler struct {
 	UserGRPC pb.UserToRestClient
 }
 
-func (h *UserHandler) Login(e echo.Context) error {
+// Login godoc
+// @Summary Login as user
+// @Description login as user and generate token
+// @Tags User
+// @Accept  json
+// @Produce  json
+// @Param student body models.UserRequest true "Login using email and password"
+// @Success 200 {object} map[string]interface{} "message : string, token: string"
+// @Failure 400 {object} map[string]interface{}
+// @Failure 404 {object} map[string]interface{}
+// @Failure 500 {object} map[string]interface{}
+// @Router /api/users/login [post]
+func (h *UserHandler) Login(c echo.Context) error {
+	var GetU models.User
+	err := c.Bind(&GetU)
+	if err != nil {
+		return helper.ParseError(helper.ErrBindJSON, c)
+	}
 
-	return nil
+	//validate user
+	if GetU.Email == "" || GetU.Password == "" {
+		return helper.ParseError(helper.ErrParam, c)
+	}
+
+	// validate role
+	if GetU.Role != "admin" && GetU.Role != "recipient" && GetU.Role != "donor" {
+		return helper.ParseError(helper.ErrParam, c)
+	}
+
+	tokenString, err := h.UserGRPC.Login(
+		context.TODO(),
+		&pb.LoginReq{
+			Email:    GetU.Email,
+			Password: GetU.Password,
+			Role:     GetU.Role,
+		})
+	if err != nil {
+		return helper.ParseError(err, c)
+	}
+
+	return c.JSON(
+		http.StatusOK,
+		map[string]interface{}{
+			"message": "Login success",
+			"token":   tokenString,
+		})
 }
 
 func (h *UserHandler) Register(e echo.Context) error {
