@@ -40,8 +40,8 @@ API GATEWAY ENDPOINT
         ==> all payments                                ADMIN
         ==> donor payments                              DONOR
 
-    GET /payment/{id}               payment detail      ADMIN, DONOR
-    POST /payment{id}               pay a donation      DONOR
+    GET /payment/{id}                payment detail      ADMIN, DONOR
+    POST /payment/{id}               pay a donation      DONOR
 
 -> REPORT
     GET /recipient-donor/{id}       get donation-donor  ADMIN

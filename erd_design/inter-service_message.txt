@@ -1,0 +1,7 @@
+DEFINE HOW EACH MICROSERVICE EXCHANGE DATA WITH EACH OTHER
+
++++++++++++++++++++++++++++++++++
+USER SERVICE -> AUTH SERVICE
+# login
+    - as table
++++++++++++++++++++++++++++++++++
