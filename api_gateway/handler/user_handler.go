@@ -152,17 +152,36 @@ func (h *UserHandler) GetAllUser(c echo.Context) error {
 	return c.JSON(http.StatusOK, map[string]interface{}{"message": "Get All User", "User": resp.List})
 }
 
-func (h *UserHandler) GetUserDetail(e echo.Context) error {
+// GetUserInfo godoc
+// @Summary Get info about a user
+// @Description must be authenticated user and return user detail data
+// @Tags User
+// @Accept  json
+// @Produce  json
+// @Param   Authorization  header  string  true  "Authentication token"  default()
+// @Success 200 {object} models.UserDetailResponse
+// @Failure 400 {object} map[string]interface{}
+// @Failure 404 {object} map[string]interface{}
+// @Failure 500 {object} map[string]interface{}
+// @Router /api/user [get]
+func (h *UserHandler) GetUserDetail(c echo.Context) error {
+	cred := helper.GetCredential(c)
+	resp, err := h.UserGRPC.GetUserDetail(
+		context.TODO(),
+		&pb.DetailReq{UserId: uint64(cred.UserID)},
+	)
+	if err != nil {
+		return helper.ParseErrorGRPC(err, c)
+	}
+	return c.JSON(http.StatusOK, map[string]interface{}{"message": "Get User Info", "User": resp})
+}
+
+func (h *UserHandler) EditUser(c echo.Context) error {
 
 	return nil
 }
 
-func (h *UserHandler) EditUser(e echo.Context) error {
-
-	return nil
-}
-
-func (h *UserHandler) TopUp(e echo.Context) error {
+func (h *UserHandler) TopUp(c echo.Context) error {
 
 	return nil
 }
