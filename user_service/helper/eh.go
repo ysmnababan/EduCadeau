@@ -76,6 +76,7 @@ func ParseError(err error, ctx echo.Context) error {
 }
 
 func ParseErrorGRPC(err error) error {
+	Logging(nil).Error("ERR: ", err)
 	code := codes.OK
 	message := ""
 	switch {

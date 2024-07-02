@@ -79,6 +79,7 @@ message UserDetailResp {
 // for top up 
 message TopUpReq {
     double amount = 1;
+    uint64 user_id = 2;
 }
 
 message TopUpResp {
@@ -94,6 +95,7 @@ message EditReq {
     int64 age = 5;
     string phone_number = 6;
     string profile_picture_url = 7;
+    uint64 user_id = 8;
 }
 
 message EditResp {

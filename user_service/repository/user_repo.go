@@ -16,7 +16,7 @@ type UserRepo interface {
 	Login(u models.User) (string, error)
 	Register(u models.User) (models.UserResponse, error)
 	GetInfo(user_id uint) (models.UserDetailResponse, error)
-	GetAllUser(user_id uint) ([]models.UserDetailResponse, error)
+	GetAllUser() ([]models.UserDetailResponse, error)
 	Update(user_id uint, u models.UserUpdateRequest) (models.UserDetailResponse, error)
 	TopUp(user_id uint, amount float64) (float64, error)
 }
@@ -160,9 +160,9 @@ func (r *Repo) GetInfo(user_id uint) (models.UserDetailResponse, error) {
 	return respU, nil
 }
 
-func (r *Repo) GetAllUser(user_id uint) ([]models.UserDetailResponse, error) {
+func (r *Repo) GetAllUser() ([]models.UserDetailResponse, error) {
 	var users []models.User
-	res := r.DB.Where("role = ?", "user").Find(&users)
+	res := r.DB.Find(&users)
 	if res.Error != nil {
 		return nil, helper.ErrQuery
 	}

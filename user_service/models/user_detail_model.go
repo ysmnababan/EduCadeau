@@ -25,10 +25,11 @@ type UserDetailResponse struct {
 }
 
 type UserUpdateRequest struct {
-	Username    string `json:"username"`
-	Fname       string `json:"fname"`
-	Lname       string `json:"lname" `
-	Address     string `json:"address"`
-	Age         int    `json:"age"`
-	PhoneNumber string `json:"phone_number"`
+	Username          string `json:"username"`
+	Fname             string `json:"fname"`
+	Lname             string `json:"lname" `
+	Address           string `json:"address"`
+	Age               int    `json:"age"`
+	PhoneNumber       string `json:"phone_number"`
+	ProfilePictureUrl string `json:"profile_picture_url"`
 }
