@@ -63,17 +63,11 @@ func (h *UserHandler) Login(c echo.Context) error {
 		return helper.ParseError(helper.ErrParam, c)
 	}
 
-	// validate role
-	if GetU.Role != "admin" && GetU.Role != "recipient" && GetU.Role != "donor" {
-		return helper.ParseError(helper.ErrParam, c)
-	}
-
 	tokenString, err := h.UserGRPC.Login(
 		context.TODO(),
 		&pb.LoginReq{
 			Email:    GetU.Email,
 			Password: GetU.Password,
-			Role:     GetU.Role,
 		})
 	if err != nil {
 		return helper.ParseError(err, c)
