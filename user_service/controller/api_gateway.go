@@ -6,12 +6,7 @@ import (
 	"user_service/helper"
 	"user_service/models"
 	"user_service/pb"
-	"user_service/repository"
 )
-
-type UserController struct {
-	repository.UserRepo
-}
 
 func (s *UserController) Register(ctx context.Context, in *pb.RegisterReq) (*pb.RegisterResp, error) {
 	var GetU models.User
