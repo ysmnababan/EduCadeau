@@ -29,7 +29,7 @@ var (
 
 func ParseError(err error, ctx echo.Context) error {
 	status := http.StatusOK
-	message := ""
+
 	switch {
 	case errors.Is(err, ErrQuery):
 		fallthrough
@@ -37,44 +37,43 @@ func ParseError(err error, ctx echo.Context) error {
 		fallthrough
 	case errors.Is(err, ErrNoUser):
 		status = http.StatusNotFound
-		message = "No User found"
+
 	case errors.Is(err, ErrNoData):
 		status = http.StatusNotFound
-		message = "No data found"
+
 	case errors.Is(err, ErrUnsufficientBalance):
 		status = http.StatusBadRequest
-		message = "unsufficient balance"
+
 	case errors.Is(err, ErrParam):
 		status = http.StatusBadRequest
-		message = "error or missing param"
+
 	case errors.Is(err, ErrBindJSON):
 		status = http.StatusBadRequest
-		message = "Bad request"
+
 	case errors.Is(err, ErrInvalidId):
 		status = http.StatusBadRequest
-		message = "Invalid ID"
-		message = "author and book name must be unique"
+
 	case errors.Is(err, ErrCredential):
 		status = http.StatusBadRequest
-		message = "email or password missmatch"
+
 	case errors.Is(err, ErrUserExists):
 		status = http.StatusBadRequest
-		message = "User Already Exists"
+
 	case errors.Is(err, ErrMustAdmin):
 		status = http.StatusUnauthorized
-		message = "Admin privilege only"
+
 	case errors.Is(err, ErrOnlyUser):
 		status = http.StatusUnauthorized
-		message = "User privilege only"
+
 	case errors.Is(err, ErrNoUpdate):
 		status = http.StatusBadRequest
-		message = "Data is the same"
+
 	default:
 		status = http.StatusInternalServerError
-		message = "Unknown error:" + err.Error()
+
 	}
 
-	return ctx.JSON(status, map[string]interface{}{"message": message})
+	return ctx.JSON(status, map[string]interface{}{"message": err.Error()})
 }
 
 // func ParseErrorGRPC(err error) error {
@@ -154,6 +153,6 @@ func ParseErrorGRPC(err error, ctx echo.Context) error {
 		fmt.Printf("not able to parse error returned %v", err)
 		message = "Internal error parsing grpc"
 	}
-
+	log.Println("ERROR=> ", err)
 	return ctx.JSON(stat, map[string]interface{}{"message": message})
 }

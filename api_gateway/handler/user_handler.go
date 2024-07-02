@@ -176,9 +176,52 @@ func (h *UserHandler) GetUserDetail(c echo.Context) error {
 	return c.JSON(http.StatusOK, map[string]interface{}{"message": "Get User Info", "User": resp})
 }
 
+// UpdateUser godoc
+// @Summary Update user information
+// @Description must be authenticated user and update detail info of a user
+// @Tags User
+// @Accept  json
+// @Produce  json
+// @Param   Authorization  header  string  true  "Authentication token"  default()
+// @Param student body models.UserUpdateRequest true "Data to be updated"
+// @Success 200 {object} models.UserDetailResponse
+// @Failure 400 {object} map[string]interface{}
+// @Failure 404 {object} map[string]interface{}
+// @Failure 500 {object} map[string]interface{}
+// @Router /api/user [put]
 func (h *UserHandler) EditUser(c echo.Context) error {
+	cred := helper.GetCredential(c)
+	var GetU models.UserUpdateRequest
+	err := c.Bind(&GetU)
+	if err != nil {
+		log.Println("ERROR BINDING: ", err)
+		return helper.ParseError(helper.ErrBindJSON, c)
+	}
 
-	return nil
+	//validate user
+	if GetU.Username == "" || GetU.Age <= 0 {
+		return helper.ParseError(helper.ErrParam, c)
+	}
+
+	respU, err := h.UserGRPC.EditDataUser(
+		context.TODO(),
+		&pb.EditReq{
+			Username:          GetU.Username,
+			Fname:             GetU.Fname,
+			Lname:             GetU.Lname,
+			Address:           GetU.Address,
+			Age:               int64(GetU.Age),
+			PhoneNumber:       GetU.PhoneNumber,
+			ProfilePictureUrl: GetU.ProfilePictureUrl,
+			UserId:            uint64(cred.UserID),
+		},
+	)
+	if err != nil {
+		return helper.ParseErrorGRPC(err, c)
+	}
+
+	return c.JSON(http.StatusOK, map[string]interface{}{"message": "User Data Updated", "User": respU})
+
 }
 
 func (h *UserHandler) TopUp(c echo.Context) error {
