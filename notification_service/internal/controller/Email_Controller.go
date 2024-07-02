@@ -1,5 +1,3 @@
-// internal/controller/email_controller.go
-
 package controller
 
 import (
