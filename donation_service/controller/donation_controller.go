@@ -93,6 +93,9 @@ func (c *DonationController) CreateDonation(ctx context.Context, in *donation_re
 		return nil, helper.ParseErrorGRPC(err)
 	}
 
+	// send notification for user
+	helper.CreateDonationNotif(&res)
+
 	out := donation_rest.CreateResp{
 		DonationId:        res.ID.String(),
 		RecipientId:       uint64(res.RecipientID),
@@ -141,6 +144,9 @@ func (c *DonationController) EditDonation(ctx context.Context, in *donation_rest
 	if err != nil {
 		return nil, helper.ParseErrorGRPC(err)
 	}
+
+	// send notification to user
+	helper.EditDonationNotif(&res)
 
 	out := donation_rest.EditResp{
 		DonationId:        res.ID.String(),
