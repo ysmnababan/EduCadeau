@@ -47,7 +47,13 @@ func (r *Repo) isDonationExist(donation_id primitive.ObjectID, recipient_id uint
 
 func (r *Repo) GetAllDonations(filter string) ([]models.Donation, error) {
 	var donations []models.Donation
-	cursor, err := r.DB.Collection("donations").Find(context.TODO(), bson.M{"status": filter})
+	var cursor *mongo.Cursor
+	var err error
+	if filter == "" {
+		cursor, err = r.DB.Collection("donations").Find(context.TODO(), bson.D{{}})
+	} else {
+		cursor, err = r.DB.Collection("donations").Find(context.TODO(), bson.M{"status": filter})
+	}
 	if err != nil {
 		helper.Logging(nil).Error("ERROR REPO: ", err)
 		return nil, helper.ErrQuery
@@ -113,7 +119,7 @@ func (r *Repo) CreateDonation(dreq *models.CreateDonationReq) (models.DonationDe
 	d := models.Donation{
 		RecipientID:       dreq.RecipientID,
 		DonationName:      dreq.DonationName,
-		TargetAmount:   dreq.TargetAmount,
+		TargetAmount:      dreq.TargetAmount,
 		MiscellaneousCost: dreq.MiscellaneousCost,
 	}
 	d.CreatedAt = time.Now().Format("2006-01-02 15:04:05")
@@ -151,7 +157,7 @@ func (r *Repo) CreateDonation(dreq *models.CreateDonationReq) (models.DonationDe
 	log.Println("Donation Detail ID: ", res.InsertedID)
 
 	resp := models.DonationDetailResp{
-		ID:                d.ID,
+		ID:                res.InsertedID.(primitive.ObjectID),
 		RecipientID:       d.RecipientID,
 		DonationName:      d.DonationName,
 		CreatedAt:         d.CreatedAt,
@@ -196,12 +202,14 @@ func (r *Repo) EditDonation(dreq *models.EditDonationReq) (models.DonationDetail
 	dd.RelatedLink = dreq.RelatedLink
 	dd.Notes = dreq.Notes
 
+	d.ID = primitive.NilObjectID
 	_, err = r.DB.Collection("donations").UpdateOne(
 		context.TODO(),
 		bson.M{"_id": dreq.DonationID},
 		bson.M{"$set": d},
 	)
 
+	log.Println("here")
 	if err != nil {
 		helper.Logging(nil).Error("ERR REPO: ", err)
 		return models.DonationDetailResp{}, helper.ErrQuery
@@ -210,7 +218,7 @@ func (r *Repo) EditDonation(dreq *models.EditDonationReq) (models.DonationDetail
 	_, err = r.DB.Collection("donation_details").UpdateOne(
 		context.TODO(),
 		bson.M{"_id": dd.ID},
-		bson.M{"$set": d},
+		bson.M{"$set": dd},
 	)
 	if err != nil {
 		helper.Logging(nil).Error("ERR REPO: ", err)
@@ -218,7 +226,7 @@ func (r *Repo) EditDonation(dreq *models.EditDonationReq) (models.DonationDetail
 	}
 
 	resp := models.DonationDetailResp{
-		ID:                d.ID,
+		ID:                dreq.DonationID,
 		RecipientID:       d.RecipientID,
 		DonationName:      d.DonationName,
 		CreatedAt:         d.CreatedAt,

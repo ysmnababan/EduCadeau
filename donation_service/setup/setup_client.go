@@ -13,8 +13,7 @@ import (
 
 func SetupClientForUserServer() user_donation.UserDonationClient {
 	// create connection to 'transaction service'
-	trServiceHost := "localhost"
-	addr := trServiceHost + ":" + helper.USER_SERVICE_PORT
+	addr := helper.USER_SERVICE_HOST + ":443"
 	systemRoots, err := x509.SystemCertPool()
 	if err != nil {
 		log.Fatalf("%s", err)
@@ -24,7 +23,7 @@ func SetupClientForUserServer() user_donation.UserDonationClient {
 	})
 
 	// Initialize client connections outside handler in your implementation
-	connection, err := grpc.Dial(addr, grpc.WithAuthority(trServiceHost), grpc.WithTransportCredentials(cred))
+	connection, err := grpc.Dial(addr, grpc.WithAuthority(helper.USER_SERVICE_HOST), grpc.WithTransportCredentials(cred))
 
 	if err != nil {
 		log.Fatalf("did not connect: %v", err)

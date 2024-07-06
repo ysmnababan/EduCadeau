@@ -62,14 +62,13 @@ message CreateDonationReq {
     uint64 recipient_id = 1;
     string donation_name = 2;
     double target_amount = 3;
-    double amount_collected = 4;
-    double miscellaneous_cost = 5;
-    string description = 6;
-    string donation_type = 7;
-    string tag = 8;
-    string sender_address = 9;
-    string related_link = 10;
-    string notes = 11;
+    double miscellaneous_cost = 4;
+    string description = 5;
+    string donation_type = 6;
+    string tag = 7;
+    string sender_address = 8;
+    string related_link = 9;
+    string notes = 10;
 }
 
 message CreateResp {
