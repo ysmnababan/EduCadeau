@@ -113,7 +113,7 @@ func (r *Repo) CreateDonation(dreq *models.CreateDonationReq) (models.DonationDe
 	d := models.Donation{
 		RecipientID:       dreq.RecipientID,
 		DonationName:      dreq.DonationName,
-		AmountCollected:   dreq.AmountCollected,
+		TargetAmount:   dreq.TargetAmount,
 		MiscellaneousCost: dreq.MiscellaneousCost,
 	}
 	d.CreatedAt = time.Now().Format("2006-01-02 15:04:05")
