@@ -19,7 +19,7 @@ type Repo struct {
 
 type DonationRepo interface {
 	GetAllDonations(filter string) ([]models.Donation, error)
-	GetDonationDetail(donation_id string, recipient_id uint) (models.DonationDetailResp, error)
+	GetDonationDetail(donation_id string) (models.DonationDetailResp, error)
 	CreateDonation(dreq *models.CreateDonationReq) (models.DonationDetailResp, error)
 	EditDonation(dreq *models.EditDonationReq) (models.DonationDetailResp, error)
 	DeleteDonation(donation_id string, recipient_id uint) (string, error)
@@ -72,7 +72,7 @@ func (r *Repo) GetAllDonations(filter string) ([]models.Donation, error) {
 	return donations, nil
 }
 
-func (r *Repo) GetDonationDetail(donation_id string, recipient_id uint) (models.DonationDetailResp, error) {
+func (r *Repo) GetDonationDetail(donation_id string) (models.DonationDetailResp, error) {
 	var d models.Donation
 	var dd models.DonationDetail
 
@@ -82,7 +82,7 @@ func (r *Repo) GetDonationDetail(donation_id string, recipient_id uint) (models.
 		return models.DonationDetailResp{}, helper.ErrInvalidId
 	}
 
-	isDonationExist, err := r.isDonationExist(d_id, recipient_id)
+	isDonationExist, err := r.isDonationExist(d_id, 0)
 	if err != nil {
 		return models.DonationDetailResp{}, err
 	}

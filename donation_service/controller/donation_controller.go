@@ -41,7 +41,7 @@ func (c *DonationController) GetAllDonations(ctx context.Context, in *donation_r
 }
 
 func (c *DonationController) GetDonationDetail(ctx context.Context, in *donation_rest.DonationDetailReq) (*donation_rest.DonationDetailResp, error) {
-	res, err := c.DC.GetDonationDetail(in.DonationId, uint(in.RecipientId))
+	res, err := c.DC.GetDonationDetail(in.DonationId)
 	if err != nil {
 		return nil, helper.ParseErrorGRPC(err)
 	}
