@@ -37,6 +37,7 @@ message DonationDB{
 // for donation detail
 message DonationDetailReq {
     string donation_id = 1;
+    uint64 recipient_id = 2;
 }
 
 message DonationDetailResp {
@@ -125,6 +126,8 @@ message EditResp {
 // for delete donation
 message DeleteDonationReq {
     string donation_id = 1;
+    uint64 recipient_id = 2;
+
 }
 
 message DeleteResp {
