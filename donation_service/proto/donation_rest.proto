@@ -1,8 +1,8 @@
 syntax = "proto3";
 package donation;
-option go_package = "/pb";
+option go_package = "/pb/donation_rest";
 
-service Donation{
+service DonationRest{
     rpc GetAllDonations(DonationReq) returns (DonationList);
     rpc GetDonationDetail (DonationDetailReq) returns (DonationDetailResp);
     rpc CreateDonation (CreateDonationReq) returns (CreateResp);

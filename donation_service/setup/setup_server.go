@@ -3,7 +3,7 @@ package setup
 import (
 	"donation_service/controller"
 	"donation_service/helper"
-	"donation_service/pb"
+	"donation_service/pb/donation_rest"
 	"fmt"
 	"log"
 	"net"
@@ -16,7 +16,7 @@ func SetupGPRCServer(DC *controller.DonationController) {
 	grpcServer := grpc.NewServer()
 
 	// register the 'Donation' service server
-	pb.RegisterDonationServer(grpcServer, DC)
+	donation_rest.RegisterDonationRestServer(grpcServer, DC)
 	// start grpc server
 
 	listen, err := net.Listen("tcp", fmt.Sprintf(":%s", helper.DONATION_SERVICE_PORT))

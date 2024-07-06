@@ -24,7 +24,8 @@ func main() {
 
 	repo := &repository.Repo{DB: db}
 	donationController := &controller.DonationController{
-		DC: repo,
+		DC:       repo,
+		UserGRPC: setup.SetupClientForUserServer(),
 	}
 
 	setup.SetupGPRCServer(donationController)

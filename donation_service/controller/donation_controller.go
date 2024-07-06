@@ -2,35 +2,37 @@ package controller
 
 import (
 	"context"
-	"donation_service/pb"
+	"donation_service/pb/donation_rest"
+	"donation_service/pb/user_donation"
 	"donation_service/repository"
 )
 
 type DonationController struct {
-	DC repository.DonationRepo
+	DC       repository.DonationRepo
+	UserGRPC user_donation.UserDonationClient
 }
 
-func (c *DonationController) GetAllDonations(ctx context.Context, in *pb.DonationReq) (*pb.DonationList, error) {
+func (c *DonationController) GetAllDonations(ctx context.Context, in *donation_rest.DonationReq) (*donation_rest.DonationList, error) {
 
 	return nil, nil
 }
 
-func (c *DonationController) GetDonationDetail(ctx context.Context, in *pb.DonationDetailReq) (*pb.DonationDetailResp, error) {
+func (c *DonationController) GetDonationDetail(ctx context.Context, in *donation_rest.DonationDetailReq) (*donation_rest.DonationDetailResp, error) {
 
 	return nil, nil
 }
 
-func (c *DonationController) CreateDonation(ctx context.Context, in *pb.CreateDonationReq) (*pb.CreateResp, error) {
+func (c *DonationController) CreateDonation(ctx context.Context, in *donation_rest.CreateDonationReq) (*donation_rest.CreateResp, error) {
 
 	return nil, nil
 }
 
-func (c *DonationController) EditDonation(ctx context.Context, in *pb.EditDonationReq) (*pb.EditResp, error) {
+func (c *DonationController) EditDonation(ctx context.Context, in *donation_rest.EditDonationReq) (*donation_rest.EditResp, error) {
 
 	return nil, nil
 }
 
-func (c *DonationController) DeleteDonation(ctx context.Context, in *pb.DeleteDonationReq) (*pb.DeleteResp, error) {
+func (c *DonationController) DeleteDonation(ctx context.Context, in *donation_rest.DeleteDonationReq) (*donation_rest.DeleteResp, error) {
 
 	return nil, nil
 }
