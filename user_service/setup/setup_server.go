@@ -7,16 +7,21 @@ import (
 	"user_service/controller"
 	"user_service/helper"
 	"user_service/pb"
+	"user_service/pb/user_donation"
 
 	"google.golang.org/grpc"
 )
 
-func SetupGPRCServer(UC *controller.UserController) {
+func SetupGPRCServer(UserRestServer *controller.UserController, UserDonationServer *controller.UserDonation) {
 	// create new grpc server
 	grpcServer := grpc.NewServer()
 
-	// register the 'payment' service server
-	pb.RegisterUserToRestServer(grpcServer, UC)
+	// register the 'user to rest' service server
+	pb.RegisterUserToRestServer(grpcServer, UserRestServer)
+
+	// register the 'user to donation' service server
+	user_donation.RegisterUserDonationServer(grpcServer, UserDonationServer)
+
 	// start grpc server
 
 	listen, err := net.Listen("tcp", fmt.Sprintf(":%s", helper.USER_SERVICE_PORT))
