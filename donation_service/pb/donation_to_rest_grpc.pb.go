@@ -19,202 +19,240 @@ import (
 const _ = grpc.SupportPackageIsVersion8
 
 const (
-	DonationToRest_GetAllDonations_FullMethodName   = "/donation.DonationToRest/GetAllDonations"
-	DonationToRest_GetDonationDetail_FullMethodName = "/donation.DonationToRest/GetDonationDetail"
-	DonationToRest_CreateDonation_FullMethodName    = "/donation.DonationToRest/CreateDonation"
-	DonationToRest_EditDonation_FullMethodName      = "/donation.DonationToRest/EditDonation"
+	Donation_GetAllDonations_FullMethodName   = "/donation.Donation/GetAllDonations"
+	Donation_GetDonationDetail_FullMethodName = "/donation.Donation/GetDonationDetail"
+	Donation_CreateDonation_FullMethodName    = "/donation.Donation/CreateDonation"
+	Donation_EditDonation_FullMethodName      = "/donation.Donation/EditDonation"
+	Donation_DeleteDonation_FullMethodName    = "/donation.Donation/DeleteDonation"
 )
 
-// DonationToRestClient is the client API for DonationToRest service.
+// DonationClient is the client API for Donation service.
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
-type DonationToRestClient interface {
+type DonationClient interface {
 	GetAllDonations(ctx context.Context, in *DonationReq, opts ...grpc.CallOption) (*DonationList, error)
 	GetDonationDetail(ctx context.Context, in *DonationDetailReq, opts ...grpc.CallOption) (*DonationDetailResp, error)
 	CreateDonation(ctx context.Context, in *CreateDonationReq, opts ...grpc.CallOption) (*CreateResp, error)
 	EditDonation(ctx context.Context, in *EditDonationReq, opts ...grpc.CallOption) (*EditResp, error)
+	DeleteDonation(ctx context.Context, in *DeleteDonationReq, opts ...grpc.CallOption) (*DeleteResp, error)
 }
 
-type donationToRestClient struct {
+type donationClient struct {
 	cc grpc.ClientConnInterface
 }
 
-func NewDonationToRestClient(cc grpc.ClientConnInterface) DonationToRestClient {
-	return &donationToRestClient{cc}
+func NewDonationClient(cc grpc.ClientConnInterface) DonationClient {
+	return &donationClient{cc}
 }
 
-func (c *donationToRestClient) GetAllDonations(ctx context.Context, in *DonationReq, opts ...grpc.CallOption) (*DonationList, error) {
+func (c *donationClient) GetAllDonations(ctx context.Context, in *DonationReq, opts ...grpc.CallOption) (*DonationList, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(DonationList)
-	err := c.cc.Invoke(ctx, DonationToRest_GetAllDonations_FullMethodName, in, out, cOpts...)
+	err := c.cc.Invoke(ctx, Donation_GetAllDonations_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *donationToRestClient) GetDonationDetail(ctx context.Context, in *DonationDetailReq, opts ...grpc.CallOption) (*DonationDetailResp, error) {
+func (c *donationClient) GetDonationDetail(ctx context.Context, in *DonationDetailReq, opts ...grpc.CallOption) (*DonationDetailResp, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(DonationDetailResp)
-	err := c.cc.Invoke(ctx, DonationToRest_GetDonationDetail_FullMethodName, in, out, cOpts...)
+	err := c.cc.Invoke(ctx, Donation_GetDonationDetail_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *donationToRestClient) CreateDonation(ctx context.Context, in *CreateDonationReq, opts ...grpc.CallOption) (*CreateResp, error) {
+func (c *donationClient) CreateDonation(ctx context.Context, in *CreateDonationReq, opts ...grpc.CallOption) (*CreateResp, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(CreateResp)
-	err := c.cc.Invoke(ctx, DonationToRest_CreateDonation_FullMethodName, in, out, cOpts...)
+	err := c.cc.Invoke(ctx, Donation_CreateDonation_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *donationToRestClient) EditDonation(ctx context.Context, in *EditDonationReq, opts ...grpc.CallOption) (*EditResp, error) {
+func (c *donationClient) EditDonation(ctx context.Context, in *EditDonationReq, opts ...grpc.CallOption) (*EditResp, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(EditResp)
-	err := c.cc.Invoke(ctx, DonationToRest_EditDonation_FullMethodName, in, out, cOpts...)
+	err := c.cc.Invoke(ctx, Donation_EditDonation_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-// DonationToRestServer is the server API for DonationToRest service.
-// All implementations should embed UnimplementedDonationToRestServer
+func (c *donationClient) DeleteDonation(ctx context.Context, in *DeleteDonationReq, opts ...grpc.CallOption) (*DeleteResp, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(DeleteResp)
+	err := c.cc.Invoke(ctx, Donation_DeleteDonation_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+// DonationServer is the server API for Donation service.
+// All implementations should embed UnimplementedDonationServer
 // for forward compatibility
-type DonationToRestServer interface {
+type DonationServer interface {
 	GetAllDonations(context.Context, *DonationReq) (*DonationList, error)
 	GetDonationDetail(context.Context, *DonationDetailReq) (*DonationDetailResp, error)
 	CreateDonation(context.Context, *CreateDonationReq) (*CreateResp, error)
 	EditDonation(context.Context, *EditDonationReq) (*EditResp, error)
+	DeleteDonation(context.Context, *DeleteDonationReq) (*DeleteResp, error)
 }
 
-// UnimplementedDonationToRestServer should be embedded to have forward compatible implementations.
-type UnimplementedDonationToRestServer struct {
+// UnimplementedDonationServer should be embedded to have forward compatible implementations.
+type UnimplementedDonationServer struct {
 }
 
-func (UnimplementedDonationToRestServer) GetAllDonations(context.Context, *DonationReq) (*DonationList, error) {
+func (UnimplementedDonationServer) GetAllDonations(context.Context, *DonationReq) (*DonationList, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetAllDonations not implemented")
 }
-func (UnimplementedDonationToRestServer) GetDonationDetail(context.Context, *DonationDetailReq) (*DonationDetailResp, error) {
+func (UnimplementedDonationServer) GetDonationDetail(context.Context, *DonationDetailReq) (*DonationDetailResp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetDonationDetail not implemented")
 }
-func (UnimplementedDonationToRestServer) CreateDonation(context.Context, *CreateDonationReq) (*CreateResp, error) {
+func (UnimplementedDonationServer) CreateDonation(context.Context, *CreateDonationReq) (*CreateResp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CreateDonation not implemented")
 }
-func (UnimplementedDonationToRestServer) EditDonation(context.Context, *EditDonationReq) (*EditResp, error) {
+func (UnimplementedDonationServer) EditDonation(context.Context, *EditDonationReq) (*EditResp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method EditDonation not implemented")
 }
+func (UnimplementedDonationServer) DeleteDonation(context.Context, *DeleteDonationReq) (*DeleteResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DeleteDonation not implemented")
+}
 
-// UnsafeDonationToRestServer may be embedded to opt out of forward compatibility for this service.
-// Use of this interface is not recommended, as added methods to DonationToRestServer will
+// UnsafeDonationServer may be embedded to opt out of forward compatibility for this service.
+// Use of this interface is not recommended, as added methods to DonationServer will
 // result in compilation errors.
-type UnsafeDonationToRestServer interface {
-	mustEmbedUnimplementedDonationToRestServer()
+type UnsafeDonationServer interface {
+	mustEmbedUnimplementedDonationServer()
 }
 
-func RegisterDonationToRestServer(s grpc.ServiceRegistrar, srv DonationToRestServer) {
-	s.RegisterService(&DonationToRest_ServiceDesc, srv)
+func RegisterDonationServer(s grpc.ServiceRegistrar, srv DonationServer) {
+	s.RegisterService(&Donation_ServiceDesc, srv)
 }
 
-func _DonationToRest_GetAllDonations_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _Donation_GetAllDonations_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(DonationReq)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(DonationToRestServer).GetAllDonations(ctx, in)
+		return srv.(DonationServer).GetAllDonations(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: DonationToRest_GetAllDonations_FullMethodName,
+		FullMethod: Donation_GetAllDonations_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(DonationToRestServer).GetAllDonations(ctx, req.(*DonationReq))
+		return srv.(DonationServer).GetAllDonations(ctx, req.(*DonationReq))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _DonationToRest_GetDonationDetail_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _Donation_GetDonationDetail_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(DonationDetailReq)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(DonationToRestServer).GetDonationDetail(ctx, in)
+		return srv.(DonationServer).GetDonationDetail(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: DonationToRest_GetDonationDetail_FullMethodName,
+		FullMethod: Donation_GetDonationDetail_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(DonationToRestServer).GetDonationDetail(ctx, req.(*DonationDetailReq))
+		return srv.(DonationServer).GetDonationDetail(ctx, req.(*DonationDetailReq))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _DonationToRest_CreateDonation_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _Donation_CreateDonation_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(CreateDonationReq)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(DonationToRestServer).CreateDonation(ctx, in)
+		return srv.(DonationServer).CreateDonation(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: DonationToRest_CreateDonation_FullMethodName,
+		FullMethod: Donation_CreateDonation_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(DonationToRestServer).CreateDonation(ctx, req.(*CreateDonationReq))
+		return srv.(DonationServer).CreateDonation(ctx, req.(*CreateDonationReq))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _DonationToRest_EditDonation_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _Donation_EditDonation_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(EditDonationReq)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(DonationToRestServer).EditDonation(ctx, in)
+		return srv.(DonationServer).EditDonation(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: DonationToRest_EditDonation_FullMethodName,
+		FullMethod: Donation_EditDonation_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(DonationToRestServer).EditDonation(ctx, req.(*EditDonationReq))
+		return srv.(DonationServer).EditDonation(ctx, req.(*EditDonationReq))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-// DonationToRest_ServiceDesc is the grpc.ServiceDesc for DonationToRest service.
+func _Donation_DeleteDonation_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DeleteDonationReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(DonationServer).DeleteDonation(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Donation_DeleteDonation_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(DonationServer).DeleteDonation(ctx, req.(*DeleteDonationReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+// Donation_ServiceDesc is the grpc.ServiceDesc for Donation service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
-var DonationToRest_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "donation.DonationToRest",
-	HandlerType: (*DonationToRestServer)(nil),
+var Donation_ServiceDesc = grpc.ServiceDesc{
+	ServiceName: "donation.Donation",
+	HandlerType: (*DonationServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
 			MethodName: "GetAllDonations",
-			Handler:    _DonationToRest_GetAllDonations_Handler,
+			Handler:    _Donation_GetAllDonations_Handler,
 		},
 		{
 			MethodName: "GetDonationDetail",
-			Handler:    _DonationToRest_GetDonationDetail_Handler,
+			Handler:    _Donation_GetDonationDetail_Handler,
 		},
 		{
 			MethodName: "CreateDonation",
-			Handler:    _DonationToRest_CreateDonation_Handler,
+			Handler:    _Donation_CreateDonation_Handler,
 		},
 		{
 			MethodName: "EditDonation",
-			Handler:    _DonationToRest_EditDonation_Handler,
+			Handler:    _Donation_EditDonation_Handler,
+		},
+		{
+			MethodName: "DeleteDonation",
+			Handler:    _Donation_DeleteDonation_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
