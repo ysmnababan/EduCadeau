@@ -51,7 +51,7 @@ func CreateDonationNotif(body *models.DonationDetailResp) {
 	if err != nil {
 		log.Fatalf("Failed to publish a message: %s", err)
 	}
-	log.Printf(" [x] Sent %s", body)
+	log.Printf(" [x] Sent %v", body)
 }
 
 func EditDonationNotif(body *models.DonationDetailResp) {
@@ -96,5 +96,5 @@ func EditDonationNotif(body *models.DonationDetailResp) {
 	if err != nil {
 		log.Fatalf("Failed to publish a message: %s", err)
 	}
-	log.Printf(" [x] Sent %s", body)
+	log.Printf(" [x] Sent %v", body)
 }
