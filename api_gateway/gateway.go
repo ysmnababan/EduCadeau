@@ -18,6 +18,7 @@ func main() {
 
 	handler := &setup.Handler{
 		User: handler.InitUserHandler(),
+		Donation: handler.InitDonationHandler(),
 	}
 	setup.SetupRESTServer(e, handler)
 

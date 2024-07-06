@@ -5,35 +5,11 @@ import (
 	"api_gateway/models"
 	"api_gateway/pb"
 	"context"
-	"crypto/tls"
-	"crypto/x509"
 	"log"
 	"net/http"
 
 	"github.com/labstack/echo/v4"
-	"google.golang.org/grpc"
-	"google.golang.org/grpc/credentials"
 )
-
-func InitUserHandler() pb.UserToRestClient {
-	// create connection to 'user service'
-	addr := helper.USER_SERVICE_HOST + ":443"
-	systemRoots, err := x509.SystemCertPool()
-	if err != nil {
-		log.Fatalf("%s", err)
-	}
-	cred := credentials.NewTLS(&tls.Config{
-		RootCAs: systemRoots,
-	})
-
-	// Initialize client connections outside handler in your implementation
-	connection, err := grpc.Dial(addr, grpc.WithAuthority(helper.USER_SERVICE_HOST), grpc.WithTransportCredentials(cred))
-	if err != nil {
-		log.Println(err)
-	}
-	userServiceClient := pb.NewUserToRestClient(connection)
-	return userServiceClient
-}
 
 type UserHandler struct {
 	UserGRPC pb.UserToRestClient
