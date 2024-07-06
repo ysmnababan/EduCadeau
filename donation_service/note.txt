@@ -1,7 +1,9 @@
-// compile proto for user-rest_proto
+// compile proto 
 
-protoc --go_out=. --go-grpc_out=require_unimplemented_servers=false:. .\proto\user_to_rest.proto
+protoc --go_out=. --go-grpc_out=require_unimplemented_servers=false:. .\proto\donation_rest.proto
 protoc --go_out=. --go-grpc_out=require_unimplemented_servers=false:. .\proto\user_to_donation.proto
+
+
 
 // user service link
 grpc://user-service-753cnjdw3a-et.a.run.app

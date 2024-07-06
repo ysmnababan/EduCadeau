@@ -19,6 +19,7 @@ type UserRepo interface {
 	GetAllUser() ([]models.UserDetailResponse, error)
 	Update(user_id uint, u models.UserUpdateRequest) (models.UserDetailResponse, error)
 	TopUp(user_id uint, amount float64) (float64, error)
+	GetUsername(user_id uint) (string, error)
 }
 
 type Repo struct {
@@ -240,4 +241,19 @@ func (r *Repo) TopUp(user_id uint, amount float64) (float64, error) {
 		return 0, helper.ErrQuery
 	}
 	return user.Deposit, nil
+}
+
+func (r *Repo) GetUsername(user_id uint) (string, error) {
+
+	var u models.User
+	res := r.DB.First(&u, user_id)
+	if res.Error != nil {
+		if res.Error == gorm.ErrRecordNotFound {
+			return "", helper.ErrNoUser
+		}
+		helper.Logging(nil).Error("ERR QUERY", res.Error)
+		return "", helper.ErrQuery
+	}
+
+	return u.Username, nil
 }
