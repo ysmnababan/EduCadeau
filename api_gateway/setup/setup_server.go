@@ -4,6 +4,7 @@ import (
 	"api_gateway/handler"
 	"api_gateway/helper"
 	"api_gateway/pb"
+	"api_gateway/pb/donation_rest"
 	"fmt"
 	"net/http"
 
@@ -13,7 +14,8 @@ import (
 )
 
 type Handler struct {
-	User pb.UserToRestClient
+	User     pb.UserToRestClient
+	Donation donation_rest.DonationRestClient
 }
 
 func SetupRESTServer(e *echo.Echo, h *Handler) {
@@ -41,6 +43,7 @@ func SetupRESTServer(e *echo.Echo, h *Handler) {
 	})
 
 	userHandler := &handler.UserHandler{UserGRPC: h.User}
+	// donationHandler := &handl
 	e.POST("/login", userHandler.Login)
 	e.POST("/register", userHandler.Register)
 

@@ -1,0 +1,133 @@
+syntax = "proto3";
+package donation;
+option go_package = "/pb/donation_rest";
+
+service DonationRest{
+    rpc GetAllDonations(DonationReq) returns (DonationList);
+    rpc GetDonationDetail (DonationDetailReq) returns (DonationDetailResp);
+    rpc CreateDonation (CreateDonationReq) returns (CreateResp);
+    rpc EditDonation (EditDonationReq) returns (EditResp);
+    rpc DeleteDonation(DeleteDonationReq) returns (DeleteResp);
+}
+
+
+// for donation
+message DonationReq {
+    uint64 user_id = 1;
+    string filter = 2;
+    string role = 3;
+}
+
+message DonationList {
+    repeated DonationDB list = 1;
+}
+
+message DonationDB{
+    string donation_id = 1;
+    uint64 recipient_id = 2;
+    string donation_name = 3;
+    string created_at = 4;
+    string status = 5;
+    double target_amount = 6;
+    double amount_collected = 7;
+    double miscellaneous_cost = 8;
+}
+
+// for donation detail
+message DonationDetailReq {
+    string donation_id = 1;
+    uint64 recipient_id = 2;
+}
+
+message DonationDetailResp {
+    string donation_id = 1;
+    uint64 recipient_id = 2;
+    string donation_name = 3;
+    string created_at = 4;
+    string status = 5;
+    double target_amount = 6;
+    double amount_collected = 7;
+    double miscellaneous_cost = 8;
+    string description = 9;
+    string donation_type = 10;
+    string tag = 11;
+    string sender_address = 12;
+    string related_link = 13;
+    string notes = 14;
+    string recipient_name = 15;
+}
+
+// for create new donation
+message CreateDonationReq {
+    uint64 recipient_id = 1;
+    string donation_name = 2;
+    double target_amount = 3;
+    double miscellaneous_cost = 4;
+    string description = 5;
+    string donation_type = 6;
+    string tag = 7;
+    string sender_address = 8;
+    string related_link = 9;
+    string notes = 10;
+}
+
+message CreateResp {
+    string donation_id = 1;
+    uint64 recipient_id = 2;
+    string donation_name = 3;
+    string created_at = 4;
+    string status = 5;
+    double target_amount = 6;
+    double amount_collected = 7;
+    double miscellaneous_cost = 8;
+    string description = 9;
+    string donation_type = 10;
+    string tag = 11;
+    string sender_address = 12;
+    string related_link = 13;
+    string notes = 14;
+    string recipient_name = 15;
+}
+
+// for edit donation
+message EditDonationReq {
+    string donation_id = 1;
+    uint64 recipient_id = 2;
+    string donation_name = 3;
+    string status = 4;
+    string description = 5;
+    string donation_type = 6;
+    string tag = 7;
+    string sender_address = 8;
+    string related_link = 9;
+    string notes = 10;
+}
+
+message EditResp {
+    string donation_id = 1;
+    uint64 recipient_id = 2;
+    string donation_name = 3;
+    string created_at = 4;
+    string status = 5;
+    double target_amount = 6;
+    double amount_collected = 7;
+    double miscellaneous_cost = 8;
+    string description = 9;
+    string donation_type = 10;
+    string tag = 11;
+    string sender_address = 12;
+    string related_link = 13;
+    string notes = 14;
+    string recipient_name = 15;
+}
+
+// for delete donation
+message DeleteDonationReq {
+    string donation_id = 1;
+    uint64 recipient_id = 2;
+
+}
+
+message DeleteResp {
+    string message = 1;
+}
