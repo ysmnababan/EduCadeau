@@ -15,7 +15,6 @@ type CreateDonationReq struct {
 }
 
 type EditDonationReq struct {
-	DonationID    string  `json:"donation_id,omitempty" bson:"donation_id,omitempty"`
 	RecipientID   uint    `json:"recipient_id,omitempty" bson:"recipient_id,omitempty"`
 	DonationName  string  `json:"donation_name" bson:"donation_name"`
 	TargetAmount  float64 `json:"target_amount" bson:"target_amount"`
@@ -27,6 +26,3 @@ type EditDonationReq struct {
 	Notes         string  `json:"notes,omitempty" bson:"notes,omitempty"`
 }
 
-type ReqID struct {
-	DonationID string `json:"donation_id" bson:"donation_id"`
-}

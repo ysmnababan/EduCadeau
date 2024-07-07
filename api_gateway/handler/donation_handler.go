@@ -39,20 +39,14 @@ func (h *DonationHandler) GetAllDonations(e echo.Context) error {
 
 func (h *DonationHandler) GetDonationDetail(e echo.Context) error {
 
-	var idreq models.ReqID
-	err := e.Bind(&idreq)
-	if err != nil {
-		helper.Logging(e).Error("ERR BIND: ", err)
-		return helper.ParseError(helper.ErrBindJSON, e)
-	}
-	log.Println(idreq)
+	donation_id := e.Param("id")
 
-	if idreq.DonationID == "" {
-		return e.JSON(http.StatusBadGateway, helper.ErrInvalidId)
+	if donation_id == "" {
+		return e.JSON(http.StatusBadRequest, helper.ErrInvalidId)
 
 	}
 
-	resp, err := h.DonationGRPC.GetDonationDetail(e.Request().Context(), &donation_rest.DonationDetailReq{DonationId: idreq.DonationID})
+	resp, err := h.DonationGRPC.GetDonationDetail(e.Request().Context(), &donation_rest.DonationDetailReq{DonationId: donation_id})
 	if err != nil {
 		helper.Logging(e).Error("FROM GRPC: ", err)
 		return helper.ParseErrorGRPC(err, e)
@@ -75,7 +69,7 @@ func (h *DonationHandler) CreateDonation(e echo.Context) error {
 
 	//validate
 	if in.DonationName == "" || in.TargetAmount <= 0 || in.Description == "" || in.DonationType != "service" && in.DonationType != "product" || in.MiscellaneousCost < 0 || int(in.RecipientID) < 0 {
-		return e.JSON(http.StatusBadGateway, helper.ErrParam)
+		return e.JSON(http.StatusBadRequest, helper.ErrParam)
 	}
 	resp, err := h.DonationGRPC.CreateDonation(
 		context.TODO(),
@@ -113,14 +107,19 @@ func (h *DonationHandler) EditDonation(e echo.Context) error {
 		return helper.ParseError(helper.ErrBindJSON, e)
 	}
 
+	donation_id := e.Param("id")
+	if donation_id == "" {
+		return e.JSON(http.StatusBadRequest, helper.ErrInvalidId)
+	}
+
 	//validate
-	if in.DonationID == "" || in.DonationName == "" || in.TargetAmount <= 0 || in.Description == "" || in.DonationType != "service" && in.DonationType != "product" || int(in.RecipientID) < 0 {
-		return e.JSON(http.StatusBadGateway, helper.ErrParam)
+	if in.DonationName == "" || in.TargetAmount <= 0 || in.Description == "" || in.DonationType != "service" && in.DonationType != "product" || int(in.RecipientID) < 0 {
+		return e.JSON(http.StatusBadRequest, helper.ErrParam)
 	}
 	resp, err := h.DonationGRPC.EditDonation(
 		context.TODO(),
 		&donation_rest.EditDonationReq{
-			DonationId:    in.DonationID,
+			DonationId:    donation_id,
 			RecipientId:   uint64(cred.UserID),
 			DonationName:  in.DonationName,
 			TargetAmount:  in.TargetAmount,
@@ -146,24 +145,15 @@ func (h *DonationHandler) DeleteDonation(e echo.Context) error {
 		return e.JSON(http.StatusUnauthorized, helper.ErrRecipientUser)
 	}
 
-	var idreq models.ReqID
-	err := e.Bind(&idreq)
-	if err != nil {
-		helper.Logging(e).Error("ERR BIND: ", err)
-		return helper.ParseError(helper.ErrBindJSON, e)
-	}
-
-	log.Println(idreq)
-
-	if idreq.DonationID == "" {
-		return e.JSON(http.StatusBadGateway, helper.ErrInvalidId)
-
+	donation_id := e.Param("id")
+	if donation_id == "" {
+		return e.JSON(http.StatusBadRequest, helper.ErrInvalidId)
 	}
 
 	resp, err := h.DonationGRPC.DeleteDonation(
 		context.TODO(),
 		&donation_rest.DeleteDonationReq{
-			DonationId:  idreq.DonationID,
+			DonationId:  donation_id,
 			RecipientId: uint64(cred.UserID),
 		},
 	)
