@@ -2,7 +2,7 @@ package main
 
 import (
 	"notification_service/config"
-	"notification_service/internal/router"
+	"notification_service/handler"
 
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
@@ -18,8 +18,7 @@ func main() {
 	e.Use(middleware.Logger())
 	e.Use(middleware.Recover())
 
-	// Initialize routes
-	router.InitRoutes(e)
+	e.POST("/send-email", handler.SendEmail)
 
 	// Start server
 	e.Logger.Fatal(e.Start(":8080"))
