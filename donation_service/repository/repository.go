@@ -195,6 +195,7 @@ func (r *Repo) EditDonation(dreq *models.EditDonationReq) (models.DonationDetail
 	log.Println("DONATIONS DETAILS: ", dd)
 
 	d.DonationName = dreq.DonationName
+	d.TargetAmount = dreq.TargetAmount
 	dd.Description = dreq.Description
 	dd.DonationType = dreq.DonationType
 	dd.Tag = dreq.Tag
@@ -262,7 +263,7 @@ func (r *Repo) DeleteDonation(donation_id string, recipient_id uint) (string, er
 		return "", helper.ErrNoData
 	}
 
-	res, err := r.DB.Collection("donation_details").DeleteOne(context.TODO(), bson.M{"recipient_id": recipient_id})
+	res, err := r.DB.Collection("donation_details").DeleteOne(context.TODO(), bson.M{"donation_id": d_id})
 	if err != nil {
 		helper.Logging(nil).Error("ERR REPO: ", err)
 		return "", helper.ErrQuery

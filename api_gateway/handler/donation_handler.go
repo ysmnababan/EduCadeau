@@ -20,13 +20,13 @@ func (h *DonationHandler) GetAllDonations(e echo.Context) error {
 
 	filter := e.QueryParam("filter")
 	if filter == "settled" && cred.Role != "admin" {
-		return e.JSON(http.StatusUnauthorized, helper.ErrMustAdmin)
+		return helper.ParseError(helper.ErrMustAdmin, e)
 	}
 	if (filter == "on progress" || filter == "unsponsored") && cred.Role == "recipient" {
-		return e.JSON(http.StatusUnauthorized, helper.ErrDonorUser)
+		return helper.ParseError(helper.ErrDonorUser, e)
 	}
 	if filter == "requested" && cred.Role != "recipient" {
-		return e.JSON(http.StatusUnauthorized, helper.ErrRecipientUser)
+		return helper.ParseError(helper.ErrRecipientUser, e)
 	}
 
 	resp, err := h.DonationGRPC.GetAllDonations(e.Request().Context(), &donation_rest.DonationReq{Filter: filter})
@@ -58,8 +58,9 @@ func (h *DonationHandler) GetDonationDetail(e echo.Context) error {
 func (h *DonationHandler) CreateDonation(e echo.Context) error {
 	cred := helper.GetCredential(e)
 	if cred.Role != "recipient" {
-		return e.JSON(http.StatusUnauthorized, helper.ErrRecipientUser)
+		return helper.ParseError(helper.ErrRecipientUser, e)
 	}
+
 	var in models.CreateDonationReq
 	err := e.Bind(&in)
 	if err != nil {
@@ -98,8 +99,9 @@ func (h *DonationHandler) CreateDonation(e echo.Context) error {
 func (h *DonationHandler) EditDonation(e echo.Context) error {
 	cred := helper.GetCredential(e)
 	if cred.Role != "recipient" {
-		return e.JSON(http.StatusUnauthorized, helper.ErrRecipientUser)
+		return helper.ParseError(helper.ErrRecipientUser, e)
 	}
+
 	var in models.EditDonationReq
 	err := e.Bind(&in)
 	if err != nil {
@@ -142,7 +144,7 @@ func (h *DonationHandler) EditDonation(e echo.Context) error {
 func (h *DonationHandler) DeleteDonation(e echo.Context) error {
 	cred := helper.GetCredential(e)
 	if cred.Role != "recipient" {
-		return e.JSON(http.StatusUnauthorized, helper.ErrRecipientUser)
+		return helper.ParseError(helper.ErrRecipientUser, e)
 	}
 
 	donation_id := e.Param("id")

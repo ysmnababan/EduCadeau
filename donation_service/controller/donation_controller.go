@@ -125,7 +125,7 @@ func (c *DonationController) EditDonation(ctx context.Context, in *donation_rest
 
 	d_id, err := primitive.ObjectIDFromHex(in.DonationId)
 	if err != nil {
-		return nil, helper.ErrInvalidId
+		return nil, helper.ParseErrorGRPC(helper.ErrInvalidId)
 	}
 
 	res, err := c.DC.EditDonation(
