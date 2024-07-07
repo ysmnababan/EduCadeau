@@ -31,7 +31,7 @@ type EditDonationReq struct {
 	DonationID    primitive.ObjectID `json:"donation_id,omitempty" bson:"donation_id,omitempty"`
 	RecipientID   uint               `json:"recipient_id,omitempty" bson:"recipient_id,omitempty"`
 	DonationName  string             `json:"donation_name" bson:"donation_name"`
-	Status        string             `json:"status" bson:"status"`
+	TargetAmount  float64            `json:"target_amount" bson:"target_amount"`
 	Description   string             `json:"description,omitempty" bson:"description,omitempty"`
 	DonationType  string             `json:"donation_type,omitempty" bson:"donation_type,omitempty"`
 	Tag           string             `json:"tag,omitempty" bson:"tag,omitempty"`

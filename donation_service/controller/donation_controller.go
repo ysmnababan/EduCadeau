@@ -133,6 +133,7 @@ func (c *DonationController) EditDonation(ctx context.Context, in *donation_rest
 			DonationID:    d_id,
 			RecipientID:   uint(in.RecipientId),
 			DonationName:  in.DonationName,
+			TargetAmount:  in.TargetAmount,
 			Description:   in.Description,
 			DonationType:  in.DonationType,
 			Tag:           in.Tag,
