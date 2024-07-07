@@ -41,7 +41,7 @@ func (c *DonationController) GetAllDonations(ctx context.Context, in *donation_r
 }
 
 func (c *DonationController) GetDonationDetail(ctx context.Context, in *donation_rest.DonationDetailReq) (*donation_rest.DonationDetailResp, error) {
-	res, err := c.DC.GetDonationDetail(in.DonationId, uint(in.RecipientId))
+	res, err := c.DC.GetDonationDetail(in.DonationId)
 	if err != nil {
 		return nil, helper.ParseErrorGRPC(err)
 	}
@@ -125,7 +125,7 @@ func (c *DonationController) EditDonation(ctx context.Context, in *donation_rest
 
 	d_id, err := primitive.ObjectIDFromHex(in.DonationId)
 	if err != nil {
-		return nil, helper.ErrInvalidId
+		return nil, helper.ParseErrorGRPC(helper.ErrInvalidId)
 	}
 
 	res, err := c.DC.EditDonation(
@@ -133,6 +133,7 @@ func (c *DonationController) EditDonation(ctx context.Context, in *donation_rest
 			DonationID:    d_id,
 			RecipientID:   uint(in.RecipientId),
 			DonationName:  in.DonationName,
+			TargetAmount:  in.TargetAmount,
 			Description:   in.Description,
 			DonationType:  in.DonationType,
 			Tag:           in.Tag,

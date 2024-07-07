@@ -43,16 +43,26 @@ func SetupRESTServer(e *echo.Echo, h *Handler) {
 	})
 
 	userHandler := &handler.UserHandler{UserGRPC: h.User}
-	// donationHandler := &handl
+	donationHandler := &handler.DonationHandler{DonationGRPC: h.Donation}
+
 	e.POST("/login", userHandler.Login)
 	e.POST("/register", userHandler.Register)
 
 	protected := e.Group("")
 	protected.Use(helper.Auth)
 	{
+
+		// for user
 		protected.GET("/users", userHandler.GetAllUser)
 		protected.GET("/user", userHandler.GetUserDetail)
 		protected.PUT("/user/top-up", userHandler.TopUp)
 		protected.PUT("/user", userHandler.EditUser)
+
+		// for donation
+		protected.GET("/donations", donationHandler.GetAllDonations)
+		protected.GET("/donation/:id", donationHandler.GetDonationDetail)
+		protected.POST("/donation", donationHandler.CreateDonation)
+		protected.PUT("/donation/:id", donationHandler.EditDonation)
+		protected.DELETE("/donation/:id", donationHandler.DeleteDonation)
 	}
 }
