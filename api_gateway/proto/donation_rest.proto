@@ -94,7 +94,7 @@ message EditDonationReq {
     string donation_id = 1;
     uint64 recipient_id = 2;
     string donation_name = 3;
-    string status = 4;
+    double target_amount = 4;
     string description = 5;
     string donation_type = 6;
     string tag = 7;
