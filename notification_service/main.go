@@ -1,11 +1,14 @@
 package main
 
 import (
-	"log"
-	"net/http"
+
+	"notification_service/config"
 	"notification_service/handler"
-	helper "notification_service/helper"
+
+	"github.com/labstack/echo/v4"
+	"github.com/labstack/echo/v4/middleware"
 )
+
 
 func main() {
 	// load the .env
