@@ -9,13 +9,12 @@ service DonationRegistry{
 
 message DonationReq{
     string donation_id =1;
-    bool is_full_donation = 2;
 }
 
 message DonationResp {
     bool is_donation_exist = 1;
     string donation_name = 2;
     string description = 3;
-    double amount = 4;
-    uint64 recipienc_id = 5;
+    double amount_to_pay = 4;
+    uint64 recipient_id = 5;
 }

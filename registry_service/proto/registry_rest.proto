@@ -4,7 +4,7 @@ option go_package = "/pb/pbRegistryRest";
 
 service RegistryRest{
     rpc GetAllRegistries(AllReq) returns (RegistriesResp);
-    rpc GetRegistryID (GetRegistryReq) returns (RegistryResp);
+    rpc GetRegistryID (GetRegistryReq) returns (DetailRegistryResp);
     rpc Donate (DonationReq) returns (DonateResp);
     rpc DeleteRegistry (DeleteRegistryReq) returns (DeleteResp);
 }
@@ -18,6 +18,13 @@ message AllReq {
 message RegistriesResp {
     repeated RegistryResp list = 1;
 }
+message RegistryResp {
+    string registry_id = 1;
+    string donation_id = 2;
+    string donor_id = 3;
+    double amount = 4;
+    string status = 5;
+}
 
 // for get registry id
 message GetRegistryReq {
@@ -25,12 +32,16 @@ message GetRegistryReq {
     uint64 donor_id = 2;
 }
 
-message RegistryResp {
+message DetailRegistryResp {
     string registry_id = 1;
     string donation_id = 2;
     string donor_id = 3;
     double amount = 4;
     string status = 5;
+    string donation_name = 6;
+    string description = 7;
+    double amount_to_pay = 8;
+    uint64 recipient_id = 9;
 }
 
 // for donate 

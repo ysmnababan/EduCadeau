@@ -17,7 +17,7 @@ func (c *RegistryController) GetAllRegistries(ctx context.Context, in *pbRegistr
 	return nil, nil
 }
 
-func (c *RegistryController) GetRegistryID(ctx context.Context, in *pbRegistryRest.GetRegistryReq) (*pbRegistryRest.RegistryResp, error) {
+func (c *RegistryController) GetRegistryID(ctx context.Context, in *pbRegistryRest.GetRegistryReq) (*pbRegistryRest.DetailRegistryResp, error) {
 
 	return nil, nil
 }
