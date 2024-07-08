@@ -4,9 +4,10 @@ option go_package = "/pb/pbDonationRegistry";
 
 service DonationRegistry{
     rpc GetDonationData(DonationReg) returns (DonationResp);
-
+    rpc AddAmountCollected(AddReq) returns (AddResp);
 }
 
+// for get donation data
 message DonationReg{
     string donation_id =1;
 }
@@ -19,4 +20,16 @@ message DonationResp {
     uint64 recipient_id = 5;
     string recipient_name = 6;
     string status = 7;
+}
+
+// for add amount collected
+
+message AddReq {
+    double amount = 1;
+    string donation_id = 2;
+}
+
+message AddResp {
+    string status = 1;
+    double amount_left = 2;
 }

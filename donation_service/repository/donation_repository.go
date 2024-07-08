@@ -23,6 +23,7 @@ type DonationRepo interface {
 	CreateDonation(dreq *models.CreateDonationReq) (models.DonationDetailResp, error)
 	EditDonation(dreq *models.EditDonationReq) (models.DonationDetailResp, error)
 	DeleteDonation(donation_id string, recipient_id uint) (string, error)
+	EditDonationAfterPay(donation_id primitive.ObjectID, amount float64) (*models.DonationAfterPaid, error)
 }
 
 func (r *Repo) isDonationExist(donation_id primitive.ObjectID, recipient_id uint) (bool, error) {
@@ -287,4 +288,26 @@ func (r *Repo) DeleteDonation(donation_id string, recipient_id uint) (string, er
 
 	out := fmt.Sprintf("Donation with ID: %s deleted successfully", donation_id)
 	return out, nil
+}
+
+func (r *Repo) EditDonationAfterPay(donation_id primitive.ObjectID, amount float64) (*models.DonationAfterPaid, error) {
+	var d models.Donation
+	r.DB.Collection("donations").FindOne(context.TODO(), bson.M{"_id": donation_id}).Decode(&d)
+
+	if d.TargetAmount+d.MiscellaneousCost == d.AmountCollected+amount {
+		d.Status = "settlement"
+	} else if d.TargetAmount+d.MiscellaneousCost > d.AmountCollected+amount {
+		d.Status = "on progress"
+	}
+	d.AmountCollected = d.AmountCollected + amount
+
+	_, err := r.DB.Collection("donations").UpdateOne(
+		context.TODO(),
+		bson.M{"_id": donation_id.Hex()},
+		bson.M{"$set": d},
+	)
+	if err != nil {
+		return nil, helper.ErrQuery
+	}
+	return &models.DonationAfterPaid{Status: d.Status, AmountLeft: d.TargetAmount + d.MiscellaneousCost - d.AmountCollected - amount}, nil
 }
