@@ -12,7 +12,7 @@ import (
 	"github.com/sendgrid/sendgrid-go/helpers/mail"
 )
 
-func SendEmail(c echo.Context) error {
+func SendEmail(c echo.Context, Request struct{}) error {
 	// Parse request body
 	var request models.Request
 	if err := c.Bind(&request); err != nil {
@@ -20,10 +20,10 @@ func SendEmail(c echo.Context) error {
 	}
 
 	// Create email message
-	from := mail.NewEmail("educadeu_admin", "educadeu.service@gmail.com")
-	to := mail.NewEmail("Recipient", request.To)
+	from := mail.NewEmail("educadeu_admin", "educadeu.service@gmail.com") // ubah jadi const
+	to := mail.NewEmail("Recipient", request.To)                          // ubah jadi const
 	message := mail.NewSingleEmail(from, request.Subject, to, request.Body, request.Body)
-	message.SetReplyTo(mail.NewEmail("apem", "educadeu.service@gmail.com"))
+	message.SetReplyTo(mail.NewEmail("educadeu_customer_service", "educadeu.service@gmail.com"))
 
 	// Get SendGrid API key from environment variable
 	apiKey := os.Getenv("SENDGRID_API_KEY")
