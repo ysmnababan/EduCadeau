@@ -21,7 +21,7 @@ message RegistriesResp {
 message RegistryResp {
     string registry_id = 1;
     string donation_id = 2;
-    string donor_id = 3;
+    uint64 donor_id = 3;
     double amount = 4;
     string status = 5;
 }
@@ -35,7 +35,7 @@ message GetRegistryReq {
 message DetailRegistryResp {
     string registry_id = 1;
     string donation_id = 2;
-    string donor_id = 3;
+    uint64 donor_id = 3;
     double amount = 4;
     string status = 5;
     string donation_name = 6;
@@ -48,14 +48,14 @@ message DetailRegistryResp {
 message DonationReq {
     string donation_id = 1;
     string filter = 2;
-    string donor_id = 3;
-    string amount =4;
+    uint64 donor_id = 3;
+    double amount =4;
 }
 
 message DonateResp{
     string registry_id = 1;
     string donation_id = 2;
-    string donor_id = 3;
+    uint64 donor_id = 3;
     double amount = 4;
     string status = 5;
 }

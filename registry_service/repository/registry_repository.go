@@ -130,6 +130,8 @@ func (r *Repo) Donate(in *models.Registry) error {
 		return err
 	}
 
+	in.DonationID = res.InsertedID.(primitive.ObjectID)
+	
 	log.Printf("CREATE SUCCESS: %v\n\n", res)
 	return nil
 }

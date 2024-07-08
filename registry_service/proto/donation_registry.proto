@@ -3,11 +3,11 @@ package donation;
 option go_package = "/pb/pbDonationRegistry";
 
 service DonationRegistry{
-    rpc GetDonationData(DonationReq) returns (DonationResp);
+    rpc GetDonationData(DonationReg) returns (DonationResp);
 
 }
 
-message DonationReq{
+message DonationReg{
     string donation_id =1;
 }
 
@@ -17,4 +17,5 @@ message DonationResp {
     string description = 3;
     double amount_to_pay = 4;
     uint64 recipient_id = 5;
+    string recipient_name = 6;
 }

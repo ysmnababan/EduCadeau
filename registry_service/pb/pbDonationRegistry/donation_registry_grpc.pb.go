@@ -26,7 +26,7 @@ const (
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type DonationRegistryClient interface {
-	GetDonationData(ctx context.Context, in *DonationReq, opts ...grpc.CallOption) (*DonationResp, error)
+	GetDonationData(ctx context.Context, in *DonationReg, opts ...grpc.CallOption) (*DonationResp, error)
 }
 
 type donationRegistryClient struct {
@@ -37,7 +37,7 @@ func NewDonationRegistryClient(cc grpc.ClientConnInterface) DonationRegistryClie
 	return &donationRegistryClient{cc}
 }
 
-func (c *donationRegistryClient) GetDonationData(ctx context.Context, in *DonationReq, opts ...grpc.CallOption) (*DonationResp, error) {
+func (c *donationRegistryClient) GetDonationData(ctx context.Context, in *DonationReg, opts ...grpc.CallOption) (*DonationResp, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(DonationResp)
 	err := c.cc.Invoke(ctx, DonationRegistry_GetDonationData_FullMethodName, in, out, cOpts...)
@@ -51,14 +51,14 @@ func (c *donationRegistryClient) GetDonationData(ctx context.Context, in *Donati
 // All implementations should embed UnimplementedDonationRegistryServer
 // for forward compatibility
 type DonationRegistryServer interface {
-	GetDonationData(context.Context, *DonationReq) (*DonationResp, error)
+	GetDonationData(context.Context, *DonationReg) (*DonationResp, error)
 }
 
 // UnimplementedDonationRegistryServer should be embedded to have forward compatible implementations.
 type UnimplementedDonationRegistryServer struct {
 }
 
-func (UnimplementedDonationRegistryServer) GetDonationData(context.Context, *DonationReq) (*DonationResp, error) {
+func (UnimplementedDonationRegistryServer) GetDonationData(context.Context, *DonationReg) (*DonationResp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetDonationData not implemented")
 }
 
@@ -74,7 +74,7 @@ func RegisterDonationRegistryServer(s grpc.ServiceRegistrar, srv DonationRegistr
 }
 
 func _DonationRegistry_GetDonationData_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(DonationReq)
+	in := new(DonationReg)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -86,7 +86,7 @@ func _DonationRegistry_GetDonationData_Handler(srv interface{}, ctx context.Cont
 		FullMethod: DonationRegistry_GetDonationData_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(DonationRegistryServer).GetDonationData(ctx, req.(*DonationReq))
+		return srv.(DonationRegistryServer).GetDonationData(ctx, req.(*DonationReg))
 	}
 	return interceptor(ctx, in, info, handler)
 }
