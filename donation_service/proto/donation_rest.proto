@@ -96,7 +96,7 @@ message EditDonationReq {
     string donation_name = 3;
     double target_amount = 4;
     string description = 5;
-    string donation_type = 6;
+    double miscellaneous_cost = 6;
     string tag = 7;
     string sender_address = 8;
     string related_link = 9;
