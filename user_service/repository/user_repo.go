@@ -14,10 +14,10 @@ import (
 
 type UserRepo interface {
 	Login(u models.User) (string, error)
-	Register(u models.User) (models.UserResponse, error)
-	GetInfo(user_id uint) (models.UserDetailResponse, error)
-	GetAllUser() ([]models.UserDetailResponse, error)
-	Update(user_id uint, u models.UserUpdateRequest) (models.UserDetailResponse, error)
+	Register(u models.User) (*models.UserResponse, error)
+	GetInfo(user_id uint) (*models.UserDetailResponse, error)
+	GetAllUser() ([]*models.UserDetailResponse, error)
+	Update(user_id uint, u models.UserUpdateRequest) (*models.UserDetailResponse, error)
 	TopUp(user_id uint, amount float64) (float64, error)
 }
 
@@ -97,23 +97,23 @@ func (r *Repo) Login(u models.User) (string, error) {
 	return token, nil
 }
 
-func (r *Repo) Register(u models.User) (models.UserResponse, error) {
+func (r *Repo) Register(u models.User) (*models.UserResponse, error) {
 	var newU models.UserResponse
 
 	isExist, err := r.isUserExist(u.Email)
 	if err != nil {
-		return models.UserResponse{}, err
+		return nil, err
 	}
 
 	if isExist {
-		return models.UserResponse{}, helper.ErrUserExists
+		return nil, helper.ErrUserExists
 	}
 
 	hashedpwd, _ := bcrypt.GenerateFromPassword([]byte(u.Password), bcrypt.DefaultCost)
 	u.Password = string(hashedpwd)
 	res := r.DB.Create(&u)
 	if res.Error != nil {
-		return models.UserResponse{}, helper.ErrQuery
+		return nil, helper.ErrQuery
 	}
 
 	// create userdetail in userdetail table using emtpy data
@@ -121,7 +121,7 @@ func (r *Repo) Register(u models.User) (models.UserResponse, error) {
 	ud.UserID = u.UserID
 	res = r.DB.Create(&ud)
 	if res.Error != nil {
-		return models.UserResponse{}, helper.ErrQuery
+		return nil, helper.ErrQuery
 	}
 
 	// return response
@@ -129,25 +129,25 @@ func (r *Repo) Register(u models.User) (models.UserResponse, error) {
 	newU.Email = u.Email
 	newU.Username = u.Username
 	newU.Deposit = u.Deposit
-	return newU, nil
+	return &newU, nil
 }
 
-func (r *Repo) GetInfo(user_id uint) (models.UserDetailResponse, error) {
+func (r *Repo) GetInfo(user_id uint) (*models.UserDetailResponse, error) {
 	var respU models.UserDetailResponse
 
 	var u models.User
 	res := r.DB.First(&u, user_id)
 	if res.Error != nil {
 		if res.Error == gorm.ErrRecordNotFound {
-			return models.UserDetailResponse{}, helper.ErrNoUser
+			return nil, helper.ErrNoUser
 		}
 		helper.Logging(nil).Error("ERR QUERY", res.Error)
-		return models.UserDetailResponse{}, helper.ErrQuery
+		return nil, helper.ErrQuery
 	}
 	var ud models.UserDetail
 	res = r.DB.Where("user_id=?", user_id).First(&ud)
 	if res.Error != nil {
-		return models.UserDetailResponse{}, helper.ErrQuery
+		return nil, helper.ErrQuery
 	}
 
 	// return response
@@ -162,16 +162,16 @@ func (r *Repo) GetInfo(user_id uint) (models.UserDetailResponse, error) {
 	respU.PhoneNumber = ud.PhoneNumber
 	respU.ProfilePictureUrl = ud.ProfilePictureUrl
 
-	return respU, nil
+	return &respU, nil
 }
 
-func (r *Repo) GetAllUser() ([]models.UserDetailResponse, error) {
+func (r *Repo) GetAllUser() ([]*models.UserDetailResponse, error) {
 	var users []models.User
 	res := r.DB.Find(&users)
 	if res.Error != nil {
 		return nil, helper.ErrQuery
 	}
-	var alluser []models.UserDetailResponse
+	var alluser []*models.UserDetailResponse
 	for _, user := range users {
 		u, err := r.GetInfo(uint(user.UserID))
 		if err != nil {
@@ -183,15 +183,15 @@ func (r *Repo) GetAllUser() ([]models.UserDetailResponse, error) {
 	return alluser, nil
 }
 
-func (r *Repo) Update(user_id uint, u models.UserUpdateRequest) (models.UserDetailResponse, error) {
+func (r *Repo) Update(user_id uint, u models.UserUpdateRequest) (*models.UserDetailResponse, error) {
 	var user models.User
 	res := r.DB.First(&user, user_id)
 	if res.Error != nil {
 		if res.Error == gorm.ErrRecordNotFound {
-			return models.UserDetailResponse{}, helper.ErrNoUser
+			return nil, helper.ErrNoUser
 		}
 		helper.Logging(nil).Error("ERR QUERY", res.Error)
-		return models.UserDetailResponse{}, helper.ErrQuery
+		return nil, helper.ErrQuery
 	}
 
 	// update username
@@ -200,14 +200,14 @@ func (r *Repo) Update(user_id uint, u models.UserUpdateRequest) (models.UserDeta
 	}
 	res = r.DB.Save(&user)
 	if res.Error != nil {
-		return models.UserDetailResponse{}, helper.ErrQuery
+		return nil, helper.ErrQuery
 	}
 
 	// update detail of user
 	var updateU models.UserDetail
 	res = r.DB.Where("user_id=?", user_id).First(&updateU)
 	if res.Error != nil {
-		return models.UserDetailResponse{}, helper.ErrQuery
+		return nil, helper.ErrQuery
 	}
 	if u.Fname != ""{
 		updateU.Fname = u.Fname
@@ -232,7 +232,7 @@ func (r *Repo) Update(user_id uint, u models.UserUpdateRequest) (models.UserDeta
 
 	res = r.DB.Save(&updateU)
 	if res.Error != nil {
-		return models.UserDetailResponse{}, helper.ErrQuery
+		return nil, helper.ErrQuery
 	}
 
 	return r.GetInfo(user_id)
