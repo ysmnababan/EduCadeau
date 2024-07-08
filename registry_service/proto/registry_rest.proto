@@ -1,0 +1,59 @@
+syntax = "proto3";
+package registry;
+option go_package = "/pb/pbRegistryRest";
+
+service RegistryRest{
+    rpc GetAllRegistries(AllReq) returns (RegistriesResp);
+    rpc GetRegistryID (GetRegistryReq) returns (RegistryResp);
+    rpc Donate (DonationReq) returns (DonateResp);
+    rpc DeleteRegistry (DeleteRegistryReq) returns (DeleteResp);
+}
+
+
+// for get all registries
+message AllReq {
+    string filter = 1;
+}
+
+message RegistriesResp {
+    repeated RegistryResp list = 1;
+}
+
+// for get registry id
+message GetRegistryReq {
+    string registry_id = 1;
+    uint64 donor_id = 2;
+}
+
+message RegistryResp {
+    string registry_id = 1;
+    string donation_id = 2;
+    string donor_id = 3;
+    double amount = 4;
+    string status = 5;
+}
+
+// for donate 
+message DonationReq {
+    string donation_id = 1;
+    string filter = 2;
+    string donor_id = 3;
+    string amount =4;
+}
+
+message DonateResp{
+    string registry_id = 1;
+    string donation_id = 2;
+    string donor_id = 3;
+    double amount = 4;
+    string status = 5;
+}
+
+message DeleteRegistryReq{
+    string registry_id = 1;
+    uint64 donor_id = 2;
+}
+
+message DeleteResp{
+    string message = 1;
+}
