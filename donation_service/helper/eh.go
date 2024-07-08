@@ -23,6 +23,7 @@ var (
 	ErrMustAdmin           = errors.New("unauthorized, admin privilege only")
 	ErrOnlyUser            = errors.New("unauthorized, user privilege only")
 	ErrUnsufficientBalance = errors.New("no sufficient fund")
+	ErrInvalidRegistry     = errors.New("registry is no longer valid, due to donation data change")
 )
 
 func ParseError(err error, ctx echo.Context) error {
@@ -92,6 +93,9 @@ func ParseErrorGRPC(err error) error {
 	case errors.Is(err, ErrParam):
 		code = codes.InvalidArgument
 		message = "error or missing param"
+	case errors.Is(err, ErrInvalidRegistry):
+		code = codes.InvalidArgument
+		message = "Bad request"
 	case errors.Is(err, ErrBindJSON):
 		code = codes.InvalidArgument
 		message = "Bad request"

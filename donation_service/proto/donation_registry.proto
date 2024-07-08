@@ -18,4 +18,5 @@ message DonationResp {
     double amount_to_pay = 4;
     uint64 recipient_id = 5;
     string recipient_name = 6;
+    string status = 7;
 }
