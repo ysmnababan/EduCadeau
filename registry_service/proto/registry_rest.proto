@@ -13,6 +13,7 @@ service RegistryRest{
 // for get all registries
 message AllReq {
     string filter = 1;
+    uint64 donor_id = 2;
 }
 
 message RegistriesResp {
@@ -42,6 +43,7 @@ message DetailRegistryResp {
     string description = 7;
     double amount_to_pay = 8;
     uint64 recipient_id = 9;
+    string recipient_name = 10;
 }
 
 // for donate 

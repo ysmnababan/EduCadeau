@@ -8,6 +8,7 @@ import (
 	"registry_service/pb/pbDonationRegistry"
 	"registry_service/pb/pbRegistryRest"
 	"registry_service/repository"
+	"strings"
 
 	"go.mongodb.org/mongo-driver/bson/primitive"
 )
@@ -19,7 +20,7 @@ type RegistryController struct {
 
 func (c *RegistryController) GetAllRegistries(ctx context.Context, in *pbRegistryRest.AllReq) (*pbRegistryRest.RegistriesResp, error) {
 	var out []*pbRegistryRest.RegistryResp
-	res, err := c.RR.GetAllRegistries(in.Filter)
+	res, err := c.RR.GetAllRegistries(in.Filter, uint(in.DonorId))
 	if err != nil {
 		return nil, helper.ParseErrorGRPC(err)
 	}
@@ -47,29 +48,31 @@ func (c *RegistryController) GetRegistryID(ctx context.Context, in *pbRegistryRe
 	d, err := c.DonationGRPC.GetDonationData(
 		ctx,
 		&pbDonationRegistry.DonationReg{
-			DonationId: res.DonationID.String(),
+			DonationId: res.DonationID.Hex(),
 		},
 	)
 
+	helper.Logging(nil).Error("REGISTRY DATA: ", res, res.DonationID.Hex(), res.DonationID.String())
 	if err != nil {
 		helper.Logging(nil).Error("ERROR FROM DONATION GRPC: ", err)
+		return nil, helper.ParseErrorGRPC(err)
 	}
 
-	helper.Logging(nil).Error("REGISTRY DATA: ", res)
 	helper.Logging(nil).Error("DONATION DATA: ", d)
 
 	log.Printf("GET REGISTRY SUCCESS DATA: \n\n")
 
 	return &pbRegistryRest.DetailRegistryResp{
-		RegistryId:   in.RegistryId,
-		DonationId:   res.DonationID.String(),
-		DonorId:      in.DonorId,
-		Amount:       res.Amount,
-		Status:       res.Status,
-		DonationName: d.DonationName,
-		Description:  d.Description,
-		AmountToPay:  d.AmountToPay,
-		RecipientId:  d.RecipientId,
+		RegistryId:    in.RegistryId,
+		DonationId:    res.DonationID.String(),
+		DonorId:       in.DonorId,
+		Amount:        res.Amount,
+		Status:        res.Status,
+		DonationName:  d.DonationName,
+		Description:   d.Description,
+		AmountToPay:   d.AmountToPay,
+		RecipientId:   d.RecipientId,
+		RecipientName: d.RecipientName,
 	}, nil
 }
 
@@ -88,6 +91,9 @@ func (c *RegistryController) Donate(ctx context.Context, in *pbRegistryRest.Dona
 	)
 
 	if err != nil {
+		if strings.Contains(err.Error(), "no data in result set") {
+			return nil, helper.ParseErrorGRPC(helper.ErrNoData)
+		}
 		helper.Logging(nil).Error("ERROR FROM DONATION GRPC: ", err)
 		return nil, helper.ParseErrorGRPC(helper.ErrQuery)
 	}
@@ -97,6 +103,7 @@ func (c *RegistryController) Donate(ctx context.Context, in *pbRegistryRest.Dona
 	if in.Filter == "full" {
 		in.Amount = d.AmountToPay
 	} else if in.Filter == "partial" && in.Amount >= d.AmountToPay {
+		log.Println("amount is bigger than needed")
 		return nil, helper.ParseErrorGRPC(helper.ErrParam)
 	}
 	req := &models.Registry{

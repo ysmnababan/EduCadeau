@@ -17,11 +17,9 @@ type Repo struct {
 }
 
 type RegistryRepo interface {
-	GetAllRegistries(filter string) ([]models.Registry, error)
+	GetAllRegistries(filter string, donor_id uint) ([]models.Registry, error)
 	GetRegistryID(registry_id string, donor_id uint64) (models.Registry, error)
 	Donate(in *models.Registry) error
-	// FullDonate(in *models.Registry) (models.Registry, error)
-	// PartialDonate(in *models.Registry) (models.Registry, error)
 	DeleteRegistry(registry_id string, donor_id uint64) (string, error)
 }
 
@@ -53,23 +51,32 @@ func (r *Repo) isRegistryDuplicate(donation_id primitive.ObjectID, donor_id uint
 	if err != nil {
 		// transaction not found
 		if err == mongo.ErrNoDocuments {
-			return false, helper.ErrNoData
+			return false, nil
 		}
 		helper.Logging(nil).Error(err)
 		return false, err
 	}
-	return true, nil
+	return true, helper.ErrUserExists
 }
 
-func (r *Repo) GetAllRegistries(filter string) ([]models.Registry, error) {
+func (r *Repo) GetAllRegistries(filter string, donor_id uint) ([]models.Registry, error) {
 	var registries []models.Registry
 	var cursor *mongo.Cursor
 	var err error
-	if filter == "" {
-		cursor, err = r.DB.Collection("registries").Find(context.TODO(), bson.D{{}})
-	} else {
-		cursor, err = r.DB.Collection("registries").Find(context.TODO(), bson.M{"status": filter})
+
+	var qFilter interface{}
+	if filter == "" && donor_id == 0 {
+		qFilter = bson.D{{}}
+	} else if filter == "" && donor_id != 0 {
+		qFilter = bson.M{"donor_id": donor_id}
+	} else if filter != "" && donor_id == 0 {
+		qFilter = bson.M{"status": filter}
+	} else if filter != "" && donor_id != 0 {
+		qFilter = bson.M{"status": filter, "donor_id": donor_id}
 	}
+
+	cursor, err = r.DB.Collection("registries").Find(context.TODO(), qFilter)
+
 	if err != nil {
 		helper.Logging(nil).Error("ERROR REPO: ", err)
 		return nil, helper.ErrQuery
@@ -130,16 +137,12 @@ func (r *Repo) Donate(in *models.Registry) error {
 		return err
 	}
 
-	in.DonationID = res.InsertedID.(primitive.ObjectID)
-	
+	in.ID = res.InsertedID.(primitive.ObjectID)
+
 	log.Printf("CREATE SUCCESS: %v\n\n", res)
 	return nil
 }
 
-// func (r *Repo) PartialDonate(in *models.Registry) (models.Registry, error) {
-
-// 	return models.Registry{}, nil
-// }
 
 func (r *Repo) DeleteRegistry(registry_id string, donor_id uint64) (string, error) {
 	r_id, err := primitive.ObjectIDFromHex(registry_id)
@@ -165,5 +168,5 @@ func (r *Repo) DeleteRegistry(registry_id string, donor_id uint64) (string, erro
 
 	log.Printf("DELETE SUCCESS: %v\n\n", res)
 
-	return fmt.Sprintf("REGISTRY WITH ID:%d IS DELETED SUCCESFULLY", r_id), nil
+	return fmt.Sprintf("REGISTRY WITH ID:%v IS DELETED SUCCESFULLY", r_id.Hex()), nil
 }
