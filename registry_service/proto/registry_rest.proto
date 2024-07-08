@@ -7,6 +7,9 @@ service RegistryRest{
     rpc GetRegistryID (GetRegistryReq) returns (DetailRegistryResp);
     rpc Donate (DonationReq) returns (DonateResp);
     rpc DeleteRegistry (DeleteRegistryReq) returns (DeleteResp);
+
+    rpc GetAllPayments(PaymentsReq) returns (PaymentList);
+    rpc GetPayment(PaymentReq) returns (PaymentResp);
 }
 
 
@@ -62,6 +65,7 @@ message DonateResp{
     string status = 5;
 }
 
+// for delete
 message DeleteRegistryReq{
     string registry_id = 1;
     uint64 donor_id = 2;
@@ -69,4 +73,28 @@ message DeleteRegistryReq{
 
 message DeleteResp{
     string message = 1;
+}
+
+// for get all payments
+message PaymentsReq {
+    uint64 donor_id = 1;
+}
+
+message PaymentList{
+    repeated PaymentResp list =1;
+}
+
+
+// for get payment
+message PaymentReq {
+    uint64 donor_id = 1;
+    string payment_id = 2;
+}
+
+message PaymentResp {
+    string payment_id = 1;
+    string registry_id = 2;
+    string payment_date = 3;
+    string payment_method = 4;
+    double payment_amount = 5;
 }
