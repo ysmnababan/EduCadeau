@@ -21,6 +21,11 @@ type RegistryRepo interface {
 	GetRegistryID(registry_id string, donor_id uint64) (models.Registry, error)
 	Donate(in *models.Registry) error
 	DeleteRegistry(registry_id string, donor_id uint64) (string, error)
+
+	GetAllPayments() ([]*models.Payment, error)
+	GetAllMyPayments(donor_id uint64) ([]*models.Payment, error)
+	GetPayment(donor_id uint64, payment_id string) (*models.Payment, error)
+	Pay(in *models.Payment, donor_id uint64) error
 }
 
 func (r *Repo) isRegistryExist(registry_id primitive.ObjectID, donor_id uint) (bool, error) {

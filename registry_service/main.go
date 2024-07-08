@@ -26,6 +26,7 @@ func main() {
 	registryController := &controller.RegistryController{
 		RR:           repo,
 		DonationGRPC: setup.SetupClientForDonationServer(),
+		UserGRPC:     setup.SetupClientForUserServer(),
 	}
 
 	setup.SetupGPRCServer(registryController)

@@ -25,6 +25,10 @@ func main() {
 		UD: repo,
 	}
 
-	setup.SetupGPRCServer(userController, userToDonationController)
+	userToRegistryController := &controller.UserRegistry{
+		UR: repo,
+	}
+
+	setup.SetupGPRCServer(userController, userToDonationController, userToRegistryController)
 
 }

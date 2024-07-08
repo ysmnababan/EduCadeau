@@ -7,6 +7,7 @@ import (
 	"registry_service/models"
 	"registry_service/pb/pbDonationRegistry"
 	"registry_service/pb/pbRegistryRest"
+	"registry_service/pb/user_registry"
 	"registry_service/repository"
 	"strings"
 
@@ -16,6 +17,7 @@ import (
 type RegistryController struct {
 	RR           repository.RegistryRepo
 	DonationGRPC pbDonationRegistry.DonationRegistryClient
+	UserGRPC     user_registry.UserRegistryClient
 }
 
 func (c *RegistryController) GetAllRegistries(ctx context.Context, in *pbRegistryRest.AllReq) (*pbRegistryRest.RegistriesResp, error) {

@@ -8,11 +8,12 @@ import (
 	"user_service/helper"
 	"user_service/pb"
 	"user_service/pb/user_donation"
+	"user_service/pb/user_registry"
 
 	"google.golang.org/grpc"
 )
 
-func SetupGPRCServer(UserRestServer *controller.UserController, UserDonationServer *controller.UserDonation) {
+func SetupGPRCServer(UserRestServer *controller.UserController, UserDonationServer *controller.UserDonation, UserRegistryServer *controller.UserRegistry) {
 	// create new grpc server
 	grpcServer := grpc.NewServer()
 
@@ -21,6 +22,9 @@ func SetupGPRCServer(UserRestServer *controller.UserController, UserDonationServ
 
 	// register the 'user to donation' service server
 	user_donation.RegisterUserDonationServer(grpcServer, UserDonationServer)
+
+	// register the 'user to registry' service server
+	user_registry.RegisterUserRegistryServer(grpcServer, UserRegistryServer)
 
 	// start grpc server
 

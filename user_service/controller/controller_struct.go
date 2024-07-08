@@ -9,3 +9,7 @@ type UserController struct {
 type UserDonation struct {
 	UD repository.UserRepo
 }
+
+type UserRegistry struct {
+	UR repository.UserRepo
+}

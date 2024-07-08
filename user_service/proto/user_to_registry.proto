@@ -1,0 +1,27 @@
+syntax = "proto3";
+package user;
+option go_package = "/pb/user_registry";
+
+service UserRegistry{
+    rpc GetBalance(BalanceReq) returns (BalanceResp);
+    rpc UpdateBalance(BalanceUpdate) returns (UpdateResp);
+}
+
+// for get balance
+message BalanceReq {
+    uint64 user_id = 1;
+}
+
+message BalanceResp {
+    double deposit = 1;
+}
+
+// for updating balance
+message BalanceUpdate {
+    uint64 user_id = 1;
+    double new_balance = 2;
+}
+
+message UpdateResp {
+
+}

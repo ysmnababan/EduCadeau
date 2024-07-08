@@ -57,3 +57,8 @@ type DonationDetailResp struct {
 	RelatedLink       string  `json:"related_link,omitempty" bson:"related_link,omitempty"`
 	Notes             string  `json:"notes,omitempty" bson:"notes,omitempty"`
 }
+
+type DonationAfterPaid struct {
+	Status     string
+	AmountLeft float64
+}
