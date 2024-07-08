@@ -19,7 +19,6 @@ type UserRepo interface {
 	GetAllUser() ([]models.UserDetailResponse, error)
 	Update(user_id uint, u models.UserUpdateRequest) (models.UserDetailResponse, error)
 	TopUp(user_id uint, amount float64) (float64, error)
-	GetUsername(user_id uint) (string, error)
 }
 
 type Repo struct {
@@ -196,7 +195,9 @@ func (r *Repo) Update(user_id uint, u models.UserUpdateRequest) (models.UserDeta
 	}
 
 	// update username
-	user.Username = u.Username
+	if u.Username != ""{
+		user.Username = u.Username
+	}
 	res = r.DB.Save(&user)
 	if res.Error != nil {
 		return models.UserDetailResponse{}, helper.ErrQuery
@@ -208,12 +209,26 @@ func (r *Repo) Update(user_id uint, u models.UserUpdateRequest) (models.UserDeta
 	if res.Error != nil {
 		return models.UserDetailResponse{}, helper.ErrQuery
 	}
-	updateU.Fname = u.Fname
-	updateU.Lname = u.Lname
-	updateU.Address = u.Address
-	updateU.Age = u.Age
-	updateU.PhoneNumber = u.PhoneNumber
-	updateU.ProfilePictureUrl = u.ProfilePictureUrl
+	if u.Fname != ""{
+		updateU.Fname = u.Fname
+	}
+	if u.Lname != ""{
+		updateU.Lname = u.Lname
+	}
+	if u.Address != ""{
+		updateU.Address = u.Address
+	}
+	if u.Age >0 {
+		updateU.Age = u.Age
+	}
+
+	if u.PhoneNumber != ""{
+		updateU.PhoneNumber = u.PhoneNumber
+	}
+	
+	if u.ProfilePictureUrl != ""{
+		updateU.ProfilePictureUrl = u.ProfilePictureUrl
+	}
 
 	res = r.DB.Save(&updateU)
 	if res.Error != nil {
@@ -243,17 +258,3 @@ func (r *Repo) TopUp(user_id uint, amount float64) (float64, error) {
 	return user.Deposit, nil
 }
 
-func (r *Repo) GetUsername(user_id uint) (string, error) {
-
-	var u models.User
-	res := r.DB.First(&u, user_id)
-	if res.Error != nil {
-		if res.Error == gorm.ErrRecordNotFound {
-			return "", helper.ErrNoUser
-		}
-		helper.Logging(nil).Error("ERR QUERY", res.Error)
-		return "", helper.ErrQuery
-	}
-
-	return u.Username, nil
-}
