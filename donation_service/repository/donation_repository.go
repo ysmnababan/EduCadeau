@@ -189,6 +189,7 @@ func (r *Repo) EditDonation(dreq *models.EditDonationReq) (models.DonationDetail
 	if !isDonationExist {
 		return models.DonationDetailResp{}, helper.ErrNoData
 	}
+
 	r.DB.Collection("donations").FindOne(context.TODO(), bson.M{"_id": dreq.DonationID}).Decode(&d)
 	r.DB.Collection("donation_details").FindOne(context.TODO(), bson.M{"donation_id": dreq.DonationID}).Decode(&dd)
 	log.Println("DONATIONS : ", d)
@@ -196,8 +197,15 @@ func (r *Repo) EditDonation(dreq *models.EditDonationReq) (models.DonationDetail
 
 	d.DonationName = dreq.DonationName
 	d.TargetAmount = dreq.TargetAmount
+	if dd.DonationType == "product" && (dd.SenderAddress == "" && dreq.SenderAddress == "") {
+		return models.DonationDetailResp{}, helper.ErrParam
+	}
+
+	if dd.DonationType == "service" && dreq.MiscellaneousCost > 0 {
+		d.MiscellaneousCost = dreq.MiscellaneousCost
+	}
+
 	dd.Description = dreq.Description
-	dd.DonationType = dreq.DonationType
 	dd.Tag = dreq.Tag
 	dd.SenderAddress = dreq.SenderAddress
 	dd.RelatedLink = dreq.RelatedLink

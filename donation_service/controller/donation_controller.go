@@ -137,6 +137,7 @@ func (c *DonationController) EditDonation(ctx context.Context, in *donation_rest
 		return nil, helper.ParseErrorGRPC(helper.ErrInvalidId)
 	}
 
+	
 	res, err := c.DC.EditDonation(
 		&models.EditDonationReq{
 			DonationID:    d_id,
@@ -144,7 +145,7 @@ func (c *DonationController) EditDonation(ctx context.Context, in *donation_rest
 			DonationName:  in.DonationName,
 			TargetAmount:  in.TargetAmount,
 			Description:   in.Description,
-			DonationType:  in.DonationType,
+			MiscellaneousCost: in.MiscellaneousCost,
 			Tag:           in.Tag,
 			SenderAddress: in.SenderAddress,
 			RelatedLink:   in.RelatedLink,
