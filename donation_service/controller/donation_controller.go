@@ -61,7 +61,7 @@ func (c *DonationController) GetDonationDetail(ctx context.Context, in *donation
 		RelatedLink:       res.RelatedLink,
 		Notes:             res.Notes,
 	}
-	user, err := c.UserGRPC.GetUsername(ctx, &user_donation.DetailReq{UserId: uint64(res.RecipientID)})
+	user, err := c.UserGRPC.GetRecipientData(ctx, &user_donation.RecipientReq{UserId: uint64(res.RecipientID)})
 	if err != nil {
 		return nil, helper.ParseErrorGRPC(err)
 	}
@@ -70,9 +70,18 @@ func (c *DonationController) GetDonationDetail(ctx context.Context, in *donation
 }
 
 func (c *DonationController) CreateDonation(ctx context.Context, in *donation_rest.CreateDonationReq) (*donation_rest.CreateResp, error) {
-	user, err := c.UserGRPC.GetUsername(ctx, &user_donation.DetailReq{UserId: uint64(in.RecipientId)})
+	user, err := c.UserGRPC.GetRecipientData(ctx, &user_donation.RecipientReq{UserId: uint64(in.RecipientId)})
 	if err != nil {
 		return nil, helper.ParseErrorGRPC(err)
+	}
+
+	miscCost := in.MiscellaneousCost
+	if in.DonationType == "product" {
+		miscCost, err = helper.GetPriceFromAddress(in.SenderAddress, user.Address)
+		if err != nil {
+			helper.Logging(nil).Error("ERROR GENERATING DELIVERYCOST: ", err)
+			miscCost = 20000 // default delivery cost
+		}
 	}
 
 	res, err := c.DC.CreateDonation(
@@ -80,7 +89,7 @@ func (c *DonationController) CreateDonation(ctx context.Context, in *donation_re
 			RecipientID:       uint(in.RecipientId),
 			DonationName:      in.DonationName,
 			TargetAmount:      in.TargetAmount,
-			MiscellaneousCost: in.MiscellaneousCost,
+			MiscellaneousCost: miscCost,
 			Description:       in.Description,
 			DonationType:      in.DonationType,
 			Tag:               in.Tag,
@@ -118,7 +127,7 @@ func (c *DonationController) CreateDonation(ctx context.Context, in *donation_re
 }
 
 func (c *DonationController) EditDonation(ctx context.Context, in *donation_rest.EditDonationReq) (*donation_rest.EditResp, error) {
-	user, err := c.UserGRPC.GetUsername(ctx, &user_donation.DetailReq{UserId: uint64(in.RecipientId)})
+	user, err := c.UserGRPC.GetRecipientData(ctx, &user_donation.RecipientReq{UserId: uint64(in.RecipientId)})
 	if err != nil {
 		return nil, helper.ParseErrorGRPC(err)
 	}

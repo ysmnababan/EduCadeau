@@ -19,14 +19,14 @@ import (
 const _ = grpc.SupportPackageIsVersion8
 
 const (
-	UserDonation_GetUsername_FullMethodName = "/user.UserDonation/GetUsername"
+	UserDonation_GetRecipientData_FullMethodName = "/user.UserDonation/GetRecipientData"
 )
 
 // UserDonationClient is the client API for UserDonation service.
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type UserDonationClient interface {
-	GetUsername(ctx context.Context, in *DetailReq, opts ...grpc.CallOption) (*UsernameResp, error)
+	GetRecipientData(ctx context.Context, in *RecipientReq, opts ...grpc.CallOption) (*DetailResp, error)
 }
 
 type userDonationClient struct {
@@ -37,10 +37,10 @@ func NewUserDonationClient(cc grpc.ClientConnInterface) UserDonationClient {
 	return &userDonationClient{cc}
 }
 
-func (c *userDonationClient) GetUsername(ctx context.Context, in *DetailReq, opts ...grpc.CallOption) (*UsernameResp, error) {
+func (c *userDonationClient) GetRecipientData(ctx context.Context, in *RecipientReq, opts ...grpc.CallOption) (*DetailResp, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(UsernameResp)
-	err := c.cc.Invoke(ctx, UserDonation_GetUsername_FullMethodName, in, out, cOpts...)
+	out := new(DetailResp)
+	err := c.cc.Invoke(ctx, UserDonation_GetRecipientData_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
@@ -51,15 +51,15 @@ func (c *userDonationClient) GetUsername(ctx context.Context, in *DetailReq, opt
 // All implementations should embed UnimplementedUserDonationServer
 // for forward compatibility
 type UserDonationServer interface {
-	GetUsername(context.Context, *DetailReq) (*UsernameResp, error)
+	GetRecipientData(context.Context, *RecipientReq) (*DetailResp, error)
 }
 
 // UnimplementedUserDonationServer should be embedded to have forward compatible implementations.
 type UnimplementedUserDonationServer struct {
 }
 
-func (UnimplementedUserDonationServer) GetUsername(context.Context, *DetailReq) (*UsernameResp, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method GetUsername not implemented")
+func (UnimplementedUserDonationServer) GetRecipientData(context.Context, *RecipientReq) (*DetailResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetRecipientData not implemented")
 }
 
 // UnsafeUserDonationServer may be embedded to opt out of forward compatibility for this service.
@@ -73,20 +73,20 @@ func RegisterUserDonationServer(s grpc.ServiceRegistrar, srv UserDonationServer)
 	s.RegisterService(&UserDonation_ServiceDesc, srv)
 }
 
-func _UserDonation_GetUsername_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(DetailReq)
+func _UserDonation_GetRecipientData_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(RecipientReq)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(UserDonationServer).GetUsername(ctx, in)
+		return srv.(UserDonationServer).GetRecipientData(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: UserDonation_GetUsername_FullMethodName,
+		FullMethod: UserDonation_GetRecipientData_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(UserDonationServer).GetUsername(ctx, req.(*DetailReq))
+		return srv.(UserDonationServer).GetRecipientData(ctx, req.(*RecipientReq))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -99,8 +99,8 @@ var UserDonation_ServiceDesc = grpc.ServiceDesc{
 	HandlerType: (*UserDonationServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
-			MethodName: "GetUsername",
-			Handler:    _UserDonation_GetUsername_Handler,
+			MethodName: "GetRecipientData",
+			Handler:    _UserDonation_GetRecipientData_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
