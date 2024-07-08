@@ -1,15 +1,15 @@
 package helper
 
 import (
-	"registry_service/models"
 	"encoding/json"
 	"fmt"
 	"log"
+	"registry_service/models"
 
 	"github.com/streadway/amqp"
 )
 
-func CreateRegistryNotif(body *models.DonationDetailResp) {
+func CreateRegistryNotif(body *models.Registry) {
 	conn, err := amqp.Dial(RABBIT_MQ_ADDR)
 	if err != nil {
 		log.Fatalf("Failed to connect to RabbitMQ: %s", err)
