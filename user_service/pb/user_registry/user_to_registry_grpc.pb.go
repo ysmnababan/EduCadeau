@@ -19,7 +19,8 @@ import (
 const _ = grpc.SupportPackageIsVersion8
 
 const (
-	UserRegistry_GetBalance_FullMethodName = "/user.UserRegistry/GetBalance"
+	UserRegistry_GetBalance_FullMethodName    = "/user.UserRegistry/GetBalance"
+	UserRegistry_UpdateBalance_FullMethodName = "/user.UserRegistry/UpdateBalance"
 )
 
 // UserRegistryClient is the client API for UserRegistry service.
@@ -27,6 +28,7 @@ const (
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type UserRegistryClient interface {
 	GetBalance(ctx context.Context, in *BalanceReq, opts ...grpc.CallOption) (*BalanceResp, error)
+	UpdateBalance(ctx context.Context, in *BalanceUpdate, opts ...grpc.CallOption) (*UpdateResp, error)
 }
 
 type userRegistryClient struct {
@@ -47,11 +49,22 @@ func (c *userRegistryClient) GetBalance(ctx context.Context, in *BalanceReq, opt
 	return out, nil
 }
 
+func (c *userRegistryClient) UpdateBalance(ctx context.Context, in *BalanceUpdate, opts ...grpc.CallOption) (*UpdateResp, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(UpdateResp)
+	err := c.cc.Invoke(ctx, UserRegistry_UpdateBalance_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // UserRegistryServer is the server API for UserRegistry service.
 // All implementations should embed UnimplementedUserRegistryServer
 // for forward compatibility
 type UserRegistryServer interface {
 	GetBalance(context.Context, *BalanceReq) (*BalanceResp, error)
+	UpdateBalance(context.Context, *BalanceUpdate) (*UpdateResp, error)
 }
 
 // UnimplementedUserRegistryServer should be embedded to have forward compatible implementations.
@@ -60,6 +73,9 @@ type UnimplementedUserRegistryServer struct {
 
 func (UnimplementedUserRegistryServer) GetBalance(context.Context, *BalanceReq) (*BalanceResp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetBalance not implemented")
+}
+func (UnimplementedUserRegistryServer) UpdateBalance(context.Context, *BalanceUpdate) (*UpdateResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UpdateBalance not implemented")
 }
 
 // UnsafeUserRegistryServer may be embedded to opt out of forward compatibility for this service.
@@ -91,6 +107,24 @@ func _UserRegistry_GetBalance_Handler(srv interface{}, ctx context.Context, dec 
 	return interceptor(ctx, in, info, handler)
 }
 
+func _UserRegistry_UpdateBalance_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(BalanceUpdate)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserRegistryServer).UpdateBalance(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: UserRegistry_UpdateBalance_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserRegistryServer).UpdateBalance(ctx, req.(*BalanceUpdate))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // UserRegistry_ServiceDesc is the grpc.ServiceDesc for UserRegistry service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -101,6 +135,10 @@ var UserRegistry_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetBalance",
 			Handler:    _UserRegistry_GetBalance_Handler,
+		},
+		{
+			MethodName: "UpdateBalance",
+			Handler:    _UserRegistry_UpdateBalance_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

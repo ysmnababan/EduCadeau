@@ -19,6 +19,7 @@ type UserRepo interface {
 	GetAllUser() ([]*models.UserDetailResponse, error)
 	Update(user_id uint, u models.UserUpdateRequest) (*models.UserDetailResponse, error)
 	TopUp(user_id uint, amount float64) (float64, error)
+	SubstractBalance(user_id uint, newBalance float64) error
 }
 
 type Repo struct {
@@ -195,7 +196,7 @@ func (r *Repo) Update(user_id uint, u models.UserUpdateRequest) (*models.UserDet
 	}
 
 	// update username
-	if u.Username != ""{
+	if u.Username != "" {
 		user.Username = u.Username
 	}
 	res = r.DB.Save(&user)
@@ -209,24 +210,24 @@ func (r *Repo) Update(user_id uint, u models.UserUpdateRequest) (*models.UserDet
 	if res.Error != nil {
 		return nil, helper.ErrQuery
 	}
-	if u.Fname != ""{
+	if u.Fname != "" {
 		updateU.Fname = u.Fname
 	}
-	if u.Lname != ""{
+	if u.Lname != "" {
 		updateU.Lname = u.Lname
 	}
-	if u.Address != ""{
+	if u.Address != "" {
 		updateU.Address = u.Address
 	}
-	if u.Age >0 {
+	if u.Age > 0 {
 		updateU.Age = u.Age
 	}
 
-	if u.PhoneNumber != ""{
+	if u.PhoneNumber != "" {
 		updateU.PhoneNumber = u.PhoneNumber
 	}
-	
-	if u.ProfilePictureUrl != ""{
+
+	if u.ProfilePictureUrl != "" {
 		updateU.ProfilePictureUrl = u.ProfilePictureUrl
 	}
 
@@ -258,3 +259,22 @@ func (r *Repo) TopUp(user_id uint, amount float64) (float64, error) {
 	return user.Deposit, nil
 }
 
+func (r *Repo) SubstractBalance(user_id uint, newBalance float64) error {
+	var user models.User
+	res := r.DB.First(&user, user_id)
+	if res.Error != nil {
+		if res.Error == gorm.ErrRecordNotFound {
+			return helper.ErrNoUser
+		}
+		helper.Logging(nil).Error("ERR QUERY", res.Error)
+		return helper.ErrQuery
+	}
+	log.Println("HERE")
+	// update user deposit
+	user.Deposit = newBalance
+	res = r.DB.Save(&user)
+	if res.Error != nil {
+		return helper.ErrQuery
+	}
+	return nil
+}
