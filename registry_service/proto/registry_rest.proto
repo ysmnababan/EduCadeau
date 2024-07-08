@@ -10,6 +10,7 @@ service RegistryRest{
 
     rpc GetAllPayments(PaymentsReq) returns (PaymentList);
     rpc GetPayment(PaymentReq) returns (PaymentResp);
+    rpc Pay(PayReq) returns (PaymentResp);
 }
 
 
@@ -98,3 +99,18 @@ message PaymentResp {
     string payment_method = 4;
     double payment_amount = 5;
 }
+
+// for Pay
+message PayReq {
+    string registry_id = 1;
+    uint64 donor_id = 2;
+    string payment_method = 3;
+}
+
+// message Payresp {
+//     string payment_id = 1;
+//     string registry_id = 2;
+//     string payment_date = 3;
+//     string payment_method = 4;
+//     double payment_amount = 5;
+// }

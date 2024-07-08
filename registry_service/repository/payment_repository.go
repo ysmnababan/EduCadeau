@@ -11,35 +11,43 @@ import (
 	"go.mongodb.org/mongo-driver/mongo"
 )
 
-func (r *Repo) isPaymentExist(payment_id primitive.ObjectID) (bool, error) {
+// func (r *Repo) isPaymentExist(filter any) (bool, error) {
+// 	var result bson.M
+// 	err := r.DB.Collection("payments").FindOne(context.TODO(), filter).Decode(&result)
+// 	if err != nil {
+// 		// transaction not found
+// 		if err == mongo.ErrNoDocuments {
+// 			return false, helper.ErrNoData
+// 		}
+// 		helper.Logging(nil).Error(err)
+// 		return false, helper.ErrQuery
+// 	}
+
+// 	return true, nil
+// }
+
+func (r *Repo) isPaymentValid(registry_id primitive.ObjectID, donor_id uint) (bool, error) {
 	var result bson.M
-	err := r.DB.Collection("payments").FindOne(context.TODO(), bson.M{"_id": payment_id}).Decode(&result)
+	err := r.DB.Collection("registries").FindOne(context.TODO(), bson.M{"_id": registry_id, "donor_id": donor_id}).Decode(&result)
 	if err != nil {
-		// transaction not found
+		// registries not found
 		if err == mongo.ErrNoDocuments {
 			return false, helper.ErrNoData
 		}
 		helper.Logging(nil).Error(err)
-		return false, err
+		return false, helper.ErrQuery
 	}
 
-	return true, nil
-}
-
-func (r *Repo) isPaymentDuplicate(donation_id primitive.ObjectID, donor_id uint) (bool, error) {
-	var result bson.M
-
-	err := r.DB.Collection("registries").FindOne(context.TODO(), bson.M{"_id": donation_id, "donor_id": donor_id}).Decode(&result)
-
-	if err != nil {
-		// transaction not found
-		if err == mongo.ErrNoDocuments {
-			return false, nil
-		}
+	err = r.DB.Collection("payments").FindOne(context.TODO(), bson.M{"registry_id": registry_id}).Decode(&result)
+	if err != nil && err != mongo.ErrNoDocuments {
 		helper.Logging(nil).Error(err)
-		return false, err
+		return false, helper.ErrQuery
 	}
-	return true, helper.ErrUserExists
+	if err == nil {
+		helper.Logging(nil).Error("ERROR REPO: REGISTRY ALREADY EXISTS IN PAYMENT")
+		return false, helper.ErrParam
+	}
+	return true, nil
 }
 
 func (r *Repo) GetAllPayments() ([]*models.Payment, error) {
@@ -122,7 +130,30 @@ func (r *Repo) GetPayment(donor_id uint64, payment_id string) (*models.Payment, 
 	return &result, nil
 }
 
-func (r *Repo) Pay(in *models.Payment) error {
+func (r *Repo) Pay(in *models.Payment, donor_id uint64) error {
+	isValid, err := r.isPaymentValid(in.RegistryID, uint(donor_id))
+	if err != nil || !isValid {
+		return helper.ParseErrorGRPC(err)
+	}
+
+	res, err := r.DB.Collection("payments").InsertOne(context.TODO(), *in)
+	if err != nil {
+		helper.Logging(nil).Error("CREATE PAYMENT: ", err)
+		return helper.ErrQuery
+	}
+	in.ID = res.InsertedID.(primitive.ObjectID)
+
+	log.Println("PAY A DONATION: ", res)
+	update, err := r.DB.Collection("registries").UpdateOne(
+		context.TODO(),
+		bson.M{"_id": in.RegistryID},
+		bson.M{"$set": bson.M{"status": "settlement"}},
+	)
+	if err != nil {
+		helper.Logging(nil).Error("UPDATE STATUS PAYMENT: ", err)
+		return helper.ErrQuery
+	}
+	log.Println("PAY A DONATION: ", update)
 
 	return nil
 }

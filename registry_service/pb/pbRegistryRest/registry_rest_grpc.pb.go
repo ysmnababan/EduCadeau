@@ -25,6 +25,7 @@ const (
 	RegistryRest_DeleteRegistry_FullMethodName   = "/registry.RegistryRest/DeleteRegistry"
 	RegistryRest_GetAllPayments_FullMethodName   = "/registry.RegistryRest/GetAllPayments"
 	RegistryRest_GetPayment_FullMethodName       = "/registry.RegistryRest/GetPayment"
+	RegistryRest_Pay_FullMethodName              = "/registry.RegistryRest/Pay"
 )
 
 // RegistryRestClient is the client API for RegistryRest service.
@@ -37,6 +38,7 @@ type RegistryRestClient interface {
 	DeleteRegistry(ctx context.Context, in *DeleteRegistryReq, opts ...grpc.CallOption) (*DeleteResp, error)
 	GetAllPayments(ctx context.Context, in *PaymentsReq, opts ...grpc.CallOption) (*PaymentList, error)
 	GetPayment(ctx context.Context, in *PaymentReq, opts ...grpc.CallOption) (*PaymentResp, error)
+	Pay(ctx context.Context, in *PayReq, opts ...grpc.CallOption) (*PaymentResp, error)
 }
 
 type registryRestClient struct {
@@ -107,6 +109,16 @@ func (c *registryRestClient) GetPayment(ctx context.Context, in *PaymentReq, opt
 	return out, nil
 }
 
+func (c *registryRestClient) Pay(ctx context.Context, in *PayReq, opts ...grpc.CallOption) (*PaymentResp, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(PaymentResp)
+	err := c.cc.Invoke(ctx, RegistryRest_Pay_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // RegistryRestServer is the server API for RegistryRest service.
 // All implementations should embed UnimplementedRegistryRestServer
 // for forward compatibility
@@ -117,6 +129,7 @@ type RegistryRestServer interface {
 	DeleteRegistry(context.Context, *DeleteRegistryReq) (*DeleteResp, error)
 	GetAllPayments(context.Context, *PaymentsReq) (*PaymentList, error)
 	GetPayment(context.Context, *PaymentReq) (*PaymentResp, error)
+	Pay(context.Context, *PayReq) (*PaymentResp, error)
 }
 
 // UnimplementedRegistryRestServer should be embedded to have forward compatible implementations.
@@ -140,6 +153,9 @@ func (UnimplementedRegistryRestServer) GetAllPayments(context.Context, *Payments
 }
 func (UnimplementedRegistryRestServer) GetPayment(context.Context, *PaymentReq) (*PaymentResp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetPayment not implemented")
+}
+func (UnimplementedRegistryRestServer) Pay(context.Context, *PayReq) (*PaymentResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Pay not implemented")
 }
 
 // UnsafeRegistryRestServer may be embedded to opt out of forward compatibility for this service.
@@ -261,6 +277,24 @@ func _RegistryRest_GetPayment_Handler(srv interface{}, ctx context.Context, dec 
 	return interceptor(ctx, in, info, handler)
 }
 
+func _RegistryRest_Pay_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(PayReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(RegistryRestServer).Pay(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: RegistryRest_Pay_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(RegistryRestServer).Pay(ctx, req.(*PayReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // RegistryRest_ServiceDesc is the grpc.ServiceDesc for RegistryRest service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -291,6 +325,10 @@ var RegistryRest_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetPayment",
 			Handler:    _RegistryRest_GetPayment_Handler,
+		},
+		{
+			MethodName: "Pay",
+			Handler:    _RegistryRest_Pay_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
