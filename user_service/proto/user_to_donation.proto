@@ -1,0 +1,17 @@
+syntax = "proto3";
+package user;
+option go_package = "/pb/user_donation";
+
+service UserDonation{
+    rpc GetRecipientData(RecipientReq) returns (DetailResp);
+}
+
+// for username
+message RecipientReq {
+    uint64 user_id = 1;
+}
+
+message DetailResp {
+    string username = 1;
+    string address = 2;
+}

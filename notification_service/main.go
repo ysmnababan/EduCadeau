@@ -1,6 +1,7 @@
 package main
 
 import (
+
 	"notification_service/config"
 	"notification_service/handler"
 
@@ -8,18 +9,26 @@ import (
 	"github.com/labstack/echo/v4/middleware"
 )
 
-func init() {
-	config.Loadenv()
-}
 
 func main() {
-	// Initialize Echo
-	e := echo.New()
-	e.Use(middleware.Logger())
-	e.Use(middleware.Recover())
+	// load the .env
+	helper.LoadEnv()
+	//setup the receiver
+	forever := make(chan bool)
+	go handler.NotifyUserRegister()
+	go handler.NotifyUserEditData()
+	http.HandleFunc("/health", func(w http.ResponseWriter, r *http.Request) {
+		w.WriteHeader(http.StatusOK)
+		w.Write([]byte("OK"))
+	})
 
-	e.POST("/send-email", handler.SendEmail)
+	go func() {
+		log.Println("Starting HTTP server on port 8080")
+		if err := http.ListenAndServe(":"+helper.PORT, nil); err != nil {
+			log.Fatalf("Error starting HTTP server: %v", err)
+		}
+	}()
 
-	// Start server
-	e.Logger.Fatal(e.Start(":8080"))
+	log.Println("NOTIFICATION SERVICE STARTED...")
+	<-forever
 }
