@@ -30,7 +30,7 @@ const (
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type RegistryRestClient interface {
 	GetAllRegistries(ctx context.Context, in *AllReq, opts ...grpc.CallOption) (*RegistriesResp, error)
-	GetRegistryID(ctx context.Context, in *GetRegistryReq, opts ...grpc.CallOption) (*RegistryResp, error)
+	GetRegistryID(ctx context.Context, in *GetRegistryReq, opts ...grpc.CallOption) (*DetailRegistryResp, error)
 	Donate(ctx context.Context, in *DonationReq, opts ...grpc.CallOption) (*DonateResp, error)
 	DeleteRegistry(ctx context.Context, in *DeleteRegistryReq, opts ...grpc.CallOption) (*DeleteResp, error)
 }
@@ -53,9 +53,9 @@ func (c *registryRestClient) GetAllRegistries(ctx context.Context, in *AllReq, o
 	return out, nil
 }
 
-func (c *registryRestClient) GetRegistryID(ctx context.Context, in *GetRegistryReq, opts ...grpc.CallOption) (*RegistryResp, error) {
+func (c *registryRestClient) GetRegistryID(ctx context.Context, in *GetRegistryReq, opts ...grpc.CallOption) (*DetailRegistryResp, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(RegistryResp)
+	out := new(DetailRegistryResp)
 	err := c.cc.Invoke(ctx, RegistryRest_GetRegistryID_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
@@ -88,7 +88,7 @@ func (c *registryRestClient) DeleteRegistry(ctx context.Context, in *DeleteRegis
 // for forward compatibility
 type RegistryRestServer interface {
 	GetAllRegistries(context.Context, *AllReq) (*RegistriesResp, error)
-	GetRegistryID(context.Context, *GetRegistryReq) (*RegistryResp, error)
+	GetRegistryID(context.Context, *GetRegistryReq) (*DetailRegistryResp, error)
 	Donate(context.Context, *DonationReq) (*DonateResp, error)
 	DeleteRegistry(context.Context, *DeleteRegistryReq) (*DeleteResp, error)
 }
@@ -100,7 +100,7 @@ type UnimplementedRegistryRestServer struct {
 func (UnimplementedRegistryRestServer) GetAllRegistries(context.Context, *AllReq) (*RegistriesResp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetAllRegistries not implemented")
 }
-func (UnimplementedRegistryRestServer) GetRegistryID(context.Context, *GetRegistryReq) (*RegistryResp, error) {
+func (UnimplementedRegistryRestServer) GetRegistryID(context.Context, *GetRegistryReq) (*DetailRegistryResp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetRegistryID not implemented")
 }
 func (UnimplementedRegistryRestServer) Donate(context.Context, *DonationReq) (*DonateResp, error) {

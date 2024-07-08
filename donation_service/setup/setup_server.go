@@ -4,6 +4,8 @@ import (
 	"donation_service/controller"
 	"donation_service/helper"
 	"donation_service/pb/donation_rest"
+	"donation_service/pb/pbDonationRegistry"
+
 	"fmt"
 	"log"
 	"net"
@@ -17,6 +19,9 @@ func SetupGPRCServer(DC *controller.DonationController) {
 
 	// register the 'Donation' service server
 	donation_rest.RegisterDonationRestServer(grpcServer, DC)
+
+	// register the 'donation to registry' service server
+	pbDonationRegistry.RegisterDonationRegistryServer(grpcServer, DC)
 	// start grpc server
 
 	listen, err := net.Listen("tcp", fmt.Sprintf(":%s", helper.DONATION_SERVICE_PORT))
