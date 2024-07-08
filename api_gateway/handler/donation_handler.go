@@ -42,8 +42,7 @@ func (h *DonationHandler) GetDonationDetail(e echo.Context) error {
 	donation_id := e.Param("id")
 
 	if donation_id == "" {
-		return e.JSON(http.StatusBadRequest, helper.ErrInvalidId)
-
+		return helper.ParseError(helper.ErrInvalidId, e)
 	}
 
 	resp, err := h.DonationGRPC.GetDonationDetail(e.Request().Context(), &donation_rest.DonationDetailReq{DonationId: donation_id})
@@ -69,9 +68,20 @@ func (h *DonationHandler) CreateDonation(e echo.Context) error {
 	}
 
 	//validate
-	if in.DonationName == "" || in.TargetAmount <= 0 || in.Description == "" || in.DonationType != "service" && in.DonationType != "product" || in.MiscellaneousCost < 0 || int(in.RecipientID) < 0 {
-		return e.JSON(http.StatusBadRequest, helper.ErrParam)
+	if in.DonationName == "" || in.TargetAmount <= 0 || in.Description == "" || in.DonationType != "service" && in.DonationType != "product" || in.MiscellaneousCost < 0 {
+		return helper.ParseError(helper.ErrParam, e)
 	}
+
+	// if donation type is "product",  address should not be empty,
+	// miscellaneous cost cannot be inputted manually, calculated using third party api
+	if in.DonationType == "product" && in.SenderAddress == "" {
+		helper.Logging(e).Error("product type must have sender address")
+		return helper.ParseError(helper.ErrParam, e)
+	}
+
+	// if donation type is "service", address can be empty and miscellaneous cost can input manually
+
+
 	resp, err := h.DonationGRPC.CreateDonation(
 		context.TODO(),
 		&donation_rest.CreateDonationReq{
@@ -110,14 +120,15 @@ func (h *DonationHandler) EditDonation(e echo.Context) error {
 	}
 
 	donation_id := e.Param("id")
-	if donation_id == "" {
-		return e.JSON(http.StatusBadRequest, helper.ErrInvalidId)
+	if donation_id == "" {		
+		return helper.ParseError(helper.ErrInvalidId, e)
 	}
 
 	//validate
-	if in.DonationName == "" || in.TargetAmount <= 0 || in.Description == "" || in.DonationType != "service" && in.DonationType != "product" || int(in.RecipientID) < 0 {
-		return e.JSON(http.StatusBadRequest, helper.ErrParam)
+	if  in.TargetAmount <= 0 || in.MiscellaneousCost <0{
+		return helper.ParseError(helper.ErrParam, e)
 	}
+
 	resp, err := h.DonationGRPC.EditDonation(
 		context.TODO(),
 		&donation_rest.EditDonationReq{
@@ -126,11 +137,11 @@ func (h *DonationHandler) EditDonation(e echo.Context) error {
 			DonationName:  in.DonationName,
 			TargetAmount:  in.TargetAmount,
 			Description:   in.Description,
-			DonationType:  in.DonationType,
 			Tag:           in.Tag,
 			SenderAddress: in.SenderAddress,
 			RelatedLink:   in.RelatedLink,
 			Notes:         in.Notes,
+			MiscellaneousCost: in.MiscellaneousCost,
 		},
 	)
 	if err != nil {
@@ -149,7 +160,7 @@ func (h *DonationHandler) DeleteDonation(e echo.Context) error {
 
 	donation_id := e.Param("id")
 	if donation_id == "" {
-		return e.JSON(http.StatusBadRequest, helper.ErrInvalidId)
+		return helper.ParseError(helper.ErrInvalidId, e)
 	}
 
 	resp, err := h.DonationGRPC.DeleteDonation(
