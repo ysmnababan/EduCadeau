@@ -59,13 +59,13 @@ func (r *Repo) GetAllPayments() ([]*models.Payment, error) {
 	}
 
 	for cursor.Next(context.TODO()) {
-		var d *models.Payment
-		if err := cursor.Decode(d); err != nil {
+		var d models.Payment
+		if err := cursor.Decode(&d); err != nil {
 			helper.Logging(nil).Error("ERROR REPO: ", err)
 			return nil, helper.ErrQuery
 		}
 
-		payments = append(payments, d)
+		payments = append(payments, &d)
 	}
 
 	log.Printf("GET ALL DATA SUCCESS: %v\n\n", payments)
@@ -74,12 +74,12 @@ func (r *Repo) GetAllPayments() ([]*models.Payment, error) {
 }
 
 func (r *Repo) GetAllMyPayments(donor_id uint64) ([]*models.Payment, error) {
-	cursor, err := r.DB.Collection("registries").Find(context.TODO(), bson.M{"donor_id": donor_id})
+	cursor, err := r.DB.Collection("registries").Find(context.TODO(), bson.M{"donor_id": donor_id, "status": "settlement"})
 	if err != nil {
 		helper.Logging(nil).Error("ERROR REPO: ", err)
 		return nil, helper.ErrQuery
 	}
-
+	log.Println("here")
 	out := []*models.Payment{}
 	for cursor.Next(context.TODO()) {
 		var reg models.Registry
@@ -87,12 +87,14 @@ func (r *Repo) GetAllMyPayments(donor_id uint64) ([]*models.Payment, error) {
 			helper.Logging(nil).Error("ERROR REPO: ", err)
 			return nil, helper.ErrQuery
 		}
+		log.Println("here", reg)
 		var p models.Payment
-		err = r.DB.Collection("payments").FindOne(context.TODO(), bson.M{"registry_id": reg.ID.Hex()}).Decode(&p)
+		err = r.DB.Collection("payments").FindOne(context.TODO(), bson.M{"registry_id": reg.ID}).Decode(&p)
 		if err != nil {
 			helper.Logging(nil).Error("ERROR REPO: ", err)
 			continue
 		}
+		log.Println("here")
 
 		out = append(out, &p)
 	}
@@ -103,7 +105,11 @@ func (r *Repo) GetAllMyPayments(donor_id uint64) ([]*models.Payment, error) {
 
 func (r *Repo) GetPayment(donor_id uint64, payment_id string) (*models.Payment, error) {
 	var result models.Payment
-	err := r.DB.Collection("payments").FindOne(context.TODO(), bson.M{"_id": payment_id}).Decode(&result)
+	p_id, err := primitive.ObjectIDFromHex(payment_id)
+	if err != nil {
+		return nil, helper.ErrInvalidId
+	}
+	err = r.DB.Collection("payments").FindOne(context.TODO(), bson.M{"_id": p_id}).Decode(&result)
 	if err != nil {
 		// payment not found
 		if err == mongo.ErrNoDocuments {
@@ -116,7 +122,7 @@ func (r *Repo) GetPayment(donor_id uint64, payment_id string) (*models.Payment, 
 
 	log.Println("here")
 	var res bson.M
-	err = r.DB.Collection("registries").FindOne(context.TODO(), bson.M{"donor_id": donor_id, "_id": result.RegistryID}).Decode(res)
+	err = r.DB.Collection("registries").FindOne(context.TODO(), bson.M{"donor_id": donor_id, "_id": result.RegistryID}).Decode(&res)
 	if err != nil {
 		// payment not found
 		if err == mongo.ErrNoDocuments {
@@ -133,7 +139,7 @@ func (r *Repo) GetPayment(donor_id uint64, payment_id string) (*models.Payment, 
 func (r *Repo) Pay(in *models.Payment, donor_id uint64) error {
 	isValid, err := r.isPaymentValid(in.RegistryID, uint(donor_id))
 	if err != nil || !isValid {
-		return helper.ParseErrorGRPC(err)
+		return helper.ErrPaymentSettled
 	}
 
 	res, err := r.DB.Collection("payments").InsertOne(context.TODO(), *in)
