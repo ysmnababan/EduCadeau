@@ -54,7 +54,7 @@ func NotifyUserRegister() {
 
 			log.Printf("Received a message from %s: %v", helper.USER_REGISTER_CHANNEL, data)
 			// Process the message here
-			SendToMail(data)
+			SendToMail(data, "You have registered an account")
 		}
 	}()
 
@@ -113,7 +113,7 @@ func NotifyUserEditData() {
 
 			log.Printf("Received a message from %s: %v", helper.USER_EDIT_CHANNEL, data)
 			// Process the message here
-			SendToMail(data)
+			SendToMail(data, "You have edited your data")
 		}
 	}()
 
