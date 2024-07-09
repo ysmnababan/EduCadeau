@@ -11,7 +11,7 @@ import (
 )
 
 func SendToMail(body interface{}, subject string) {
-
+	// Make sure the interface is translated to string
 	bodyValue := reflect.ValueOf(body)
 	if bodyValue.Kind() == reflect.Ptr {
 		bodyValue = bodyValue.Elem()
