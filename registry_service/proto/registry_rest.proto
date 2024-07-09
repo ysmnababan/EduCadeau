@@ -98,6 +98,7 @@ message PaymentResp {
     string payment_date = 3;
     string payment_method = 4;
     double payment_amount = 5;
+    string invoice_link = 6;
 }
 
 // for Pay

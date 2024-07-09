@@ -24,6 +24,7 @@ var (
 	ErrOnlyUser            = errors.New("unauthorized, user privilege only")
 	ErrInvalidRegistry     = errors.New("registry is no longer valid, due to donation data change")
 	ErrUnsufficientBalance = errors.New("no sufficient fund")
+	ErrPaymentSettled      = errors.New("Payment already settled")
 )
 
 func ParseError(err error, ctx echo.Context) error {
@@ -96,6 +97,9 @@ func ParseErrorGRPC(err error) error {
 	case errors.Is(err, ErrInvalidRegistry):
 		code = codes.InvalidArgument
 		message = "Bad request"
+	case errors.Is(err, ErrPaymentSettled):
+		code = codes.InvalidArgument
+		message = "Bad request, payment already settled"
 	case errors.Is(err, ErrBindJSON):
 		code = codes.InvalidArgument
 		message = "Bad request"

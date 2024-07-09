@@ -294,6 +294,7 @@ func (r *Repo) EditDonationAfterPay(donation_id primitive.ObjectID, amount float
 	var d models.Donation
 	r.DB.Collection("donations").FindOne(context.TODO(), bson.M{"_id": donation_id}).Decode(&d)
 
+	log.Println("donation info:", d)
 	if d.TargetAmount+d.MiscellaneousCost == d.AmountCollected+amount {
 		d.Status = "settlement"
 	} else if d.TargetAmount+d.MiscellaneousCost > d.AmountCollected+amount {
@@ -303,11 +304,12 @@ func (r *Repo) EditDonationAfterPay(donation_id primitive.ObjectID, amount float
 
 	_, err := r.DB.Collection("donations").UpdateOne(
 		context.TODO(),
-		bson.M{"_id": donation_id.Hex()},
+		bson.M{"_id": donation_id},
 		bson.M{"$set": d},
 	)
+	log.Println("before update d: ", d)
 	if err != nil {
 		return nil, helper.ErrQuery
 	}
-	return &models.DonationAfterPaid{Status: d.Status, AmountLeft: d.TargetAmount + d.MiscellaneousCost - d.AmountCollected - amount}, nil
+	return &models.DonationAfterPaid{Status: d.Status, AmountLeft: d.TargetAmount + d.MiscellaneousCost - d.AmountCollected}, nil
 }
