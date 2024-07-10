@@ -18,11 +18,16 @@ const (
 
 func PaymentGateway(amount float64, detail *pbDonationRegistry.DonationResp) {
 	XenditAPIKey := os.Getenv("XENDIT_SECRET_KEY")
+	if XenditAPIKey == "" {
+		log.Fatalf("XENDIT_SECRET_KEY environment variable is not set")
+	}
 	// Prepare the request payload
 	requestPayload := models.XenditInvoiceRequest{
-		ExternalID:  fmt.Sprintf("donation_%d", detail.RecipientId),
-		Amount:      amount,
-		Description: detail.Description,
+		RecipientName: detail.RecipientName,
+		ExternalID:    fmt.Sprintf("donation_%d", detail.RecipientId),
+		Amount:        amount,
+		Description:   detail.Description,
+		Status:        fmt.Sprintf("status:%v", detail.Status),
 	}
 
 	payloadBytes, err := json.Marshal(requestPayload)

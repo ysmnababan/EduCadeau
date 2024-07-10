@@ -19,9 +19,11 @@ type PaymentReq struct {
 }
 
 type XenditInvoiceRequest struct {
-	ExternalID  string  `json:"external_id"`
-	Amount      float64 `json:"amount"`
-	Description string  `json:"description"`
+	RecipientName string  `json:"recipient_name"`
+	ExternalID    string  `json:"external_id"`
+	Amount        float64 `json:"amount"`
+	Description   string  `json:"description"`
+	Status        string  `json:"status"`
 }
 
 type XenditInvoiceResponse struct {
