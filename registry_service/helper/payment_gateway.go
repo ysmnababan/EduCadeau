@@ -7,6 +7,7 @@ import (
 	"io/ioutil"
 	"log"
 	"net/http"
+
 	"registry_service/pb/pbDonationRegistry"
 )
 
@@ -50,6 +51,7 @@ func PaymentGateway(amount float64, detail *pbDonationRegistry.DonationResp) (st
 	}
 
 	req.Header.Set("Content-Type", "application/json")
+
 	req.SetBasicAuth(XENDIT_SECRET_KEY, "")
 
 	client := &http.Client{}
@@ -69,6 +71,7 @@ func PaymentGateway(amount float64, detail *pbDonationRegistry.DonationResp) (st
 		log.Fatalf("Error response from Xendit: %v\nResponse body: %s", resp.Status, string(body))
 	}
 
+
 	var invoiceResponse XenditInvoiceResponse
 	err = json.Unmarshal(body, &invoiceResponse)
 	if err != nil {
@@ -78,4 +81,5 @@ func PaymentGateway(amount float64, detail *pbDonationRegistry.DonationResp) (st
 	fmt.Printf("Invoice created: %s\n", invoiceResponse.InvoiceURL)
 
 	return invoiceResponse.InvoiceURL, nil
+
 }

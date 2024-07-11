@@ -3,6 +3,7 @@ package handler
 import (
 	"encoding/json"
 	"log"
+
 	"notification_service/helper"
 	"reflect"
 
@@ -17,6 +18,7 @@ func SendToMail(body interface{}, subject string) {
 		bodyValue = bodyValue.Elem()
 	}
 	log.Println("inside mail message", bodyValue.Interface())
+
 	bodyBytes, err := json.Marshal(bodyValue.Interface())
 	if err != nil {
 		log.Println("Error marshalling body:", err)
