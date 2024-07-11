@@ -138,18 +138,3 @@ func (h *RegistryHandler) DeleteRegistry(e echo.Context) error {
 
 	return e.JSON(http.StatusOK, res)
 }
-
-func (h *RegistryHandler) GetAllPayments(e echo.Context) error {
-
-	return e.JSON(http.StatusOK, "")
-}
-
-func (h *RegistryHandler) GetPaymentID(e echo.Context) error {
-
-	return e.JSON(http.StatusOK, "")
-}
-
-func (h *RegistryHandler) PayDonation(e echo.Context) error {
-
-	return e.JSON(http.StatusOK, "")
-}

@@ -33,6 +33,7 @@ func (c *RegistryController) GetAllPayments(ctx context.Context, in *pbRegistryR
 			PaymentId:     val.ID.Hex(),
 			PaymentMethod: val.PaymentMethod,
 			RegistryId:    val.RegistryID.Hex(),
+			InvoiceLink:   val.InvoiceLink,
 		}
 		out = append(out, v)
 	}
@@ -54,6 +55,7 @@ func (c *RegistryController) GetPayment(ctx context.Context, in *pbRegistryRest.
 		PaymentDate:   res.PaymentDate,
 		PaymentMethod: res.PaymentMethod,
 		PaymentAmount: res.PaymentAmount,
+		InvoiceLink:   res.InvoiceLink,
 	}, nil
 }
 
@@ -91,7 +93,6 @@ func (c *RegistryController) Pay(ctx context.Context, in *pbRegistryRest.PayReq)
 
 	log.Println("DEPOSIT, AMOUNT : ", user.Deposit, registryData.Amount)
 
-	
 	var invoice_link string
 	if in.PaymentMethod == "by deposit" {
 		// using deposit
