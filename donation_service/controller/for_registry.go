@@ -6,6 +6,7 @@ import (
 	"donation_service/pb/pbDonationRegistry"
 	"donation_service/pb/user_donation"
 	"errors"
+	"log"
 
 	"go.mongodb.org/mongo-driver/bson/primitive"
 )
@@ -34,6 +35,7 @@ func (c *DonationController) GetDonationData(ctx context.Context, in *pbDonation
 }
 
 func (c *DonationController) AddAmountCollected(ctx context.Context, in *pbDonationRegistry.AddReq) (*pbDonationRegistry.AddResp, error) {
+	log.Println("add amount", in)
 	donation_id, err := primitive.ObjectIDFromHex(in.DonationId)
 	if err != nil {
 		helper.Logging(nil).Error("ERR REPO: ", err)
@@ -45,6 +47,7 @@ func (c *DonationController) AddAmountCollected(ctx context.Context, in *pbDonat
 		return nil, helper.ParseErrorGRPC(err)
 	}
 
+	log.Println("after pay: ", res)
 	return &pbDonationRegistry.AddResp{
 		AmountLeft: res.AmountLeft,
 		Status:     res.Status,

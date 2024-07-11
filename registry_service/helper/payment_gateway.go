@@ -12,6 +12,7 @@ import (
 	"registry_service/pb/pbDonationRegistry"
 )
 
+
 const (
 	XenditURL = "https://api.xendit.co/v2/invoices"
 )
@@ -70,4 +71,5 @@ func PaymentGateway(amount float64, detail *pbDonationRegistry.DonationResp) (st
 	fmt.Printf("Invoice created: %s\n", invoiceResponse.InvoiceURL)
 
 	return invoiceResponse.InvoiceURL, nil
+
 }

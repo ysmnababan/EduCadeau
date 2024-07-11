@@ -17,8 +17,9 @@ func main() {
 	e := echo.New()
 
 	handler := &setup.Handler{
-		User: handler.InitUserHandler(),
+		User:     handler.InitUserHandler(),
 		Donation: handler.InitDonationHandler(),
+		Registry: handler.InitRegistryHandler(),
 	}
 	setup.SetupRESTServer(e, handler)
 

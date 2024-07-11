@@ -91,22 +91,29 @@ func (c *RegistryController) Pay(ctx context.Context, in *pbRegistryRest.PayReq)
 
 	log.Println("DEPOSIT, AMOUNT : ", user.Deposit, registryData.Amount)
 
-	if user.Deposit < registryData.Amount {
-		return nil, helper.ParseErrorGRPC(helper.ErrUnsufficientBalance)
-	}
-
+	
+	var invoice_link string
 	if in.PaymentMethod == "by deposit" {
 		// using deposit
+		if user.Deposit < registryData.Amount {
+			return nil, helper.ParseErrorGRPC(helper.ErrUnsufficientBalance)
+		}
 		newDeposit := user.Deposit - registryData.Amount
 
 		// grpc update user balance
+		log.Println("update user balance: ", newDeposit, in.DonorId)
 		_, err := c.UserGRPC.UpdateBalance(ctx, &user_registry.BalanceUpdate{UserId: in.DonorId, NewBalance: newDeposit})
 		if err != nil {
 			helper.Logging(nil).Error("ERROR FROM DONATION GRPC: ", err)
 			return nil, helper.ParseErrorGRPC(err)
 		}
 	} else if in.PaymentMethod == "payment gateway" {
-		helper.PaymentGateway(registryData.Amount, donationData)
+		res, err := helper.PaymentGateway(registryData.Amount, donationData)
+		if err != nil {
+			helper.Logging(nil).Error("ERROR GENERATING INVOICE: ", err)
+			return nil, helper.ParseErrorGRPC(helper.ErrQuery)
+		}
+		invoice_link = res
 	}
 
 	//grpc update donation
@@ -114,13 +121,13 @@ func (c *RegistryController) Pay(ctx context.Context, in *pbRegistryRest.PayReq)
 		ctx,
 		&pbDonationRegistry.AddReq{
 			Amount:     registryData.Amount,
-			DonationId: registryData.ID.Hex(),
+			DonationId: registryData.DonationID.Hex(),
 		},
 	)
 	if err != nil {
 		return nil, helper.ParseErrorGRPC(err)
 	}
-	log.Println("EDIT DONATION: ", resp)
+	log.Println("EDIT DONATION AFTER PAY: ", resp.AmountLeft, resp.Status)
 
 	//create new payment record
 	req := &models.Payment{
@@ -128,7 +135,9 @@ func (c *RegistryController) Pay(ctx context.Context, in *pbRegistryRest.PayReq)
 		PaymentDate:   time.Now().Format("2006-01-02 15:04:05"),
 		PaymentMethod: in.PaymentMethod,
 		PaymentAmount: registryData.Amount,
+		InvoiceLink:   invoice_link,
 	}
+	log.Println("payment udpate data ", req)
 	err = c.RR.Pay(req,
 		in.DonorId)
 	if err != nil {
@@ -140,5 +149,6 @@ func (c *RegistryController) Pay(ctx context.Context, in *pbRegistryRest.PayReq)
 		PaymentDate:   req.PaymentDate,
 		PaymentMethod: req.PaymentMethod,
 		PaymentAmount: req.PaymentAmount,
+		InvoiceLink:   invoice_link,
 	}, nil
 }
