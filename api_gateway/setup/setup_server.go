@@ -27,7 +27,7 @@ func SetupRESTServer(e *echo.Echo, h *Handler) {
 	// using logger for each api
 	e.Use(func(next echo.HandlerFunc) echo.HandlerFunc {
 		return func(c echo.Context) error {
-			fmt.Print("\033[H\033[2J")
+			// fmt.Print("\033[H\033[2J")
 			fmt.Println("==================================")
 			fmt.Println("            EDU CADEU")
 			fmt.Println("==================================")

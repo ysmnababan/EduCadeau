@@ -53,7 +53,7 @@ func (h *UserHandler) Login(c echo.Context) error {
 		http.StatusOK,
 		map[string]interface{}{
 			"message": "Login success",
-			"token":   tokenString,
+			"token":   tokenString.Token,
 		})
 }
 

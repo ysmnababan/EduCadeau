@@ -118,7 +118,7 @@ func NotifyUserEditData() {
 			// Process the message here
 
 			SendToMail(data, "EDIT USER DATA")
-			time.Sleep(5 * time.Second)
+			// time.Sleep(5 * time.Second)
 
 		}
 	}()
@@ -173,7 +173,7 @@ func NotifyCreateDonation() {
 			log.Printf("Received a message from %s: %v", helper.CREATE_DONATION_CH, data)
 			// Process the message here
 			SendToMail(data, "CREATE DONATION DATA")
-			time.Sleep(5 * time.Second)
+			// time.Sleep(5 * time.Second)
 
 		}
 	}()
@@ -229,7 +229,7 @@ func NotifyEditDonation() {
 			log.Printf("Received a message from %s: %v", helper.EDIT_DONATION_CH, data)
 			// Process the message here
 			SendToMail(data, "EDIT DONATION DATA")
-			time.Sleep(5 * time.Second)
+			// time.Sleep(5 * time.Second)
 		}
 	}()
 

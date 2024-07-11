@@ -15,7 +15,7 @@ COPY . .
 RUN go build -o main .
 
 # Expose port 50001 to the outside world
-EXPOSE 50001
+EXPOSE 8080
 
 # Menjalankan aplikasi
 CMD ["./main"]
