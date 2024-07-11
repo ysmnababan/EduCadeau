@@ -1,0 +1,748 @@
+{
+	"info": {
+		"_postman_id": "3b28f9db-e560-4aeb-a06d-eac73bf2ff38",
+		"name": "EduCadeau",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "35075337"
+	},
+	"item": [
+		{
+			"name": "development",
+			"item": [
+				{
+					"name": "get all users",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFkbWluIiwiZXhwIjoxNzIwMTEwMDE3LCJpZCI6Niwicm9sZSI6ImFkbWluIn0.uzg35haAW67RZ72m_Q9KndoF4knEfc0XTfDVUvgUihI",
+								"description": "admin",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImRvbm9yIiwiZXhwIjoxNzIwMTExNjEwLCJpZCI6Nywicm9sZSI6ImRvbm9yIn0.tCMlNm46ZqH_4L6Of8BzjUVGcL6-icxin8PcDxV9qgs",
+								"description": "donor",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InJlY2lwaWVudCIsImV4cCI6MTcyMDExMTY1NiwiaWQiOjgsInJvbGUiOiJyZWNpcGllbnQifQ.uIAwMoHoX1u0NWGQRoa6mwD2LFdYc8pi8C4-U7K3tNU",
+								"description": "recipient",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"url": {
+							"raw": "{{url}}/users",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "login",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"admin\",\r\n    \"password\": \"admin\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/login",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "register new user",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"test\",\r\n    \"password\": \"ok\",\r\n    \"role\": \"admin\",\r\n    \"username\": \"Lorem voluptate\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/register",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get user detail",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFkbWluIiwiZXhwIjoxNzIwMTEwMDE3LCJpZCI6Niwicm9sZSI6ImFkbWluIn0.uzg35haAW67RZ72m_Q9KndoF4knEfc0XTfDVUvgUihI",
+								"description": "admin",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImRvbm9yIiwiZXhwIjoxNzIwMTExNjEwLCJpZCI6Nywicm9sZSI6ImRvbm9yIn0.tCMlNm46ZqH_4L6Of8BzjUVGcL6-icxin8PcDxV9qgs",
+								"description": "donor",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{url}}/user",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"user"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "edit user",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFkbWluIiwiZXhwIjoxNzIwMTEwMDE3LCJpZCI6Niwicm9sZSI6ImFkbWluIn0.uzg35haAW67RZ72m_Q9KndoF4knEfc0XTfDVUvgUihI",
+								"description": "admin",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImRvbm9yIiwiZXhwIjoxNzIwMTExNjEwLCJpZCI6Nywicm9sZSI6ImRvbm9yIn0.tCMlNm46ZqH_4L6Of8BzjUVGcL6-icxin8PcDxV9qgs",
+								"description": "donor",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"address\": \"labore sed\",\r\n    \"age\": 1,\r\n    \"fname\": \"aliqua Ut sit nostrud\",\r\n    \"lname\": \"voluptate ullamco veniam deserunt\",\r\n    \"phone_number\": \"occaecat velit enim\",\r\n    \"profile_picture_url\": \"ad magna eu nisi\",\r\n    \"username\": \"yoland-donor\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/user",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"user"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "top up deposit",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFkbWluIiwiZXhwIjoxNzIwMTEwMDE3LCJpZCI6Niwicm9sZSI6ImFkbWluIn0.uzg35haAW67RZ72m_Q9KndoF4knEfc0XTfDVUvgUihI",
+								"description": "admin",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImRvbm9yIiwiZXhwIjoxNzIwMTExNjEwLCJpZCI6Nywicm9sZSI6ImRvbm9yIn0.tCMlNm46ZqH_4L6Of8BzjUVGcL6-icxin8PcDxV9qgs",
+								"description": "donor",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InJlY2lwaWVudCIsImV4cCI6MTcyMDExMTY1NiwiaWQiOjgsInJvbGUiOiJyZWNpcGllbnQifQ.uIAwMoHoX1u0NWGQRoa6mwD2LFdYc8pi8C4-U7K3tNU",
+								"description": "recipient",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"deposit\": 10\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/user/top-up",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"user",
+								"top-up"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get all donations",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InJlY2lwaWVudCIsImV4cCI6MTcyMDUwMDE1MywiaWQiOjgsInJvbGUiOiJyZWNpcGllbnQifQ.esGmSw58LxhvTcKNRt62xzrZ_Umer09oc4sqPycq880",
+								"description": "recipient",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{url}}/donations?filter=on progress",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"donations"
+							],
+							"query": [
+								{
+									"key": "filter",
+									"value": "on progress"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get donation by id",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InJlY2lwaWVudCIsImV4cCI6MTcyMDUwMDE1MywiaWQiOjgsInJvbGUiOiJyZWNpcGllbnQifQ.esGmSw58LxhvTcKNRt62xzrZ_Umer09oc4sqPycq880",
+								"description": "recipient",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{url}}/donation/668976259471e605bcb94b0d",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"donation",
+								"668976259471e605bcb94b0d"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "create donation",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InJlY2lwaWVudCIsImV4cCI6MTcyMDg0OTY4NCwiaWQiOjgsInJvbGUiOiJyZWNpcGllbnQifQ.DgvnhxRHSUX58tRebijK0Y94MFCNZkByqgLtBRjNaRM",
+								"description": "re",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImRvbm9yIiwiZXhwIjoxNzIwNTAxNzMwLCJpZCI6Nywicm9sZSI6ImRvbm9yIn0.UqJX-vkleR3wzbsHWjd26Aujr7_S8fvNSkyIPuuUB9g",
+								"description": "do",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFkbWluIiwiZXhwIjoxNzIwNTAxNzQ3LCJpZCI6Niwicm9sZSI6ImFkbWluIn0.54E6gN1-jzkOdiswR7Fv4P8Gvb2CifFikeYz_qbdf5o",
+								"description": "admin",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"description\": \"desc 11\",\r\n    \"donation_name\": \"name 11\",\r\n    \"donation_type\": \"product\",\r\n    \"sender_address\": \"bandung\",\r\n    \"related_link\": \"example.go\",\r\n    \"tag\": \"service\",\r\n    \"target_amount\": 200\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/donation",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"donation"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "edit donation",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InJlY2lwaWVudCIsImV4cCI6MTcyMDUwMDE1MywiaWQiOjgsInJvbGUiOiJyZWNpcGllbnQifQ.esGmSw58LxhvTcKNRt62xzrZ_Umer09oc4sqPycq880",
+								"description": "re",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImRvbm9yIiwiZXhwIjoxNzIwNTAxNzMwLCJpZCI6Nywicm9sZSI6ImRvbm9yIn0.UqJX-vkleR3wzbsHWjd26Aujr7_S8fvNSkyIPuuUB9g",
+								"description": "do",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFkbWluIiwiZXhwIjoxNzIwNTAxNzQ3LCJpZCI6Niwicm9sZSI6ImFkbWluIn0.54E6gN1-jzkOdiswR7Fv4P8Gvb2CifFikeYz_qbdf5o",
+								"description": "admin",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"description\": \"desc 7\",\r\n    \"donation_name\": \"name 7\",\r\n    \"related_link\": \"tokped\",\r\n    \"sender_address\": \"irure ut sed\",\r\n    \"tag\": \"sekolah\",\r\n    \"target_amount\": 1900,\r\n    \"notes\":\"ntaps\",\r\n    \"miscellaneous_cost\": 10\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/donation/668ba7f04b7bc16a3cf10850",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"donation",
+								"668ba7f04b7bc16a3cf10850"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InJlY2lwaWVudCIsImV4cCI6MTcyMDUwMDE1MywiaWQiOjgsInJvbGUiOiJyZWNpcGllbnQifQ.esGmSw58LxhvTcKNRt62xzrZ_Umer09oc4sqPycq880",
+								"description": "re",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImRvbm9yIiwiZXhwIjoxNzIwNTAxNzMwLCJpZCI6Nywicm9sZSI6ImRvbm9yIn0.UqJX-vkleR3wzbsHWjd26Aujr7_S8fvNSkyIPuuUB9g",
+								"description": "do",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFkbWluIiwiZXhwIjoxNzIwNTAxNzQ3LCJpZCI6Niwicm9sZSI6ImFkbWluIn0.54E6gN1-jzkOdiswR7Fv4P8Gvb2CifFikeYz_qbdf5o",
+								"description": "admin",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"url": {
+							"raw": "{{url}}/donation/668a25102df87ddd76f5d2ee",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"donation",
+								"668a25102df87ddd76f5d2ee"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get all registries",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFkbWluIiwiZXhwIjoxNzIwODQ5NjEzLCJpZCI6Niwicm9sZSI6ImFkbWluIn0.Fk5vd496Fuxu1HcawP4UMXavJE_3z-H88XcLGiN1sSc",
+								"description": "admin",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InJlY2lwaWVudCIsImV4cCI6MTcyMDg0OTY4NCwiaWQiOjgsInJvbGUiOiJyZWNpcGllbnQifQ.DgvnhxRHSUX58tRebijK0Y94MFCNZkByqgLtBRjNaRM",
+								"description": "recipient",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImRvbm9yIiwiZXhwIjoxNzIwODQ5NzI5LCJpZCI6Nywicm9sZSI6ImRvbm9yIn0.2gKZpkSvfj1Y_ZKwPlNRenPPuOIOe5nkcF4xGI6bIdw",
+								"description": "donor",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{url}}/donated?filter=settlement",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"donated"
+							],
+							"query": [
+								{
+									"key": "filter",
+									"value": "settlement"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getregistry by id",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFkbWluIiwiZXhwIjoxNzIwODQ5NjEzLCJpZCI6Niwicm9sZSI6ImFkbWluIn0.Fk5vd496Fuxu1HcawP4UMXavJE_3z-H88XcLGiN1sSc",
+								"description": "admin",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InJlY2lwaWVudCIsImV4cCI6MTcyMDg0OTY4NCwiaWQiOjgsInJvbGUiOiJyZWNpcGllbnQifQ.DgvnhxRHSUX58tRebijK0Y94MFCNZkByqgLtBRjNaRM",
+								"description": "recipient",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImRvbm9yIiwiZXhwIjoxNzIwODQ5NzI5LCJpZCI6Nywicm9sZSI6ImRvbm9yIn0.2gKZpkSvfj1Y_ZKwPlNRenPPuOIOe5nkcF4xGI6bIdw",
+								"description": "donor",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{url}}/donated/668cf5d1fdae5dbe852e98ba",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"donated",
+								"668cf5d1fdae5dbe852e98ba"
+							],
+							"query": [
+								{
+									"key": "filter",
+									"value": "settlement",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "donate (create registry)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFkbWluIiwiZXhwIjoxNzIwODQ5NjEzLCJpZCI6Niwicm9sZSI6ImFkbWluIn0.Fk5vd496Fuxu1HcawP4UMXavJE_3z-H88XcLGiN1sSc",
+								"description": "admin",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InJlY2lwaWVudCIsImV4cCI6MTcyMDg0OTY4NCwiaWQiOjgsInJvbGUiOiJyZWNpcGllbnQifQ.DgvnhxRHSUX58tRebijK0Y94MFCNZkByqgLtBRjNaRM",
+								"description": "recipient",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImRvbm9yIiwiZXhwIjoxNzIwODQ5NzI5LCJpZCI6Nywicm9sZSI6ImRvbm9yIn0.2gKZpkSvfj1Y_ZKwPlNRenPPuOIOe5nkcF4xGI6bIdw",
+								"description": "donor",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"donation_id\": \"668ba8a14b7bc16a3cf10854\",\r\n    \"filter\": \"partial\",\r\n    \"amount\": 50\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/donate",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"donate"
+							],
+							"query": [
+								{
+									"key": "filter",
+									"value": "settlement",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete registry",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFkbWluIiwiZXhwIjoxNzIwODQ5NjEzLCJpZCI6Niwicm9sZSI6ImFkbWluIn0.Fk5vd496Fuxu1HcawP4UMXavJE_3z-H88XcLGiN1sSc",
+								"description": "admin",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InJlY2lwaWVudCIsImV4cCI6MTcyMDg0OTY4NCwiaWQiOjgsInJvbGUiOiJyZWNpcGllbnQifQ.DgvnhxRHSUX58tRebijK0Y94MFCNZkByqgLtBRjNaRM",
+								"description": "recipient",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImRvbm9yIiwiZXhwIjoxNzIwODQ5NzI5LCJpZCI6Nywicm9sZSI6ImRvbm9yIn0.2gKZpkSvfj1Y_ZKwPlNRenPPuOIOe5nkcF4xGI6bIdw",
+								"description": "donor",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{url}}/donated/668f7d594b0c28e82bab5370",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"donated",
+								"668f7d594b0c28e82bab5370"
+							],
+							"query": [
+								{
+									"key": "filter",
+									"value": "settlement",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get all payments",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFkbWluIiwiZXhwIjoxNzIwODQ5NjEzLCJpZCI6Niwicm9sZSI6ImFkbWluIn0.Fk5vd496Fuxu1HcawP4UMXavJE_3z-H88XcLGiN1sSc",
+								"description": "admin",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InJlY2lwaWVudCIsImV4cCI6MTcyMDg0OTY4NCwiaWQiOjgsInJvbGUiOiJyZWNpcGllbnQifQ.DgvnhxRHSUX58tRebijK0Y94MFCNZkByqgLtBRjNaRM",
+								"description": "recipient",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImRvbm9yIiwiZXhwIjoxNzIwODQ5NzI5LCJpZCI6Nywicm9sZSI6ImRvbm9yIn0.2gKZpkSvfj1Y_ZKwPlNRenPPuOIOe5nkcF4xGI6bIdw",
+								"description": "donor",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{url}}/payments",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"payments"
+							],
+							"query": [
+								{
+									"key": "filter",
+									"value": "settlement",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get payment by id",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFkbWluIiwiZXhwIjoxNzIwODQ5NjEzLCJpZCI6Niwicm9sZSI6ImFkbWluIn0.Fk5vd496Fuxu1HcawP4UMXavJE_3z-H88XcLGiN1sSc",
+								"description": "admin",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InJlY2lwaWVudCIsImV4cCI6MTcyMDg0OTY4NCwiaWQiOjgsInJvbGUiOiJyZWNpcGllbnQifQ.DgvnhxRHSUX58tRebijK0Y94MFCNZkByqgLtBRjNaRM",
+								"description": "recipient",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImRvbm9yIiwiZXhwIjoxNzIwODQ5NzI5LCJpZCI6Nywicm9sZSI6ImRvbm9yIn0.2gKZpkSvfj1Y_ZKwPlNRenPPuOIOe5nkcF4xGI6bIdw",
+								"description": "donor",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{url}}/payment",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"payment"
+							],
+							"query": [
+								{
+									"key": "filter",
+									"value": "settlement",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "pay a donation",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFkbWluIiwiZXhwIjoxNzIwODQ5NjEzLCJpZCI6Niwicm9sZSI6ImFkbWluIn0.Fk5vd496Fuxu1HcawP4UMXavJE_3z-H88XcLGiN1sSc",
+								"description": "admin",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InJlY2lwaWVudCIsImV4cCI6MTcyMDg0OTY4NCwiaWQiOjgsInJvbGUiOiJyZWNpcGllbnQifQ.DgvnhxRHSUX58tRebijK0Y94MFCNZkByqgLtBRjNaRM",
+								"description": "recipient",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImRvbm9yIiwiZXhwIjoxNzIwODQ5NzI5LCJpZCI6Nywicm9sZSI6ImRvbm9yIn0.2gKZpkSvfj1Y_ZKwPlNRenPPuOIOe5nkcF4xGI6bIdw",
+								"description": "donor",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"payment_method\": \"by deposit\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/payment/668fc53eb8261b7eb98f353b",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"payment",
+								"668fc53eb8261b7eb98f353b"
+							],
+							"query": [
+								{
+									"key": "filter",
+									"value": "settlement",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
