@@ -15,6 +15,7 @@ var (
 	DONATION_SERVICE_HOST string
 	RABBIT_MQ_ADDR        string
 	CREATE_REGISTRY_CH    string
+	XENDIT_SECRET_KEY	string
 )
 
 func LoadEnv() {
@@ -34,4 +35,6 @@ func LoadEnv() {
 
 	RABBIT_MQ_ADDR = os.Getenv("RABBIT_MQ_ADDR")
 	CREATE_REGISTRY_CH = os.Getenv("CREATE_REGISTRY_CH")
+
+	XENDIT_SECRET_KEY = os.Getenv("XENDIT_SECRET_KEY")
 }

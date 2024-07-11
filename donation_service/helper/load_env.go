@@ -15,6 +15,7 @@ var (
 	CREATE_DONATION_CH    string
 	EDIT_DONATION_CH      string
 	DELETE_DONATION_CH    string
+	GOOGLE_MAPS_API_KEY   string
 )
 
 func LoadEnv() {
@@ -31,4 +32,5 @@ func LoadEnv() {
 	CREATE_DONATION_CH = os.Getenv("CREATE_DONATION_CH")
 	EDIT_DONATION_CH = os.Getenv("EDIT_DONATION_CH")
 	DELETE_DONATION_CH = os.Getenv("DELETE_DONATION_CH")
+	GOOGLE_MAPS_API_KEY = os.Getenv("GOOGLE_MAPS_API_KEY")
 }

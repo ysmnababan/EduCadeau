@@ -7,23 +7,31 @@ import (
 	"io/ioutil"
 	"log"
 	"net/http"
-	"os"
-	"registry_service/models"
+
 	"registry_service/pb/pbDonationRegistry"
 )
-
 
 const (
 	XenditURL = "https://api.xendit.co/v2/invoices"
 )
 
+type XenditInvoiceRequest struct {
+	DonationName  string  `json:"donation_name"`
+	RecipientName string  `json:"recipient_name"`
+	ExternalID    string  `json:"external_id"`
+	Amount        float64 `json:"amount"`
+	Description   string  `json:"description"`
+	Status        string  `json:"status"`
+}
+
+type XenditInvoiceResponse struct {
+	ID         string `json:"id"`
+	InvoiceURL string `json:"invoice_url"`
+}
+
 func PaymentGateway(amount float64, detail *pbDonationRegistry.DonationResp) (string, error) {
-	XenditAPIKey := os.Getenv("XENDIT_SECRET_KEY")
-	if XenditAPIKey == "" {
-		log.Fatalf("XENDIT_SECRET_KEY environment variable is not set")
-	}
 	// Prepare the request payload
-	requestPayload := models.XenditInvoiceRequest{
+	requestPayload := XenditInvoiceRequest{
 		DonationName:  detail.DonationName,
 		RecipientName: detail.RecipientName,
 		ExternalID:    fmt.Sprintf("donation_%d", detail.RecipientId),
@@ -43,7 +51,8 @@ func PaymentGateway(amount float64, detail *pbDonationRegistry.DonationResp) (st
 	}
 
 	req.Header.Set("Content-Type", "application/json")
-	req.SetBasicAuth(XenditAPIKey, "")
+
+	req.SetBasicAuth(XENDIT_SECRET_KEY, "")
 
 	client := &http.Client{}
 	resp, err := client.Do(req)
@@ -62,7 +71,8 @@ func PaymentGateway(amount float64, detail *pbDonationRegistry.DonationResp) (st
 		log.Fatalf("Error response from Xendit: %v\nResponse body: %s", resp.Status, string(body))
 	}
 
-	var invoiceResponse models.XenditInvoiceResponse
+
+	var invoiceResponse XenditInvoiceResponse
 	err = json.Unmarshal(body, &invoiceResponse)
 	if err != nil {
 		log.Fatalf("Error decoding response body: %v", err)
