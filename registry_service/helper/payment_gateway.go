@@ -16,13 +16,14 @@ const (
 	XenditURL = "https://api.xendit.co/v2/invoices"
 )
 
-func PaymentGateway(amount float64, detail *pbDonationRegistry.DonationResp) {
+func PaymentGateway(amount float64, detail *pbDonationRegistry.DonationResp) (string, error) {
 	XenditAPIKey := os.Getenv("XENDIT_SECRET_KEY")
 	if XenditAPIKey == "" {
 		log.Fatalf("XENDIT_SECRET_KEY environment variable is not set")
 	}
 	// Prepare the request payload
 	requestPayload := models.XenditInvoiceRequest{
+		DonationName:  detail.DonationName,
 		RecipientName: detail.RecipientName,
 		ExternalID:    fmt.Sprintf("donation_%d", detail.RecipientId),
 		Amount:        amount,
@@ -67,4 +68,6 @@ func PaymentGateway(amount float64, detail *pbDonationRegistry.DonationResp) {
 	}
 	fmt.Println(invoiceResponse.ID)
 	fmt.Printf("Invoice created: %s\n", invoiceResponse.InvoiceURL)
+
+	return invoiceResponse.InvoiceURL, nil
 }

@@ -19,6 +19,7 @@ type PaymentReq struct {
 }
 
 type XenditInvoiceRequest struct {
+	DonationName  string  `json:"donation_name"`
 	RecipientName string  `json:"recipient_name"`
 	ExternalID    string  `json:"external_id"`
 	Amount        float64 `json:"amount"`
