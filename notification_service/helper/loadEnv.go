@@ -7,10 +7,15 @@ import (
 )
 
 var (
-	RABBIT_MQ_ADDR        string
+	RABBIT_MQ_ADDR   string
+	PORT             string
+	SENDGRID_API_KEY string
+
 	USER_REGISTER_CHANNEL string
 	USER_EDIT_CHANNEL     string
-	PORT                  string
+
+	CREATE_DONATION_CH string
+	EDIT_DONATION_CH   string
 )
 
 func LoadEnv() {
@@ -20,8 +25,14 @@ func LoadEnv() {
 	}
 
 	RABBIT_MQ_ADDR = os.Getenv("RABBIT_MQ_ADDR")
+	SENDGRID_API_KEY = os.Getenv("SENDGRID_API_KEY")
+
+	PORT = os.Getenv("PORT")
+
 	USER_REGISTER_CHANNEL = os.Getenv("USER_REGISTER_CHANNEL")
 	USER_EDIT_CHANNEL = os.Getenv("USER_EDIT_CHANNEL")
-	PORT = os.Getenv("PORT")
+
+	CREATE_DONATION_CH = os.Getenv("CREATE_DONATION_CH")
+	EDIT_DONATION_CH = os.Getenv("EDIT_DONATION_CH")
 
 }

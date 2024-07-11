@@ -14,6 +14,8 @@ func main() {
 	forever := make(chan bool)
 	go handler.NotifyUserRegister()
 	go handler.NotifyUserEditData()
+	go handler.NotifyCreateDonation()
+	go handler.NotifyEditDonation()
 	http.HandleFunc("/health", func(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusOK)
 		w.Write([]byte("OK"))

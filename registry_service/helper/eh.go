@@ -24,7 +24,7 @@ var (
 	ErrOnlyUser            = errors.New("unauthorized, user privilege only")
 	ErrInvalidRegistry     = errors.New("registry is no longer valid, due to donation data change")
 	ErrUnsufficientBalance = errors.New("no sufficient fund")
-	ErrPaymentSettled      = errors.New("Payment already settled")
+	ErrPaymentSettled      = errors.New("payment already settled")
 )
 
 func ParseError(err error, ctx echo.Context) error {
