@@ -1,7 +1,9 @@
 package handler
 
 import (
+	"api_gateway/helper"
 	"api_gateway/pb/pbRegistryRest"
+	"context"
 	"net/http"
 
 	"github.com/labstack/echo/v4"
@@ -12,8 +14,27 @@ type RegistryHandler struct {
 }
 
 func (h *RegistryHandler) GetAllRegistries(e echo.Context) error {
+	cred := helper.GetCredential(e)
+	if cred.Role == "recipient" {
+		return helper.ParseError(helper.ErrDonorUser, e)
+	}
 
-	return e.JSON(http.StatusOK, "")
+	//get filter
+	filter := e.QueryParam("filter")
+
+	var donor_id uint64
+	if cred.Role == "admin" {
+		donor_id = 0
+	} else {
+		donor_id = uint64(cred.UserID)
+	}
+	res, err := h.RegistryGRPC.GetAllRegistries(context.TODO(), &pbRegistryRest.AllReq{Filter: filter, DonorId: donor_id})
+	if err != nil {
+		helper.Logging(e).Error("ERROR FROM REGISTRY GRPC: ", err)
+		return helper.ParseErrorGRPC(err, e)
+	}
+
+	return e.JSON(http.StatusOK, res)
 }
 
 func (h *RegistryHandler) DetailOfRegistry(e echo.Context) error {
