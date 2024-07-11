@@ -3,7 +3,8 @@ package handler
 import (
 	"encoding/json"
 	"log"
-	"os"
+
+	"notification_service/helper"
 	"reflect"
 
 	"github.com/sendgrid/sendgrid-go"
@@ -16,6 +17,8 @@ func SendToMail(body interface{}, subject string) {
 	if bodyValue.Kind() == reflect.Ptr {
 		bodyValue = bodyValue.Elem()
 	}
+	log.Println("inside mail message", bodyValue.Interface())
+
 	bodyBytes, err := json.Marshal(bodyValue.Interface())
 	if err != nil {
 		log.Println("Error marshalling body:", err)
@@ -25,22 +28,16 @@ func SendToMail(body interface{}, subject string) {
 
 	// Create email message
 	from := mail.NewEmail("educadeu_admin", "educadeu.service@gmail.com") // ubah jadi const
-	to := mail.NewEmail("Recipient", "andhika.favian18@gmail.com")        // ubah jadi const
+	to := mail.NewEmail("Recipient", "educadeu.service@gmail.com")        // ubah jadi const
 	message := mail.NewSingleEmail(from, subject, to, bodyStr, bodyStr)
 	message.SetReplyTo(mail.NewEmail("educadeu_customer_service", "educadeu.service@gmail.com"))
 
-	// Get SendGrid API key from environment variable
-	apiKey := os.Getenv("SENDGRID_API_KEY")
-	if apiKey == "" {
-		// log error
-		return
-	}
-
 	// Send email
-	client := sendgrid.NewSendClient(apiKey)
+	client := sendgrid.NewSendClient(helper.SENDGRID_API_KEY)
 	response, err := client.Send(message)
 	if err != nil {
 		// log error
+		log.Println("Error client send:", err)
 		return
 	}
 
