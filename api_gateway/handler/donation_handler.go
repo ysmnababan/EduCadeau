@@ -15,6 +15,16 @@ type DonationHandler struct {
 	DonationGRPC donation_rest.DonationRestClient
 }
 
+// GetAllDonations godoc
+// @Summary Get all donations
+// @Description Retrieve a list of all donations based on filters
+// @Tags Donations
+// @Produce json
+// @Param filter query string false "Filter by donation status"
+// @Success 200 {object} donation_rest.DonationResp
+// @Failure 400 {object} map[string]interface{}
+// @Failure 500 {object} map[string]interface{}
+// @Router /donations [get]
 func (h *DonationHandler) GetAllDonations(e echo.Context) error {
 	cred := helper.GetCredential(e)
 
@@ -37,6 +47,16 @@ func (h *DonationHandler) GetAllDonations(e echo.Context) error {
 	return e.JSON(http.StatusOK, resp)
 }
 
+// GetDonationDetail godoc
+// @Summary Get donation details
+// @Description Retrieve the details of a specific donation
+// @Tags Donations
+// @Produce json
+// @Param id path string true "Donation ID"
+// @Success 200 {object} donation_rest.DonationDetailResp
+// @Failure 400 {object} map[string]interface{}
+// @Failure 500 {object} map[string]interface{}
+// @Router /donation/{id} [get]
 func (h *DonationHandler) GetDonationDetail(e echo.Context) error {
 
 	donation_id := e.Param("id")
@@ -54,6 +74,17 @@ func (h *DonationHandler) GetDonationDetail(e echo.Context) error {
 	return e.JSON(http.StatusOK, resp)
 }
 
+// CreateDonation godoc
+// @Summary Create a new donation
+// @Description Create a new donation request
+// @Tags Donations
+// @Accept json
+// @Produce json
+// @Param donation body models.CreateDonationReq true "Donation request payload"
+// @Success 201 {object} donation_rest.CreateDonationResp
+// @Failure 400 {object} map[string]interface{}
+// @Failure 500 {object} map[string]interface{}
+// @Router /donation [post]
 func (h *DonationHandler) CreateDonation(e echo.Context) error {
 	cred := helper.GetCredential(e)
 	if cred.Role != "recipient" {
@@ -81,7 +112,6 @@ func (h *DonationHandler) CreateDonation(e echo.Context) error {
 
 	// if donation type is "service", address can be empty and miscellaneous cost can input manually
 
-
 	resp, err := h.DonationGRPC.CreateDonation(
 		context.TODO(),
 		&donation_rest.CreateDonationReq{
@@ -106,6 +136,18 @@ func (h *DonationHandler) CreateDonation(e echo.Context) error {
 	return e.JSON(http.StatusCreated, resp)
 }
 
+// EditDonation godoc
+// @Summary Edit a donation
+// @Description Edit an existing donation
+// @Tags Donations
+// @Accept json
+// @Produce json
+// @Param id path string true "Donation ID"
+// @Param donation body models.EditDonationReq true "Donation edit payload"
+// @Success 200 {object} donation_rest.EditDonationResp
+// @Failure 400 {object} map[string]interface{}
+// @Failure 500 {object} map[string]interface{}
+// @Router /donation/{id} [put]
 func (h *DonationHandler) EditDonation(e echo.Context) error {
 	cred := helper.GetCredential(e)
 	if cred.Role != "recipient" {
@@ -120,27 +162,27 @@ func (h *DonationHandler) EditDonation(e echo.Context) error {
 	}
 
 	donation_id := e.Param("id")
-	if donation_id == "" {		
+	if donation_id == "" {
 		return helper.ParseError(helper.ErrInvalidId, e)
 	}
 
 	//validate
-	if  in.TargetAmount <= 0 || in.MiscellaneousCost <0{
+	if in.TargetAmount <= 0 || in.MiscellaneousCost < 0 {
 		return helper.ParseError(helper.ErrParam, e)
 	}
 
 	resp, err := h.DonationGRPC.EditDonation(
 		context.TODO(),
 		&donation_rest.EditDonationReq{
-			DonationId:    donation_id,
-			RecipientId:   uint64(cred.UserID),
-			DonationName:  in.DonationName,
-			TargetAmount:  in.TargetAmount,
-			Description:   in.Description,
-			Tag:           in.Tag,
-			SenderAddress: in.SenderAddress,
-			RelatedLink:   in.RelatedLink,
-			Notes:         in.Notes,
+			DonationId:        donation_id,
+			RecipientId:       uint64(cred.UserID),
+			DonationName:      in.DonationName,
+			TargetAmount:      in.TargetAmount,
+			Description:       in.Description,
+			Tag:               in.Tag,
+			SenderAddress:     in.SenderAddress,
+			RelatedLink:       in.RelatedLink,
+			Notes:             in.Notes,
 			MiscellaneousCost: in.MiscellaneousCost,
 		},
 	)
@@ -152,6 +194,16 @@ func (h *DonationHandler) EditDonation(e echo.Context) error {
 	return e.JSON(http.StatusOK, resp)
 }
 
+// DeleteDonation godoc
+// @Summary Delete a donation
+// @Description Delete an existing donation
+// @Tags Donations
+// @Produce json
+// @Param id path string true "Donation ID"
+// @Success 200 {object} donation_rest.DeleteDonationResp
+// @Failure 400 {object} map[string]interface{}
+// @Failure 500 {object} map[string]interface{}
+// @Router /donation/{id} [delete]
 func (h *DonationHandler) DeleteDonation(e echo.Context) error {
 	cred := helper.GetCredential(e)
 	if cred.Role != "recipient" {

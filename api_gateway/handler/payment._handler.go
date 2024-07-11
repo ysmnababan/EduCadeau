@@ -11,6 +11,18 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
+// GetAllPayments godoc
+// @Summary Get all payments
+// @Description Get all payments for a user
+// @Tags Payment
+// @Accept  json
+// @Produce  json
+// @Param Authorization header string true "Authentication token"
+// @Success 200 {array} pbRegistryRest.PaymentResponse
+// @Failure 400 {object} map[string]interface{}
+// @Failure 404 {object} map[string]interface{}
+// @Failure 500 {object} map[string]interface{}
+// @Router /payments [get]
 func (h *RegistryHandler) GetAllPayments(e echo.Context) error {
 	cred := helper.GetCredential(e)
 	if cred.Role == "recipient" {
@@ -32,6 +44,19 @@ func (h *RegistryHandler) GetAllPayments(e echo.Context) error {
 	return e.JSON(http.StatusOK, res)
 }
 
+// GetPaymentID godoc
+// @Summary Get payment details
+// @Description Get details of a specific payment
+// @Tags Payment
+// @Accept  json
+// @Produce  json
+// @Param Authorization header string true "Authentication token"
+// @Param id path string true "Payment ID"
+// @Success 200 {object} pbRegistryRest.PaymentDetailResponse
+// @Failure 400 {object} map[string]interface{}
+// @Failure 404 {object} map[string]interface{}
+// @Failure 500 {object} map[string]interface{}
+// @Router /payment/{id} [get]
 func (h *RegistryHandler) GetPaymentID(e echo.Context) error {
 	cred := helper.GetCredential(e)
 	if cred.Role != "donor" {
@@ -51,6 +76,20 @@ func (h *RegistryHandler) GetPaymentID(e echo.Context) error {
 	return e.JSON(http.StatusOK, res)
 }
 
+// PayDonation godoc
+// @Summary Make a payment for a donation
+// @Description Make a payment for a donation
+// @Tags Payment
+// @Accept  json
+// @Produce  json
+// @Param Authorization header string true "Authentication token"
+// @Param id path string true "Registry ID"
+// @Param payment body models.PayReq true "Payment request data"
+// @Success 201 {object} pbRegistryRest.PaymentResponse
+// @Failure 400 {object} map[string]interface{}
+// @Failure 404 {object} map[string]interface{}
+// @Failure 500 {object} map[string]interface{}
+// @Router /payment/{id} [post]
 func (h *RegistryHandler) PayDonation(e echo.Context) error {
 	cred := helper.GetCredential(e)
 	if cred.Role != "donor" {
