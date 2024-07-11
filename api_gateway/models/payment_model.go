@@ -11,4 +11,9 @@ type Payment struct {
 	InvoiceLink   string             `json:"invoice_link" bson:"invoice_link"`
 }
 
+type PayReq struct {
+	PaymentMethod string             `json:"payment_method" bson:"payment_method"`
+}
+
+
 

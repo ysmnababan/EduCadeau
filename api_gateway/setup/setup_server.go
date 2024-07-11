@@ -71,8 +71,8 @@ func SetupRESTServer(e *echo.Echo, h *Handler) {
 		// for registry
 		protected.GET("/donated", registryHandler.GetAllRegistries)
 		protected.GET("/donated/:id", registryHandler.DetailOfRegistry)
-		protected.POST("/donate/:id", registryHandler.Donate)
-		protected.DELETE("/donate:id", registryHandler.DeleteRegistry)
+		protected.POST("/donate", registryHandler.Donate)
+		protected.DELETE("/donated/:id", registryHandler.DeleteRegistry)
 
 		// for payments
 		protected.GET("/payments", registryHandler.GetAllPayments)
