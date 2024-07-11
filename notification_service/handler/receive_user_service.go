@@ -5,6 +5,7 @@ import (
 	"log"
 	"notification_service/helper"
 	"notification_service/models"
+	"time"
 
 	"github.com/streadway/amqp"
 )
@@ -55,6 +56,8 @@ func NotifyUserRegister() {
 			log.Printf("Received a message from %s: %v", helper.USER_REGISTER_CHANNEL, data)
 			// Process the message here
 			SendToMail(data, "REGISTER NEW USER")
+			time.Sleep(5 * time.Second)
+
 		}
 	}()
 
@@ -115,6 +118,8 @@ func NotifyUserEditData() {
 			// Process the message here
 
 			SendToMail(data, "EDIT USER DATA")
+			time.Sleep(5 * time.Second)
+
 		}
 	}()
 
@@ -168,6 +173,8 @@ func NotifyCreateDonation() {
 			log.Printf("Received a message from %s: %v", helper.CREATE_DONATION_CH, data)
 			// Process the message here
 			SendToMail(data, "CREATE DONATION DATA")
+			time.Sleep(5 * time.Second)
+
 		}
 	}()
 
@@ -222,6 +229,7 @@ func NotifyEditDonation() {
 			log.Printf("Received a message from %s: %v", helper.EDIT_DONATION_CH, data)
 			// Process the message here
 			SendToMail(data, "EDIT DONATION DATA")
+			time.Sleep(5 * time.Second)
 		}
 	}()
 

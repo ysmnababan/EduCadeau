@@ -2,6 +2,7 @@ package handler
 
 import (
 	"encoding/json"
+	"fmt"
 	"log"
 
 	"notification_service/helper"
@@ -33,14 +34,15 @@ func SendToMail(body interface{}, subject string) {
 	message.SetReplyTo(mail.NewEmail("educadeu_customer_service", "educadeu.service@gmail.com"))
 
 	// Send email
+
 	client := sendgrid.NewSendClient(helper.SENDGRID_API_KEY)
 	response, err := client.Send(message)
 	if err != nil {
-		// log error
-		log.Println("Error client send:", err)
-		return
+		log.Println("error sending message: ", err)
+	} else {
+		fmt.Println("status code", response.StatusCode)
+		fmt.Println("response body", response.Body)
+		fmt.Println("headers", response.Headers)
 	}
-
-	log.Println("SendGrid API LOGS:", response.StatusCode, response.Body)
 
 }
