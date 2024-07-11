@@ -4,6 +4,7 @@ import (
 	"api_gateway/helper"
 	"api_gateway/pb"
 	"api_gateway/pb/donation_rest"
+	"api_gateway/pb/pbRegistryRest"
 	"crypto/tls"
 	"crypto/x509"
 	"log"
@@ -50,4 +51,24 @@ func InitDonationHandler() donation_rest.DonationRestClient {
 	}
 	donationServiceClient := donation_rest.NewDonationRestClient(connection)
 	return donationServiceClient
+}
+
+func InitRegistryHandler() pbRegistryRest.RegistryRestClient {
+	// create connection to 'registry service'
+	addr := helper.REGISTRY_SERVICE_HOST + ":443"
+	systemRoots, err := x509.SystemCertPool()
+	if err != nil {
+		log.Fatalf("%s", err)
+	}
+	cred := credentials.NewTLS(&tls.Config{
+		RootCAs: systemRoots,
+	})
+
+	// Initialize client connections outside handler in your implementation
+	connection, err := grpc.Dial(addr, grpc.WithAuthority(helper.REGISTRY_SERVICE_HOST), grpc.WithTransportCredentials(cred))
+	if err != nil {
+		log.Println(err)
+	}
+	registryServiceClient := pbRegistryRest.NewRegistryRestClient(connection)
+	return registryServiceClient
 }

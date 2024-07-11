@@ -2,6 +2,8 @@
 
 protoc --go_out=. --go-grpc_out=require_unimplemented_servers=false:. .\proto\user_to_rest.proto
 protoc --go_out=. --go-grpc_out=require_unimplemented_servers=false:. .\proto\donation_rest.proto
+protoc --go_out=. --go-grpc_out=require_unimplemented_servers=false:. .\proto\registry_rest.proto
+
 
 
 // user service link
