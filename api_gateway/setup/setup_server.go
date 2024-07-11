@@ -5,6 +5,7 @@ import (
 	"api_gateway/helper"
 	"api_gateway/pb"
 	"api_gateway/pb/donation_rest"
+	"api_gateway/pb/pbRegistryRest"
 	"fmt"
 	"net/http"
 
@@ -16,6 +17,7 @@ import (
 type Handler struct {
 	User     pb.UserToRestClient
 	Donation donation_rest.DonationRestClient
+	Registry pbRegistryRest.RegistryRestClient
 }
 
 func SetupRESTServer(e *echo.Echo, h *Handler) {
@@ -44,6 +46,7 @@ func SetupRESTServer(e *echo.Echo, h *Handler) {
 
 	userHandler := &handler.UserHandler{UserGRPC: h.User}
 	donationHandler := &handler.DonationHandler{DonationGRPC: h.Donation}
+	registryHandler := &handler.RegistryHandler{RegistryGRPC: h.Registry}
 
 	e.POST("/login", userHandler.Login)
 	e.POST("/register", userHandler.Register)
@@ -64,5 +67,16 @@ func SetupRESTServer(e *echo.Echo, h *Handler) {
 		protected.POST("/donation", donationHandler.CreateDonation)
 		protected.PUT("/donation/:id", donationHandler.EditDonation)
 		protected.DELETE("/donation/:id", donationHandler.DeleteDonation)
+
+		// for registry
+		protected.GET("/donated", registryHandler.GetAllRegistries)
+		protected.GET("/donated/:id", registryHandler.DetailOfRegistry)
+		protected.POST("/donate/:id", registryHandler.Donate)
+		protected.DELETE("/donate:id", registryHandler.DeleteRegistry)
+
+		// for payments
+		protected.GET("/payments", registryHandler.GetAllPayments)
+		protected.GET("/payment/:id", registryHandler.GetPaymentID)
+		protected.POST("/payment/:id", registryHandler.PayDonation)
 	}
 }

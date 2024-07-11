@@ -10,9 +10,10 @@ var (
 	USER_SERVICE_PORT     string
 	TOKEN_KEY             string
 	USER_SERVICE_HOST     string
-	DONATION_SERVICE_HOST string
 	PORT                  string
+	DONATION_SERVICE_HOST string
 	DONATION_SERVICE_PORT string
+	REGISTRY_SERVICE_HOST string 
 )
 
 func LoadEnv() {
@@ -26,6 +27,7 @@ func LoadEnv() {
 	DONATION_SERVICE_HOST = os.Getenv("DONATION_SERVICE_HOST")
 	USER_SERVICE_PORT = os.Getenv("USER_SERVICE_PORT")
 	DONATION_SERVICE_PORT = os.Getenv("DONATION_SERVICE_PORT")
+	REGISTRY_SERVICE_HOST = os.Getenv("REGISTRY_SERVICE_HOST")
 	PORT = os.Getenv("PORT")
 
 }
