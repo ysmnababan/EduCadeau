@@ -9,3 +9,9 @@ type Registry struct {
 	Amount     float64            `json:"amount" bson:"amount"`
 	Status     string             `json:"status" bson:"status"`
 }
+
+type CreateRegistryReq struct {
+	DonationID string  `json:"donation_id,omitempty" bson:"donation_id,omitempty"`
+	Amount     float64 `json:"amount" bson:"amount"`
+	Filter     string  `json:"filter" bson:"filter"`
+}
