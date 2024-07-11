@@ -200,6 +200,19 @@ func (h *UserHandler) EditUser(c echo.Context) error {
 
 }
 
+// TopUp godoc
+// @Summary Top up account balance
+// @Description must be authenticated as a donor user to top up account balance
+// @Tags User
+// @Accept  json
+// @Produce  json
+// @Param   Authorization  header  string  true  "Authentication token"  default()
+// @Param topup body models.TopUpReq true "Top up request data"
+// @Success 200 {object} map[string]interface{} "message: string, New Balance: float64"
+// @Failure 400 {object} map[string]interface{}
+// @Failure 404 {object} map[string]interface{}
+// @Failure 500 {object} map[string]interface{}
+// @Router /api/user/topup [post]
 func (h *UserHandler) TopUp(c echo.Context) error {
 	cred := helper.GetCredential(c)
 	if cred.Role != "donor" {

@@ -15,6 +15,19 @@ type RegistryHandler struct {
 	RegistryGRPC pbRegistryRest.RegistryRestClient
 }
 
+// GetAllRegistries godoc
+// @Summary Get all registries
+// @Description Get all registries for a user
+// @Tags Registry
+// @Accept  json
+// @Produce  json
+// @Param Authorization header string true "Authentication token"
+// @Param filter query string false "Filter by registry status"
+// @Success 200 {array} pbRegistryRest.RegistryResponse
+// @Failure 400 {object} map[string]interface{}
+// @Failure 404 {object} map[string]interface{}
+// @Failure 500 {object} map[string]interface{}
+// @Router /donated [get]
 func (h *RegistryHandler) GetAllRegistries(e echo.Context) error {
 	cred := helper.GetCredential(e)
 	if cred.Role == "recipient" {
@@ -39,6 +52,19 @@ func (h *RegistryHandler) GetAllRegistries(e echo.Context) error {
 	return e.JSON(http.StatusOK, res)
 }
 
+// DetailOfRegistry godoc
+// @Summary Get registry detail
+// @Description Get details of a specific registry
+// @Tags Registry
+// @Accept  json
+// @Produce  json
+// @Param Authorization header string true "Authentication token"
+// @Param id path string true "Registry ID"
+// @Success 200 {object} pbRegistryRest.RegistryDetailResponse
+// @Failure 400 {object} map[string]interface{}
+// @Failure 404 {object} map[string]interface{}
+// @Failure 500 {object} map[string]interface{}
+// @Router /donated/{id} [get]
 func (h *RegistryHandler) DetailOfRegistry(e echo.Context) error {
 	cred := helper.GetCredential(e)
 	if cred.Role != "donor" {
@@ -61,6 +87,19 @@ func (h *RegistryHandler) DetailOfRegistry(e echo.Context) error {
 	return e.JSON(http.StatusOK, res)
 }
 
+// Donate godoc
+// @Summary Create a donation registry
+// @Description Create a new donation registry
+// @Tags Registry
+// @Accept  json
+// @Produce  json
+// @Param Authorization header string true "Authentication token"
+// @Param donation body models.CreateRegistryReq true "Donation request data"
+// @Success 201 {object} pbRegistryRest.RegistryDetailResponse
+// @Failure 400 {object} map[string]interface{}
+// @Failure 404 {object} map[string]interface{}
+// @Failure 500 {object} map[string]interface{}
+// @Router /donate [post]
 func (h *RegistryHandler) Donate(e echo.Context) error {
 	cred := helper.GetCredential(e)
 	if cred.Role != "donor" {
@@ -112,6 +151,19 @@ func (h *RegistryHandler) Donate(e echo.Context) error {
 	return e.JSON(http.StatusCreated, res)
 }
 
+// DeleteRegistry godoc
+// @Summary Delete a registry
+// @Description Delete a registry by ID
+// @Tags Registry
+// @Accept  json
+// @Produce  json
+// @Param Authorization header string true "Authentication token"
+// @Param id path string true "Registry ID"
+// @Success 200 {object} pbRegistryRest.DeleteRegistryResponse
+// @Failure 400 {object} map[string]interface{}
+// @Failure 404 {object} map[string]interface{}
+// @Failure 500 {object} map[string]interface{}
+// @Router /donated/{id} [delete]
 func (h *RegistryHandler) DeleteRegistry(e echo.Context) error {
 	cred := helper.GetCredential(e)
 	if cred.Role != "donor" {
@@ -127,7 +179,7 @@ func (h *RegistryHandler) DeleteRegistry(e echo.Context) error {
 	res, err := h.RegistryGRPC.DeleteRegistry(
 		context.TODO(),
 		&pbRegistryRest.DeleteRegistryReq{
-			DonorId: uint64(cred.UserID),
+			DonorId:    uint64(cred.UserID),
 			RegistryId: registry_id,
 		},
 	)
