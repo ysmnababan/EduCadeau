@@ -1,0 +1,1026 @@
+definitions:
+  donation_rest.CreateResp:
+    properties:
+      amount_collected:
+        type: number
+      created_at:
+        type: string
+      description:
+        type: string
+      donation_id:
+        type: string
+      donation_name:
+        type: string
+      donation_type:
+        type: string
+      miscellaneous_cost:
+        type: number
+      notes:
+        type: string
+      recipient_id:
+        type: integer
+      recipient_name:
+        type: string
+      related_link:
+        type: string
+      sender_address:
+        type: string
+      status:
+        type: string
+      tag:
+        type: string
+      target_amount:
+        type: number
+    type: object
+  donation_rest.DeleteResp:
+    properties:
+      message:
+        type: string
+    type: object
+  donation_rest.DonationDB:
+    properties:
+      amount_collected:
+        type: number
+      created_at:
+        type: string
+      donation_id:
+        type: string
+      donation_name:
+        type: string
+      miscellaneous_cost:
+        type: number
+      recipient_id:
+        type: integer
+      status:
+        type: string
+      target_amount:
+        type: number
+    type: object
+  donation_rest.DonationDetailResp:
+    properties:
+      amount_collected:
+        type: number
+      created_at:
+        type: string
+      description:
+        type: string
+      donation_id:
+        type: string
+      donation_name:
+        type: string
+      donation_type:
+        type: string
+      miscellaneous_cost:
+        type: number
+      notes:
+        type: string
+      recipient_id:
+        type: integer
+      recipient_name:
+        type: string
+      related_link:
+        type: string
+      sender_address:
+        type: string
+      status:
+        type: string
+      tag:
+        type: string
+      target_amount:
+        type: number
+    type: object
+  donation_rest.DonationList:
+    properties:
+      list:
+        items:
+          $ref: '#/definitions/donation_rest.DonationDB'
+        type: array
+    type: object
+  donation_rest.EditResp:
+    properties:
+      amount_collected:
+        type: number
+      created_at:
+        type: string
+      description:
+        type: string
+      donation_id:
+        type: string
+      donation_name:
+        type: string
+      donation_type:
+        type: string
+      miscellaneous_cost:
+        type: number
+      notes:
+        type: string
+      recipient_id:
+        type: integer
+      recipient_name:
+        type: string
+      related_link:
+        type: string
+      sender_address:
+        type: string
+      status:
+        type: string
+      tag:
+        type: string
+      target_amount:
+        type: number
+    type: object
+  models.CreateDonationReq:
+    properties:
+      amount_collected:
+        type: number
+      description:
+        type: string
+      donation_name:
+        type: string
+      donation_type:
+        type: string
+      miscellaneous_cost:
+        type: number
+      notes:
+        type: string
+      related_link:
+        type: string
+      sender_address:
+        type: string
+      tag:
+        type: string
+      target_amount:
+        type: number
+    type: object
+  models.CreateRegistryReq:
+    properties:
+      amount:
+        type: number
+      donation_id:
+        type: string
+      filter:
+        type: string
+    type: object
+  models.EditDonationReq:
+    properties:
+      description:
+        type: string
+      donation_name:
+        type: string
+      miscellaneous_cost:
+        type: number
+      notes:
+        type: string
+      related_link:
+        type: string
+      sender_address:
+        type: string
+      tag:
+        type: string
+      target_amount:
+        type: number
+    type: object
+  models.PayReq:
+    properties:
+      payment_method:
+        type: string
+    type: object
+  models.TopUpReq:
+    properties:
+      deposit:
+        type: number
+    type: object
+  models.UserDetailResponse:
+    properties:
+      address:
+        type: string
+      age:
+        type: integer
+      deposit:
+        type: number
+      email:
+        type: string
+      fname:
+        type: string
+      lname:
+        type: string
+      phone_number:
+        type: string
+      profile_picture_url:
+        type: string
+      user_id:
+        type: integer
+      username:
+        type: string
+    type: object
+  models.UserRegister:
+    properties:
+      email:
+        type: string
+      password:
+        type: string
+      username:
+        type: string
+    type: object
+  models.UserRequest:
+    properties:
+      email:
+        type: string
+      password:
+        type: string
+    type: object
+  models.UserResponse:
+    properties:
+      deposit:
+        type: number
+      email:
+        type: string
+      user_id:
+        type: integer
+      username:
+        type: string
+    type: object
+  models.UserUpdateRequest:
+    properties:
+      address:
+        type: string
+      age:
+        type: integer
+      fname:
+        type: string
+      lname:
+        type: string
+      phone_number:
+        type: string
+      profile_picture_url:
+        type: string
+      username:
+        type: string
+    type: object
+  pbRegistryRest.DeleteResp:
+    properties:
+      message:
+        type: string
+    type: object
+  pbRegistryRest.DetailRegistryResp:
+    properties:
+      amount:
+        type: number
+      amount_to_pay:
+        type: number
+      description:
+        type: string
+      donation_id:
+        type: string
+      donation_name:
+        type: string
+      donor_id:
+        type: integer
+      recipient_id:
+        type: integer
+      recipient_name:
+        type: string
+      registry_id:
+        type: string
+      status:
+        type: string
+    type: object
+  pbRegistryRest.DonateResp:
+    properties:
+      amount:
+        type: number
+      donation_id:
+        type: string
+      donor_id:
+        type: integer
+      registry_id:
+        type: string
+      status:
+        type: string
+    type: object
+  pbRegistryRest.PaymentList:
+    properties:
+      list:
+        items:
+          $ref: '#/definitions/pbRegistryRest.PaymentResp'
+        type: array
+    type: object
+  pbRegistryRest.PaymentResp:
+    properties:
+      invoice_link:
+        type: string
+      payment_amount:
+        type: number
+      payment_date:
+        type: string
+      payment_id:
+        type: string
+      payment_method:
+        type: string
+      registry_id:
+        type: string
+    type: object
+  pbRegistryRest.RegistriesResp:
+    properties:
+      list:
+        items:
+          $ref: '#/definitions/pbRegistryRest.RegistryResp'
+        type: array
+    type: object
+  pbRegistryRest.RegistryResp:
+    properties:
+      amount:
+        type: number
+      donation_id:
+        type: string
+      donor_id:
+        type: integer
+      registry_id:
+        type: string
+      status:
+        type: string
+    type: object
+info:
+  contact: {}
+paths:
+  /api/user:
+    get:
+      consumes:
+      - application/json
+      description: must be authenticated user and return user detail data
+      parameters:
+      - default: ""
+        description: Authentication token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.UserDetailResponse'
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties: true
+            type: object
+        "404":
+          description: Not Found
+          schema:
+            additionalProperties: true
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties: true
+            type: object
+      summary: Get info about a user
+      tags:
+      - User
+    put:
+      consumes:
+      - application/json
+      description: must be authenticated user and update detail info of a user
+      parameters:
+      - default: ""
+        description: Authentication token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: Data to be updated
+        in: body
+        name: student
+        required: true
+        schema:
+          $ref: '#/definitions/models.UserUpdateRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.UserDetailResponse'
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties: true
+            type: object
+        "404":
+          description: Not Found
+          schema:
+            additionalProperties: true
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties: true
+            type: object
+      summary: Update user information
+      tags:
+      - User
+  /api/user/topup:
+    post:
+      consumes:
+      - application/json
+      description: must be authenticated as a donor user to top up account balance
+      parameters:
+      - default: ""
+        description: Authentication token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: Top up request data
+        in: body
+        name: topup
+        required: true
+        schema:
+          $ref: '#/definitions/models.TopUpReq'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 'message: string, New Balance: float64'
+          schema:
+            additionalProperties: true
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties: true
+            type: object
+        "404":
+          description: Not Found
+          schema:
+            additionalProperties: true
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties: true
+            type: object
+      summary: Top up account balance
+      tags:
+      - User
+  /api/users:
+    get:
+      consumes:
+      - application/json
+      description: must be authenticated user and return all user data
+      parameters:
+      - default: ""
+        description: Authentication token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.UserDetailResponse'
+            type: array
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties: true
+            type: object
+        "404":
+          description: Not Found
+          schema:
+            additionalProperties: true
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties: true
+            type: object
+      summary: Get info about a user ONLY FOR ADMIN
+      tags:
+      - User
+  /api/users/login:
+    post:
+      consumes:
+      - application/json
+      description: login as user and generate token
+      parameters:
+      - description: Login using email and password
+        in: body
+        name: student
+        required: true
+        schema:
+          $ref: '#/definitions/models.UserRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 'message : string, token: string'
+          schema:
+            additionalProperties: true
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties: true
+            type: object
+        "404":
+          description: Not Found
+          schema:
+            additionalProperties: true
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties: true
+            type: object
+      summary: Login as user
+      tags:
+      - User
+  /api/users/register:
+    post:
+      consumes:
+      - application/json
+      description: Register as user and return user data
+      parameters:
+      - description: Register new user
+        in: body
+        name: student
+        required: true
+        schema:
+          $ref: '#/definitions/models.UserRegister'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.UserResponse'
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties: true
+            type: object
+        "404":
+          description: Not Found
+          schema:
+            additionalProperties: true
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties: true
+            type: object
+      summary: Register as user
+      tags:
+      - User
+  /donate:
+    post:
+      consumes:
+      - application/json
+      description: Create a new donation registry
+      parameters:
+      - description: Authentication token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: Donation request data
+        in: body
+        name: donation
+        required: true
+        schema:
+          $ref: '#/definitions/models.CreateRegistryReq'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/pbRegistryRest.DonateResp'
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties: true
+            type: object
+        "404":
+          description: Not Found
+          schema:
+            additionalProperties: true
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties: true
+            type: object
+      summary: Create a donation registry
+      tags:
+      - Registry
+  /donated:
+    get:
+      consumes:
+      - application/json
+      description: Get all registries for a user
+      parameters:
+      - description: Authentication token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: Filter by registry status
+        in: query
+        name: filter
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/pbRegistryRest.RegistriesResp'
+            type: array
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties: true
+            type: object
+        "404":
+          description: Not Found
+          schema:
+            additionalProperties: true
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties: true
+            type: object
+      summary: Get all registries
+      tags:
+      - Registry
+  /donated/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete a registry by ID
+      parameters:
+      - description: Authentication token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: Registry ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/pbRegistryRest.DeleteResp'
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties: true
+            type: object
+        "404":
+          description: Not Found
+          schema:
+            additionalProperties: true
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties: true
+            type: object
+      summary: Delete a registry
+      tags:
+      - Registry
+    get:
+      consumes:
+      - application/json
+      description: Get details of a specific registry
+      parameters:
+      - description: Authentication token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: Registry ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/pbRegistryRest.DetailRegistryResp'
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties: true
+            type: object
+        "404":
+          description: Not Found
+          schema:
+            additionalProperties: true
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties: true
+            type: object
+      summary: Get registry detail
+      tags:
+      - Registry
+  /donation:
+    post:
+      consumes:
+      - application/json
+      description: Create a new donation request
+      parameters:
+      - description: Donation request payload
+        in: body
+        name: donation
+        required: true
+        schema:
+          $ref: '#/definitions/models.CreateDonationReq'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/donation_rest.CreateResp'
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties: true
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties: true
+            type: object
+      summary: Create a new donation
+      tags:
+      - Donations
+  /donation/{id}:
+    delete:
+      description: Delete an existing donation
+      parameters:
+      - description: Donation ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/donation_rest.DeleteResp'
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties: true
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties: true
+            type: object
+      summary: Delete a donation
+      tags:
+      - Donations
+    get:
+      description: Retrieve the details of a specific donation
+      parameters:
+      - description: Donation ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/donation_rest.DonationDetailResp'
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties: true
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties: true
+            type: object
+      summary: Get donation details
+      tags:
+      - Donations
+    put:
+      consumes:
+      - application/json
+      description: Edit an existing donation
+      parameters:
+      - description: Donation ID
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Donation edit payload
+        in: body
+        name: donation
+        required: true
+        schema:
+          $ref: '#/definitions/models.EditDonationReq'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/donation_rest.EditResp'
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties: true
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties: true
+            type: object
+      summary: Edit a donation
+      tags:
+      - Donations
+  /donations:
+    get:
+      description: Retrieve a list of all donations based on filters
+      parameters:
+      - description: Filter by donation status
+        in: query
+        name: filter
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/donation_rest.DonationList'
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties: true
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties: true
+            type: object
+      summary: Get all donations
+      tags:
+      - Donations
+  /payment/{id}:
+    get:
+      consumes:
+      - application/json
+      description: Get details of a specific payment
+      parameters:
+      - description: Authentication token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: Payment ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/pbRegistryRest.PaymentResp'
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties: true
+            type: object
+        "404":
+          description: Not Found
+          schema:
+            additionalProperties: true
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties: true
+            type: object
+      summary: Get payment details
+      tags:
+      - Payment
+    post:
+      consumes:
+      - application/json
+      description: Make a payment for a donation
+      parameters:
+      - description: Authentication token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: Registry ID
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Payment request data
+        in: body
+        name: payment
+        required: true
+        schema:
+          $ref: '#/definitions/models.PayReq'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/pbRegistryRest.PaymentResp'
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties: true
+            type: object
+        "404":
+          description: Not Found
+          schema:
+            additionalProperties: true
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties: true
+            type: object
+      summary: Make a payment for a donation
+      tags:
+      - Payment
+  /payments:
+    get:
+      consumes:
+      - application/json
+      description: Get all payments for a user
+      parameters:
+      - description: Authentication token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/pbRegistryRest.PaymentList'
+            type: array
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties: true
+            type: object
+        "404":
+          description: Not Found
+          schema:
+            additionalProperties: true
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties: true
+            type: object
+      summary: Get all payments
+      tags:
+      - Payment
+swagger: "2.0"

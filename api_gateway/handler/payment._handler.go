@@ -85,7 +85,7 @@ func (h *RegistryHandler) GetPaymentID(e echo.Context) error {
 // @Param Authorization header string true "Authentication token"
 // @Param id path string true "Registry ID"
 // @Param payment body models.PayReq true "Payment request data"
-// @Success 201 {object} pbRegistryRest.PaymentResponse
+// @Success 201 {object} pbRegistryRest.PaymentResp
 // @Failure 400 {object} map[string]interface{}
 // @Failure 404 {object} map[string]interface{}
 // @Failure 500 {object} map[string]interface{}

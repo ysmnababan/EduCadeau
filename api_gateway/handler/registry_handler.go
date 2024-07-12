@@ -23,7 +23,7 @@ type RegistryHandler struct {
 // @Produce  json
 // @Param Authorization header string true "Authentication token"
 // @Param filter query string false "Filter by registry status"
-// @Success 200 {array} pbRegistryRest.RegistryResponse
+// @Success 200 {array} pbRegistryRest.RegistriesResp
 // @Failure 400 {object} map[string]interface{}
 // @Failure 404 {object} map[string]interface{}
 // @Failure 500 {object} map[string]interface{}
@@ -60,7 +60,7 @@ func (h *RegistryHandler) GetAllRegistries(e echo.Context) error {
 // @Produce  json
 // @Param Authorization header string true "Authentication token"
 // @Param id path string true "Registry ID"
-// @Success 200 {object} pbRegistryRest.RegistryDetailResponse
+// @Success 200 {object} pbRegistryRest.DetailRegistryResp
 // @Failure 400 {object} map[string]interface{}
 // @Failure 404 {object} map[string]interface{}
 // @Failure 500 {object} map[string]interface{}
@@ -95,7 +95,7 @@ func (h *RegistryHandler) DetailOfRegistry(e echo.Context) error {
 // @Produce  json
 // @Param Authorization header string true "Authentication token"
 // @Param donation body models.CreateRegistryReq true "Donation request data"
-// @Success 201 {object} pbRegistryRest.RegistryDetailResponse
+// @Success 201 {object} pbRegistryRest.DonateResp
 // @Failure 400 {object} map[string]interface{}
 // @Failure 404 {object} map[string]interface{}
 // @Failure 500 {object} map[string]interface{}
@@ -159,7 +159,7 @@ func (h *RegistryHandler) Donate(e echo.Context) error {
 // @Produce  json
 // @Param Authorization header string true "Authentication token"
 // @Param id path string true "Registry ID"
-// @Success 200 {object} pbRegistryRest.DeleteRegistryResponse
+// @Success 200 {object} pbRegistryRest.DeleteResp
 // @Failure 400 {object} map[string]interface{}
 // @Failure 404 {object} map[string]interface{}
 // @Failure 500 {object} map[string]interface{}

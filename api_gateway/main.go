@@ -1,6 +1,7 @@
 package main
 
 import (
+	_ "api_gateway/docs"
 	"api_gateway/handler"
 	"api_gateway/helper"
 	"api_gateway/setup"
