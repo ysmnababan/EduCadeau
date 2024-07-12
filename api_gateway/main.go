@@ -7,6 +7,7 @@ import (
 	"log"
 
 	"github.com/labstack/echo/v4"
+	echoSwagger "github.com/swaggo/echo-swagger"
 )
 
 func init() {
@@ -23,5 +24,6 @@ func main() {
 	}
 	setup.SetupRESTServer(e, handler)
 
+	e.GET("/swagger/*", echoSwagger.WrapHandler)
 	log.Fatal(e.Start(":" + helper.PORT))
 }

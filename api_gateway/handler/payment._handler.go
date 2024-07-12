@@ -18,7 +18,7 @@ import (
 // @Accept  json
 // @Produce  json
 // @Param Authorization header string true "Authentication token"
-// @Success 200 {array} pbRegistryRest.PaymentResponse
+// @Success 200 {array} pbRegistryRest.PaymentList
 // @Failure 400 {object} map[string]interface{}
 // @Failure 404 {object} map[string]interface{}
 // @Failure 500 {object} map[string]interface{}
@@ -52,7 +52,7 @@ func (h *RegistryHandler) GetAllPayments(e echo.Context) error {
 // @Produce  json
 // @Param Authorization header string true "Authentication token"
 // @Param id path string true "Payment ID"
-// @Success 200 {object} pbRegistryRest.PaymentDetailResponse
+// @Success 200 {object} pbRegistryRest.PaymentResp
 // @Failure 400 {object} map[string]interface{}
 // @Failure 404 {object} map[string]interface{}
 // @Failure 500 {object} map[string]interface{}

@@ -21,7 +21,7 @@ type DonationHandler struct {
 // @Tags Donations
 // @Produce json
 // @Param filter query string false "Filter by donation status"
-// @Success 200 {object} donation_rest.DonationResp
+// @Success 200 {object} donation_rest.DonationList
 // @Failure 400 {object} map[string]interface{}
 // @Failure 500 {object} map[string]interface{}
 // @Router /donations [get]
@@ -81,7 +81,7 @@ func (h *DonationHandler) GetDonationDetail(e echo.Context) error {
 // @Accept json
 // @Produce json
 // @Param donation body models.CreateDonationReq true "Donation request payload"
-// @Success 201 {object} donation_rest.CreateDonationResp
+// @Success 201 {object} donation_rest.CreateResp
 // @Failure 400 {object} map[string]interface{}
 // @Failure 500 {object} map[string]interface{}
 // @Router /donation [post]
@@ -144,7 +144,7 @@ func (h *DonationHandler) CreateDonation(e echo.Context) error {
 // @Produce json
 // @Param id path string true "Donation ID"
 // @Param donation body models.EditDonationReq true "Donation edit payload"
-// @Success 200 {object} donation_rest.EditDonationResp
+// @Success 200 {object} donation_rest.EditResp
 // @Failure 400 {object} map[string]interface{}
 // @Failure 500 {object} map[string]interface{}
 // @Router /donation/{id} [put]
@@ -200,7 +200,7 @@ func (h *DonationHandler) EditDonation(e echo.Context) error {
 // @Tags Donations
 // @Produce json
 // @Param id path string true "Donation ID"
-// @Success 200 {object} donation_rest.DeleteDonationResp
+// @Success 200 {object} donation_rest.DeleteResp
 // @Failure 400 {object} map[string]interface{}
 // @Failure 500 {object} map[string]interface{}
 // @Router /donation/{id} [delete]
