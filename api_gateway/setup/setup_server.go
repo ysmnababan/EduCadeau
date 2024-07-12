@@ -20,6 +20,20 @@ type Handler struct {
 	Registry pbRegistryRest.RegistryRestClient
 }
 
+// @title Edu Cadeu API
+// @version 1.0
+// @description This is API documentation for Edu Cadeu
+// @termsOfService http://swagger.io/terms/
+
+// @contact.name API Support
+// @contact.url http://www.swagger.io/support
+// @contact.email support@swagger.io
+
+// @license.name Apache 2.0
+// @license.url http://www.apache.org/licenses/LICENSE-2.0.html
+
+// @BasePath /
+// @host api-gateway-753cnjdw3a-et.a.run.app
 func SetupRESTServer(e *echo.Echo, h *Handler) {
 	e.Use(middleware.Recover())
 	e.Use(apmechov4.Middleware())

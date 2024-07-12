@@ -13,14 +13,6 @@ import (
 	"google.golang.org/grpc/credentials"
 )
 
-// InitUserHandler godoc
-// @Summary Initialize User Handler
-// @Description Initializes the gRPC client for the User service
-// @Tags Initialization
-// @Produce json
-// @Success 200 {object} pb.UserToRestClient
-// @Failure 500 {object} map[string]interface{}
-// @Router /init/user [get]
 func InitUserHandler() pb.UserToRestClient {
 	// create connection to 'user service'
 	addr := helper.USER_SERVICE_HOST + ":443"
@@ -41,14 +33,6 @@ func InitUserHandler() pb.UserToRestClient {
 	return userServiceClient
 }
 
-// InitDonationHandler godoc
-// @Summary Initialize Donation Handler
-// @Description Initializes the gRPC client for the Donation service
-// @Tags Initialization
-// @Produce json
-// @Success 200 {object} donation_rest.DonationRestClient
-// @Failure 500 {object} map[string]interface{}
-// @Router /init/donation [get]
 func InitDonationHandler() donation_rest.DonationRestClient {
 	// create connection to 'donation service'
 	addr := helper.DONATION_SERVICE_HOST + ":443"
@@ -69,14 +53,6 @@ func InitDonationHandler() donation_rest.DonationRestClient {
 	return donationServiceClient
 }
 
-// InitRegistryHandler godoc
-// @Summary Initialize Registry Handler
-// @Description Initializes the gRPC client for the Registry service
-// @Tags Initialization
-// @Produce json
-// @Success 200 {object} pbRegistryRest.RegistryRestClient
-// @Failure 500 {object} map[string]interface{}
-// @Router /init/registry [get]
 func InitRegistryHandler() pbRegistryRest.RegistryRestClient {
 	// create connection to 'registry service'
 	addr := helper.REGISTRY_SERVICE_HOST + ":443"
