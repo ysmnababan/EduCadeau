@@ -33,7 +33,7 @@ func CalculateShippingCost(distanceMeters int) int {
 		fmt.Println("dist : ", distanceBeyondBase)
 		fmt.Println("cpm : ", costPerMeter)
 		fmt.Println("creduct : ", costReduction)
-		return roundedCost
+		return roundedCost/10
 
 	}
 }

@@ -113,7 +113,7 @@ func (s *UserController) GetUserDetail(ctx context.Context, in *pb.DetailReq) (*
 	return user, nil
 }
 func (s *UserController) TopUp(ctx context.Context, in *pb.TopUpReq) (*pb.TopUpResp, error) {
-	if in.Amount <= 0 || in.Amount >= 20000 {
+	if in.Amount <= 0 || in.Amount >= 10000000 {
 		return nil, helper.ParseErrorGRPC(helper.ErrParam)
 	}
 	respU, err := s.UserRepo.TopUp(uint(in.UserId), in.Amount)

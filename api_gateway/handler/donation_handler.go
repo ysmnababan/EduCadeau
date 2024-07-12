@@ -32,7 +32,7 @@ func (h *DonationHandler) GetAllDonations(e echo.Context) error {
 	if filter == "settled" && cred.Role != "admin" {
 		return helper.ParseError(helper.ErrMustAdmin, e)
 	}
-	if (filter == "on progress" || filter == "unsponsored") && cred.Role == "recipient" {
+	if (filter == "on progress" || filter == "no donor") && cred.Role == "recipient" {
 		return helper.ParseError(helper.ErrDonorUser, e)
 	}
 	if filter == "requested" && cred.Role != "recipient" {
