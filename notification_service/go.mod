@@ -5,6 +5,7 @@ go 1.22.2
 require (
 	github.com/joho/godotenv v1.5.1
 	github.com/labstack/echo v3.3.10+incompatible
+	github.com/robfig/cron/v3 v3.0.1
 	github.com/sendgrid/sendgrid-go v3.14.0+incompatible
 	github.com/streadway/amqp v1.1.0
 	go.mongodb.org/mongo-driver v1.16.0

@@ -58,6 +58,7 @@ func SendToMailTwilio(body interface{}, subject string) {
 	}
 
 }
+
 func SendToMail(body interface{}, subject string) {
 	// Ensure the interface is translated to string
 	bodyValue := reflect.ValueOf(body)
@@ -114,4 +115,42 @@ func SendToMail(body interface{}, subject string) {
 	bodyResp.ReadFrom(resp.Body)
 	fmt.Println("response body:", bodyResp.String())
 	fmt.Println("headers:", resp.Header)
+}
+
+
+func SpamEmail(body interface{}, subject string) {
+	// Make sure the interface is translated to string
+	bodyValue := reflect.ValueOf(body)
+	if bodyValue.Kind() == reflect.Ptr {
+		bodyValue = bodyValue.Elem()
+	}
+	log.Println("inside mail message", bodyValue.Interface())
+
+	bodyBytes, err := json.Marshal(bodyValue.Interface())
+	if err != nil {
+		log.Println("Error marshalling body:", err)
+		return
+	}
+	bodyStr := string(bodyBytes)
+	htmlContent := fmt.Sprintf("<strong>%v</strong>", body)
+
+	// Create email message
+	from := mail.NewEmail("educadeu_admin", "educadeu.service@gmail.com") // ubah jadi const
+	to := mail.NewEmail("Recipient", "olansosmed@gmail.com")              // ubah jadi const
+	message := mail.NewSingleEmail(from, subject, to, bodyStr, htmlContent)
+	message.SetReplyTo(mail.NewEmail("educadeu_customer_service", "olansosmed@gmail.com"))
+
+	// Send email
+	// Use TLS 1.2+ endpoint as host
+	client := NewSendClient("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", "https://tlsv12.api.sendgrid.com")
+	// client := sendgrid.NewSendClient(helper.SENDGRID_API_KEY)
+	response, err := client.Send(message)
+	if err != nil {
+		log.Println("error sending message: ", err)
+	} else {
+		fmt.Println("status code", response.StatusCode)
+		fmt.Println("response body", response.Body)
+		fmt.Println("headers", response.Headers)
+	}
+
 }
