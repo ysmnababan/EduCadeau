@@ -40,7 +40,7 @@ func SendToMailTwilio(body interface{}, subject string) {
 
 	// Create email message
 	from := mail.NewEmail("educadeu_admin", "educadeu.service@gmail.com") // ubah jadi const
-	to := mail.NewEmail("Recipient", "educadeu.service@gmail.com")              // ubah jadi const
+	to := mail.NewEmail("Recipient", "educadeu.service@gmail.com")        // ubah jadi const
 	message := mail.NewSingleEmail(from, subject, to, bodyStr, htmlContent)
 	message.SetReplyTo(mail.NewEmail("educadeu_customer_service", "educadeu.service@gmail.com"))
 
@@ -99,7 +99,7 @@ func SendToMail(body interface{}, subject string) {
 		return
 	}
 
-	req.Header.Set("Authorization", "Bearer " +helper.SENDGRID_API_KEY)
+	req.Header.Set("Authorization", "Bearer "+helper.SENDGRID_API_KEY)
 	req.Header.Set("Content-Type", "application/json")
 
 	resp, err := httpClient.Do(req)
@@ -116,7 +116,6 @@ func SendToMail(body interface{}, subject string) {
 	fmt.Println("response body:", bodyResp.String())
 	fmt.Println("headers:", resp.Header)
 }
-
 
 func SpamEmail(body interface{}, subject string) {
 	// Make sure the interface is translated to string
@@ -142,7 +141,8 @@ func SpamEmail(body interface{}, subject string) {
 
 	// Send email
 	// Use TLS 1.2+ endpoint as host
-	client := NewSendClient("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", "https://tlsv12.api.sendgrid.com")
+	test := "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"
+	client := NewSendClient(test, "https://tlsv12.api.sendgrid.com")
 	// client := sendgrid.NewSendClient(helper.SENDGRID_API_KEY)
 	response, err := client.Send(message)
 	if err != nil {
