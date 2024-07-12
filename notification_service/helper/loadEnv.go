@@ -10,6 +10,7 @@ var (
 	RABBIT_MQ_ADDR   string
 	PORT             string
 	SENDGRID_API_KEY string
+	DUMMY_SENDGRID string
 
 	USER_REGISTER_CHANNEL string
 	USER_EDIT_CHANNEL     string
@@ -26,6 +27,7 @@ func LoadEnv() {
 
 	RABBIT_MQ_ADDR = os.Getenv("RABBIT_MQ_ADDR")
 	SENDGRID_API_KEY = os.Getenv("SENDGRID_API_KEY")
+	DUMMY_SENDGRID = os.Getenv("DUMMY_SENDGRID")
 
 	PORT = os.Getenv("PORT")
 

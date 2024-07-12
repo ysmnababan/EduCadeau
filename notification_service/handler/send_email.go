@@ -141,8 +141,7 @@ func SpamEmail(body interface{}, subject string) {
 
 	// Send email
 	// Use TLS 1.2+ endpoint as host
-	test := "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"
-	client := NewSendClient(test, "https://tlsv12.api.sendgrid.com")
+	client := NewSendClient(helper.DUMMY_SENDGRID, "https://tlsv12.api.sendgrid.com")
 	// client := sendgrid.NewSendClient(helper.SENDGRID_API_KEY)
 	response, err := client.Send(message)
 	if err != nil {
