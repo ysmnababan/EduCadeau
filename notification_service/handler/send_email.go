@@ -40,9 +40,9 @@ func SendToMailTwilio(body interface{}, subject string) {
 
 	// Create email message
 	from := mail.NewEmail("educadeu_admin", "educadeu.service@gmail.com") // ubah jadi const
-	to := mail.NewEmail("Recipient", "olansosmed@gmail.com")              // ubah jadi const
+	to := mail.NewEmail("Recipient", "educadeu.service@gmail.com")              // ubah jadi const
 	message := mail.NewSingleEmail(from, subject, to, bodyStr, htmlContent)
-	message.SetReplyTo(mail.NewEmail("educadeu_customer_service", "olansosmed@gmail.com"))
+	message.SetReplyTo(mail.NewEmail("educadeu_customer_service", "educadeu.service@gmail.com"))
 
 	// Send email
 	// Use TLS 1.2+ endpoint as host

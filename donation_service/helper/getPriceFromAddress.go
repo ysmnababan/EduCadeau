@@ -8,7 +8,6 @@ import (
 	"log"
 	"net/http"
 	"net/url"
-	"os"
 )
 
 func GetPriceFromAddress(from, to string) (float64, error) {
@@ -19,14 +18,14 @@ func GetPriceFromAddress(from, to string) (float64, error) {
 		return 0, fmt.Errorf("origin or destination cannot be blank")
 	}
 
-	apiKey := os.Getenv("GOOGLE_MAPS_API_KEY")
+	log.Println("from to:", from, to)
 
 	// URL encode the origin and destination parameters
 	origin = url.QueryEscape(origin)
 	destination = url.QueryEscape(destination)
 
 	// Construct the URL for the Google Maps Distance Matrix API
-	url := fmt.Sprintf("https://maps.googleapis.com/maps/api/distancematrix/json?origins=%s&destinations=%s&key=%s", origin, destination, apiKey)
+	url := fmt.Sprintf("https://maps.googleapis.com/maps/api/distancematrix/json?origins=%s&destinations=%s&key=%s", origin, destination, GOOGLE_MAPS_API_KEY)
 
 	// Make a GET request to the API
 	resp, err := http.Get(url)
